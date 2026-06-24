@@ -295,7 +295,45 @@
 
                 if(!fullText.trim()) throw new Error("Document structure empty or missing vector text maps.");
                 
-                dispatchGeminiAPIRequest(fullText);
+                async function dispatchGeminiAPIRequest(extractedText) {
+    // === START LOCAL TEST BYPASS ===
+    console.log("Extracted Text Preview:\n", extractedText.substring(0, 500)); 
+    document.getElementById('processing-title').innerText = "TEST MODE: Simulating AI Response...";
+    
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network latency
+
+    const mockQuestions = [
+        {
+            "id": 1,
+            "question": "Does the client-side local PDF layout scanner extract text properly?",
+            "a": "Yes, it parses vector text sheets completely inside the browser viewport",
+            "b": "No, it drops runtime operations instantly",
+            "c": "It requires a node server deployment map",
+            "d": "It only reads plain text configuration scripts",
+            "answer": "a"
+        },
+        {
+            "id": 2,
+            "question": "What happens when you select a multiple choice choice item?",
+            "a": "The active choice card gains a soft blue highlight active tracking state",
+            "b": "The browser reloads the entire configuration framework",
+            "c": "The global countdown timer speeds up execution bounds",
+            "d": "The system forces an absolute validation crash",
+            "answer": "a"
+        }
+    ];
+
+    appState.selectedPool = mockQuestions;
+    appState.currentQuestionIndex = 0;
+    appState.answersRecorded = {};
+    appState.timeRemaining = appState.selectedPool.length * 40;
+
+    switchScreen('screen-quiz');
+    renderActiveQuestion();
+    startGlobalCountdown();
+    return; // Stop execution here so it doesn't talk to Google's servers yet
+    // === END LOCAL TEST BYPASS ===
+}
 
             } catch (err) {
                 console.error(err);
