@@ -13,10 +13,11 @@
 <body class="p-6">
     <div class="max-w-6xl mx-auto space-y-6">
         
+        <!-- HEADER -->
         <div class="flex justify-between items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <div>
                 <h1 class="text-2xl font-bold text-slate-900">Question Pool Manager</h1>
-                <p class="text-sm text-slate-500">Add questions individually or bulk-paste formatted text blocks.</p>
+                <p class="text-sm text-slate-500">Bulk-paste structured question sheets instantly.</p>
             </div>
             <a href="index.html" class="px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all">
                 Go to Exam Portal →
@@ -25,8 +26,10 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
+            <!-- LEFT COLUMN: INPUT METHODS (SPAN 5) -->
             <div class="lg:col-span-5 space-y-4">
                 
+                <!-- TARGET TRACK SELECTION (GLOBAL) -->
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Target Track / Chapter</label>
                     <select id="global-track" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-indigo-500">
@@ -35,45 +38,23 @@
                     </select>
                 </div>
 
+                <!-- MODE TABS -->
                 <div class="flex bg-slate-200 p-1 rounded-xl">
-                    <button id="tab-single" onclick="switchMode('single')" class="w-1/2 py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer">Single Question</button>
-                    <button id="tab-bulk" onclick="switchMode('bulk')" class="w-1/2 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer">Bulk Paste Engine</button>
+                    <button id="tab-bulk" onclick="switchMode('bulk')" class="w-full py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer">Bulk Paste Engine</button>
+                    <button id="tab-single" onclick="switchMode('single')" class="w-full py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer hidden">Single Question</button>
                 </div>
 
-                <div id="panel-single" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                    <h2 class="text-base font-bold text-slate-800 mb-4">Add Single Item</h2>
-                    <form id="question-form" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Question Body</label>
-                            <textarea id="form-question" rows="2" placeholder="Enter question description..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500" required></textarea>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Options Layout</label>
-                            <input type="text" id="form-opt-a" placeholder="Option A" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                            <input type="text" id="form-opt-b" placeholder="Option B" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                            <input type="text" id="form-opt-c" placeholder="Option C" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                            <input type="text" id="form-opt-d" placeholder="Option D" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Correct Answer</label>
-                            <select id="form-answer" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
-                                <option value="a">(a)</option> <option value="b">(b)</option> <option value="c">(c)</option> <option value="d">(d)</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all cursor-pointer">Commit Item</button>
-                    </form>
-                </div>
-
-                <div id="panel-bulk" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hidden">
+                <!-- BULK ENGINE PANEL -->
+                <div id="panel-bulk" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <div class="mb-3">
                         <h2 class="text-base font-bold text-slate-800">Bulk Text Parser</h2>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Separate raw questions using a blank empty line. Default answer configuration keys will assign as <span class="font-bold text-slate-600">(a)</span> initially, which you can easily toggle in the list preview.</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Separate raw blocks using an empty line. Follow your specified structure accurately.</p>
                     </div>
                     
                     <div class="space-y-3">
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Raw Dump Window</label>
-                            <textarea id="bulk-raw-text" rows="10" placeholder="1. What is 2+2? (a) 3 (b) 4 (c) 5 (d) 6&#10;&#10;2. What is CPU? (a) Core (b) Unit (c) Central Processing Unit (d) Board" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:border-indigo-500 leading-relaxed"></textarea>
+                            <textarea id="bulk-raw-text" rows="12" placeholder="1. Question here? (a) Option A (b) Option B (c) Option C (d) Option D&#10;Answer: (b)&#10;&#10;2. Next question... (a) Option A (b) Option B (c) Option C (d) Option D&#10;Answer: (a)" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:border-indigo-500 leading-relaxed"></textarea>
                         </div>
                         <button onclick="processBulkTextDump()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl transition-all cursor-pointer">
                             Run Structural Extraction
@@ -81,8 +62,32 @@
                     </div>
                 </div>
 
+                <!-- SINGLE ENTRY FORM (OPTIONAL BACKUP) -->
+                <div id="panel-single" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hidden">
+                    <h2 class="text-base font-bold text-slate-800 mb-4">Add Single Item</h2>
+                    <form id="question-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Question Body</label>
+                            <textarea id="form-question" rows="2" placeholder="Enter question..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500"></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <input type="text" id="form-opt-a" placeholder="Option A" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                            <input type="text" id="form-opt-b" placeholder="Option B" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                            <input type="text" id="form-opt-c" placeholder="Option C" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                            <input type="text" id="form-opt-d" placeholder="Option D" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <select id="form-answer" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm">
+                                <option value="a">(a)</option> <option value="b">(b)</option> <option value="c">(c)</option> <option value="d">(d)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-indigo-600 text-white font-semibold text-sm rounded-xl">Commit Item</button>
+                    </form>
+                </div>
+
             </div>
 
+            <!-- RIGHT COLUMN: PREVIEW LIST (SPAN 7) -->
             <div class="lg:col-span-7 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
@@ -114,57 +119,47 @@
             if(mode === 'single') {
                 document.getElementById('panel-single').classList.remove('hidden');
                 document.getElementById('panel-bulk').classList.add('hidden');
-                document.getElementById('tab-single').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer";
-                document.getElementById('tab-bulk').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer";
             } else {
                 document.getElementById('panel-single').classList.add('hidden');
                 document.getElementById('panel-bulk').classList.remove('hidden');
-                document.getElementById('tab-single').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer";
-                document.getElementById('tab-bulk').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer";
             }
         }
 
-        // Add single question
-        document.getElementById('question-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const track = document.getElementById('global-track').value;
-            db[track].push({
-                id: Date.now() + Math.random(),
-                question: document.getElementById('form-question').value.trim(),
-                a: document.getElementById('form-opt-a').value.trim(),
-                b: document.getElementById('form-opt-b').value.trim(),
-                c: document.getElementById('form-opt-c').value.trim(),
-                d: document.getElementById('form-opt-d').value.trim(),
-                answer: document.getElementById('form-answer').value
-            });
-            saveAndRefresh();
-            this.reset();
-        });
-
-        // Bulk text parser engine
+        // Bulk text parser engine matching exact "Answer: (x)" layout lines
         function processBulkTextDump() {
             const track = document.getElementById('global-track').value;
             const rawText = document.getElementById('bulk-raw-text').value.trim();
-            if(!rawText) return alert("Pasting space layout parameters is empty.");
+            if(!rawText) return alert("Text area is empty.");
 
-            // Split items using double carriage line breaks or single line breaks if cleanly arranged
+            // Split items using double carriage line breaks
             const rawBlocks = rawText.split(/\n\s*\n/);
             let addedCount = 0;
 
             rawBlocks.forEach(block => {
-                const text = block.trim().replace(/\s+/g, ' ');
-                if(!text) return;
+                if(!block.trim()) return;
 
-                // Match layout structures: (a), (b), (c), (d)
+                // Extract and clean out the Answer parameter string row
+                let assignedAnswer = "a"; // baseline fallback context
+                let normalizedText = block.trim();
+
+                const answerMatch = normalizedText.match(/Answer:\s*\(([a-d])\)/i);
+                if (answerMatch) {
+                    assignedAnswer = answerMatch[1].toLowerCase();
+                    // Remove the Answer declaration row so it doesn't leak into option D string calculations
+                    normalizedText = normalizedText.replace(/Answer:\s*\(([a-d])\)/i, "").trim();
+                }
+
+                // Compress spaces for standard RegEx split parameters
+                normalizedText = normalizedText.replace(/\s+/g, ' ');
+
                 const regexA = /\s*\(a\)\s*/i;
                 const regexB = /\s*\(b\)\s*/i;
                 const regexC = /\s*\(c\)\s*/i;
                 const regexD = /\s*\(d\)\s*/i;
 
-                if(regexA.test(text) && regexB.test(text) && regexC.test(text) && regexD.test(text)) {
-                    // Split sections sequentially
-                    const partsA = text.split(regexA);
-                    const questionStr = partsA[0].replace(/^\d+[\.\s]*/, '').trim(); // strip leading question indices like '1.'
+                if(regexA.test(normalizedText) && regexB.test(normalizedText) && regexC.test(normalizedText) && regexD.test(normalizedText)) {
+                    const partsA = normalizedText.split(regexA);
+                    const questionStr = partsA[0].replace(/^\d+[\.\s]*/, '').trim(); // Strips numeric prefixes like "1."
                     
                     const partsB = partsA[1].split(regexB);
                     const optA = partsB[0].trim();
@@ -172,7 +167,7 @@
                     const partsC = partsB[1].split(regexC);
                     const optB = partsC[0].trim();
 
-                    const partsD = partsC[1].split(regexD);
+                    const partsD = partsB[1].split(regexD);
                     const optC = partsD[0].trim();
                     const optD = partsD[1].trim();
 
@@ -183,13 +178,13 @@
                         b: optB,
                         c: optC,
                         d: optD,
-                        answer: "a" // Baseline fallback answer target string context
+                        answer: assignedAnswer
                     });
                     addedCount++;
                 }
             });
 
-            alert(`Bulk Insertion Complete. Processed and extracted ${addedCount} questions successfully!`);
+            alert(`Successfully integrated ${addedCount} questions into database metrics!`);
             document.getElementById('bulk-raw-text').value = "";
             saveAndRefresh();
         }
@@ -215,7 +210,7 @@
         }
 
         function clearAllData() {
-            if(confirm("Wipe everything?")) {
+            if(confirm("Are you sure you want to completely clear this database?")) {
                 db = { chapter1: [], chapter2: [] };
                 saveAndRefresh();
             }
@@ -241,7 +236,7 @@
                         <div class="pt-2 flex items-center gap-2">
                             <span class="text-xs text-slate-500">Correct Target:</span>
                             <button onclick="toggleAnswer('${trackKey}', ${item.id}, '${item.answer}')" class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 cursor-pointer">
-                                (${item.answer.toUpperCase()}) — Click to change
+                                (${item.answer.toUpperCase()}) — Click to toggle adjust
                             </button>
                         </div>
                         <button onclick="deleteQuestion('${trackKey}', ${item.id})" class="absolute top-2 right-4 text-slate-400 hover:text-red-500 font-bold text-base cursor-pointer">×</button>
