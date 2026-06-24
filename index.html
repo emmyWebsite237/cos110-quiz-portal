@@ -110,13 +110,18 @@
                 </div>
 
                 <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Administrative Passkey</label>
+                    <input type="password" id="admin-passkey" placeholder="Enter password to unlock upload rights..." class="w-full px-4 py-3 glass-input text-base">
+                </div>
+
+                <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Upload Lecture Handout (PDF)</label>
                     <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition-colors bg-white/50 relative">
                         <input type="file" id="pdf-file-input" accept="application/pdf" class="absolute inset-0 opacity-0 cursor-pointer">
                         <div class="text-slate-500 space-y-1 pointer-events-none">
                             <span class="block text-2xl">📄</span>
                             <span id="file-name-display" class="block text-sm font-semibold text-slate-700">Click or drag handout PDF here</span>
-                            <span class="block text-xs text-slate-400">Supports standard document vector text extracts</span>
+                            <span class="block text-xs text-slate-400">Requires Administrative Passkey Verification</span>
                         </div>
                     </div>
                 </div>
@@ -224,9 +229,10 @@
 
         let appState = {
             studentName: "",
-            apiKey: "AQ.Ab8RN6I_0Ks4xjXKucLILJIYCVm14WjHJdRcdwol22RTyOM9lw", // Hardcoded API Key
+            apiKey: "AQ.Ab8RN6I_0Ks4xjXKucLILJIYCVm14WjHJdRcdwol22RTyOM9lw", // Embedded API Key
+            correctPasskey: "Emmanuel110", // Change this text string to whatever passkey you want
             targetFile: null,
-            configuredCount: 30, // Default to minimum setup boundary
+            configuredCount: 30, 
             selectedPool: [],
             currentQuestionIndex: 0,
             answersRecorded: {},
@@ -235,6 +241,15 @@
         };
 
         document.getElementById('pdf-file-input').addEventListener('change', function(e) {
+            const enteredPasskey = document.getElementById('admin-passkey').value;
+            
+            // Check passkey before accepting the selected file
+            if (enteredPasskey !== appState.correctPasskey) {
+                alert("Access Denied: You do not have upload privileges for this Chapter Material.");
+                this.value = ""; // Clear file input field
+                return;
+            }
+
             if(e.target.files.length > 0) {
                 appState.targetFile = e.target.files[0];
                 document.getElementById('file-name-display').innerText = appState.targetFile.name;
@@ -255,8 +270,10 @@
 
         function validateAndProceedSetup() {
             const name = document.getElementById('student-name').value.trim();
+            const enteredPasskey = document.getElementById('admin-passkey').value;
             
             if (!name) return alert("Please specify an Examinee Name parameters.");
+            if (enteredPasskey !== appState.correctPasskey) return alert("Access Denied: Invalid Administrative Passkey authorization.");
             if (!appState.targetFile) return alert("Please drop or choose a valid Chapter Handout PDF file.");
 
             appState.studentName = name;
@@ -360,7 +377,7 @@
             document.getElementById('question-text').innerText = currentItem.question;
             document.getElementById('text-opt-a').innerText = currentItem.a;
             document.getElementById('text-opt-b').innerText = currentItem.b;
-            document.getElementById('text-opt-c').innerText = currentItem.d; // Linked object structural paths
+            document.getElementById('text-opt-c').innerText = currentItem.c;
             document.getElementById('text-opt-d').innerText = currentItem.d;
 
             ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
