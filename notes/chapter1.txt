@@ -1,0 +1,849 @@
+CHAPTER ONE:
+FRODUCTION TO COMPUTERS
+
+1.0 INTRODUCTION
+
+It's likely that you have. If you've made a mobile phone call, ridden in an autornatic
+car, watched digital television, played a video game, or engaged in similar activities,
+you've utilized a computer. Even as you read this text, keep in mind that the words
+you're reading were typed using a computer. Here is a list of statements regarding
+computers. Determine whether each statement is true or false.
+
+Computers are more intelligent and smarter than humans.
+
+Computers possess brains that they use for thinking and calculations.
+
+N=
+
+Some computers have feelings and emotions.
+
+Computers can solve any problems given to them.
+
+Computers can operate independently without human intervention.
+
+To utilize a computer, extensive knowledge of science and mathematics is
+
+Dw pw
+
+required.
+If you determined that each statement is false, you are correct. Originally, the term
+"computer" referred to a machine or electronic device capable of performing
+complex calculations. Computers exist in various physical forms. The initial
+computers were as large as a spacious room, and such vast computing facilities still
+exist for specialized scientific computations, known as supercomputers, and for the
+transaction processing needs of large companies, commonly referred to as
+mainframes. Smaller computers designed for individual use, known as personal
+computers, along with their portable equivalent, notebook computers, are prevalent
+tools for information processing and communication, and are what most non-experts
+typically think of as "a computer." However, the most common type of computer in
+use today is the embedded computer, which is a small computer used to control other
+devices. Embedded computers oversee the functioning of machines ranging from
+
+fighter planes to digital cameras.
+
+ 
+Introduction To Computers
+
+So, what exactly is acomputer? Here are some definitions:
+
+e
+
+1.2
+
+According to Wikipedia.org, an online Encyclopedia, a computer is a
+machine that manipulates data based ona set of instructions.
+
+The American Heritage Dictionary defines a computer as a device that
+computes, particularly a programmable electronic machine that performs
+high-speed mathematical or logical operations, or that assembles, stores,
+correlates, or processes information.
+
+The Dictionary of Cultural Literacy describes a computer as an electronic
+device that stores and manipulates information. It differs from a calculator in
+its ability to store a program and retrieve information from its memory
+without human assistance.
+
+The British Computer Society defines a computer as a machine that, under
+the control of a stored program, automatically accepts and processes data,
+and provides the results of that processing.
+
+Dictionary.com defines a computer as a programmable electronic device
+designed to accept data and perform specified mathematical and logical
+operations at high speed.
+
+FUNCTIONS OFACOMPUTER
+
+Acomputer is designed to fulfill or carry out four main tasks:
+
+Accepting data: You can input raw data into it. The raw data could be a
+collection of facts, figures, or a set of instructions telling the computer what
+todo.
+
+Storing data: It has a memory device that holds the raw data or information
+for as long as needed. Memory is measured in bytes.
+
+Processing data: This involves performing operations with the collected raw
+data. It could be solving addition problems or comparing and sorting the data.
+
+Producing processed information: The computer provides the results of the
+
+processing. which are the outcomes of the instructions given to the computer.
+
+ 
+Introduction To Computers
+
+They can only volve the
+
+Computers are designed to follow instructions from huma
+
+ry
+
+problems that people instruct them to solve Since humans cannot solve
+problem, neither can computers. To instruct a computer, you need to know the
+
+problem you want to solve and havea plan for solving it.
+
+Computers have becoine essential and valuable tools in today's word. As they
+impact various aspec's of our lives, it is important to be aware of their usaye and
+functionality
+
+The term "data" refers to raw or unprocessed facts, such as numbers,
+
+yvmbols. and
+
+words. When data yoes through a processor, itis transformed into meaningful form,
+resulting in information. Therefore, information is processed or transformed data
+
+that holds siynificance.
+
+1.3 Characteristics of Computers
+Computers possess certain common characteristics or features. regardless of their
+
+size and type. These characteristics include:
+
+1.3.1 Speed
+
+Computers are capable of performing calculations at extremely high speeds. As
+computer power increases, so does the speed at which they can execute instructions.
+For example, microcomputers can carry out millions of instructions per second
+without errors. | he speed of a computer is measured in Hertz, which represents the
+number of processing cycles per second. A 500MHz Pentium II computer can
+process 500 million instructions per second, while a 2.2GHz Pentium 1V computer
+can process 2.2 billion instructions per second. The prefixes Kilo-, Mega-, Giga-.
+Tera-, etc., represent units of measurement for increasing orders of magnitude
+
+1.3.2. Word Length
+Digital computers operate using binary digits, or bits. which are represented by (s
+
+and Is. The word length of a computer refers to the number of bits it can process
+
+3
+
+ 
+Introduction To Computers
+‘
+
+simultancously in el. His an indie:
+
+tor of the computing power ofa computer. A
+
+computer with a word length of 16 bits can process 16 bits of data at a time, while a
+
+64-bit computer can process 64 bits atatime,
+
+1.3.3) Storage
+
+Computers have the ability to store large amounts of data, There are various external
+and backing storage devic 5 DVD disks, Zip disks, and flash disks,
+which provide extensive data storage capacity. The unique feature of computer
+
+vailable, such a
+
+storage is its ability to retrieve data quickly. While humans can store vast amounts of
+information, retrieving it accurately and rapidly is a challenge. In contrast,
+computers can access stored data within seconds.
+
+1.3.4 Accuracy
+
+Computers are highly accurate devices and rarely make mistakes on their own. The
+accuracy of a computer depends on the accuracy of the human operator or
+programmer. If incorrect procedures or input are provided, the computer will
+produce incorrect results, The principle of "Garbage In, Garbage Out" (GIGO)
+highlights the importance of accurate input to obtain accurate output.
+
+Computers are versatile and flexible machines capable of performing a wide range of
+activities. They can handle simple calculations, complex simulations, graphical
+drawings, and even tasks such as missile navigation and satellite communication.
+Computers can also communicate with other computers locally or across the globe.
+
+1.3.6 Automation
+Automation refers to the replacement of human labor with technological processes.
+Computers achieve a remarkable level of automation. Once a task is initiated,
+
+computers can carry it out independently until completion. They can be programmed
+
+ 
+Introduction To Computers
+
+to perform complex sequences of tasks, control machines, and execute programs
+the correct order and timing. Correct programming is essential for achieving
+
+automation with computers.
+
+1.3.7 Diligence
+
+Computers exhibit diligence, which refers to persistent and hard-working effort
+
+Unlike humans who can become tired, lose concentration, or experience emotions
+
+that affect their performance, computers do not experience these limitations. They
+
+can repeat the same tasks or perform different tasks repeatedly as long as there is 4
+
+power supply and a human operator to guide them.
+
+1.4 Limitations of Computers
+
+Despite their capabilities, computers have certain limitations:
+
+(i) Computers are tools created and programmed by humans. They lack inherent
+intelligence and depend on human intervention for their functionality.
+
+(ii) Digital computers lack the ability to comprehend meaning or perceive
+information. They can only make simple decisions based on the data they
+receive.
+
+(iii) | Computers cannot generate problems, analyze them, or find solutions on
+their own. They execute programs created by human programmers to solve
+specific problems.
+
+(iv) | Computers cannot think or make independent decisions. They rely on human
+users to provide correct input and determine appropriate actions.
+
+(v) Developing computer networks can be costly, including the purchase of
+hardware, software, and the establishment of instructional networks.
+
+(vi) The rapid pace of technological advancements poses challenges for
+
+» J§ educators and individuals, as keeping up with the latest equipment and
+
+advancements can be demanding.
+
+ 
+Jatiodtuction La Computer
+(vind) Computer literacy remains a challenge, as not everyone has access to
+
+computers, modern mobile phones, or computer networks, resulting in significant
+
+computer iliteraey
+
+LS Historical Deveopment
+
+The earliest computers were not machines but human beings. In fact, the term
+“computer™ was initially used as a job title for individuals, predominantly women,
+who performed repetitive calculations, These calculations were required for tasks
+such as computing navigational tables, tide charts, and astronomical positions for
+almanacs.
+
+1S.1 TheAbacus
+
+The abacus (see figure 1), an early tool for mathematical computations, aided the
+memory of the person performing the calculations. Skilled abacus operators could
+handle addition and subtraction problems as quickly as someone using a modern
+hand calculator. Contrary to popular belief, the oldest surviving abacus was not from
+China but was used by the Babylonians in 300 B.C. The abacus is still in use today,
+particularly in the Far East. Early versions of the abacus consisted of rods with
+sliding ri
+
+while older versions used pebbles for counting.
+
+Figure 1.1: The Abacus
+
+1.5.2 The Slide Rule and Mechanical Calculators
+In 1617, John Napier. a Scottish mathematician, invented logarithms, which enabled
+multiplication to be performed through addition. Logarithm values were initially
+
+ 
+Introduction To Computers
+
+alternative method using
+
+obtained from printed tables, but Napier also created @
+carved on ivory sticks called Napicr's
+
+s Bones (see figure 1.2)
+
+logarithm value:
+Napier's invention directly led to the development of the slide @ile, which was firs,
+built in England in 1632 and remained in use until the 1960s, Including during
+
+NASA's Mereury, Gemini, and Apollo programs.
+
+Figure 1.2: An original set of Napier's Bones [photo courtesy IBM]
+
+Around the same time, Leonardo da Vinci made drawings of gear-driven calculating
+machines, but they were never built. The first gear-driven calculating machine was
+likely the "calculating clock" invented by Wilhelm Schickard in 1623 (see figure
+1.3). However, it received little attention as Schickard passed away soon after due to
+the bubonic plague. In 1642, Blaise Pascal, at the age of 19, invented the Pascaline, a
+gear-driven calculator primarily used for addition. Pascal constructed 50 Pascaline
+devices, but their high cost and limited accuracy hindered widespread adoption.
+Interestingly, the mechanism used in the Pascaline to increment digits in a car's
+speedometer's odometer was similar. Gottfried Wilhelm Leibniz, a German
+mathematician and co-inventor of calculus, built a four-function calculator called
+the "stepped reckoner." (see figure 1.4) Itused fluted drums with ten flutes arranged
+in a stair-step fashion, and Leibniz advocated for the use of the binary number
+
+sysiem.
+
+ 
+Figure 1.3: Pascal's Pascaline [photo © 2002 IEEE]
+lide rule and mechanical calculators were impressive devices, they
+lacked two key features of computers. Firstly, th
+component fo
+
+y did not have a memory
+storing information in machine-readable form. Secondly, they were
+not programmable, meaning that a sequence of instructions couldn't be provided in
+advance for automatic execution.
+
+Figure 1.4: Leibniz's Stepped Reckoner
+
+1.5.3 Jaequard Loom
+
+Surprisingly, the first computing device with both memory and programmability
+was not created for mathematical computations. Instead, it was developed in 1801 by
+Joseph-Marie Jacquard, a Frenchman, for automating the weaving process used in
+rug and clothing manufacturing. Jacquard's loom utilized punched cards to create
+intricate patterns, revolutionizing the weaving industry (see figure 1.5). This device
+not only marked the first programmable device but also demonstrated how a human
+
+expert's knowledge could be captured in machine-readable form for automated
+contro]
+
+ 
+Introduction To Computers
+
+Figure 1.5: Jacquard's Loom showing the threads and the punched cards
+
+x
+ee
+
+1.5.4 The Difference Engine and the Analytic Engine
+
+In 1822, Charles Babbage, an English mathematician, proposed the construction ofa
+steam-driven machine called the Difference Engine, designed to compute tables of
+numbers like logarithm tables. Babbage received government funding for the
+project, driven by the importance of accurate numeric tables for ocean navigation.
+
+However, the construction of the Difference Engine proved to be challenging
+plagued by difficulties and escalating costs. The project was eventually abandoned
+
+without completion.
+
+Undeterred, Babbage moved on to his next idea. the Analytic Engine. This machine,
+powered by six steam engines and the size of a house, aimed to be more versatile by
+incorporating programmability using punched card technology. Babbage recognized
+that the pattern of holes in punched cards could represent abstract ideas and that
+
+punched paper could serve as a storage mechanism for computed numbers. 1
+Analytic Engine featured components similar to modern computers, including 2
+memory unit (Store) and a processing unit (Mill). Additionally, it introduced the
+concept of conditional statements, allowing diferent program paths based on
+detected conditions “during runtime. However. the Analytic Engine was neve
+
+constructed.
+
+ 
+Introduction To Computers
+
+In 1991, the London Museum of Science built a working model of Babbage’s
+DitYerence Engine based on his original plans (sce figure 1.6). This model, sta
+
+feet tall, 11 feet wide, and weighing 3 tons, had 4,000 moving parts and ope
+Babbage had envisioned. Charles Babbage's contributions to computin
+
+punched cards and the logical structures of modern computers, were
+Although he passed away in 1871 with few recognizing his achievements,
+isnow widely acknowledged, and he is considered apioneer in the field.
+
+aytrere
+
+Figure 1.6: The Difference Engine
+
+1.5.5 The First Programmer
+
+Ada Byron, later known as Countess Lady Lovelace through her marriage, became
+acquainted with Charles Babbage, the renowned mathematician and inventor.
+Despite being just 19 years old, Ada found herself captivated by Babbage's visionary
+concepts. Through correspondence and meetings with Babbage. she gained
+sufficient understanding of the Analytic Engine's design to start devising programs
+for this yet-to-be-built marvel. While Babbage chose to withhold his knowledge
+from publication for another three décades, Ada documented her sequences of
+instructions, referred to as "Notes," tailored for the Analytic Engine. Although the
+Analytic Engine never materialized due to the British government's reluctance to
+support its development, Ada secured her place in history as the world’s first
+computer programmer.
+
+ 
+Introduction To Computers:
+
+Ada's contributions to the field of computing were groundbreaking. She pioneered
+the concept of subroutines and was the first to recognize the significance of looping
+Babbage, on the other hand, made notable inventions such as the modern postal
+system, coweatchers for trains, and the ophthalmoscope, a device still employed
+today in the treatment of eye conditions. In 1979, the programming language Ada
+
+was named in her honor.
+
+1.5.6 The Census Tabulator
+
+A significant breakthrough unfolded in the United States. According to the U.S
+Constitution, a census should be conducted every ten years to determine the
+representation of states in Congress. However, by 1880, the population had
+expanded so considerably that taflying the results of the census took a staggering 7.5
+years. It became evident that automation was urgently required forthe next census.
+
+To address this challenge, the census bureau announced a prize for an inventor who
+could assist with the 1890 census. The prize was eventually won by Herman
+Hollerith, who proposed and successfully implemented the use of punched cards,
+originally developed by Jacquard, for computational purposes. Hollerith's
+
+~ invention, known as the Hollerith desk or Census Tabulator, consisted of a card
+reader that detected the holes in the cards, a gear-driven mechanism for counting
+(employing Pascal's mechanism, similar to car odometers), and a large display of
+dial indicators (similar to a car speedometer) to present the count results.
+
+Jacquard's cards featured fixed pattems, which were created when designing 2
+tapestry and remained unchanged. This can be likened to a read-only form of
+information storage. Hollerith, however, had the insight to transform punched cards
+into a read/write technology, as we recognize it today. While traveling on a train, he
+noticed that conductors didn't merely punch individual tickets but instead punched
+specific hole patterns that indicated the ticket owner's approximate height, weight.
+and eye color, among other details. This measure ensured that discarded tickets
+
+ 
+Introduction To Computers
+
+couldn't, be picked up and fraudulently: claimed by someone else. Drawing
+inspiration from this observation, Hollerith realized the value of punching (writing)
+new cards based on the analysis (reading) of other sets of cards. Complex analyses
+that couldn't be accomplished in a single pass could now be achieved through
+multiple passes, with newly printed cards storing intermediate results. Unbeknownst
+to Hollerith, Babbage had proposed a similar idea long before.
+
+Hollerith's technique proved highly successful, enabling the completion of the 1890
+census in just three years and saving five million dollars. He went on to establish the
+Tabulating Machine Company, which underwent several acquisitions and eventually
+evolved into the renowned International Business Machines (IBM) we know today.
+IBMexperienced rapid growth, and punched cards became ubiquitous.
+
+IBM continued to develop mechanical calculators for sale to businesses, aiding
+financial accounting and inventory management (see figure 1.7). Notably, both
+financial accounting and inventory management primarily involve subtraction rather
+than negative numbers, and multiplication can be accomplished through repeated
+addition. é
+
+a
+
+Figure 1.7: The Census Tabulator
+1.5.7 The Harvard MARKI Computer
+However, the U.S. military had a specific requirement for a mechanical calculator
+tailored to scientific computations. During World War II, the United States possessed
+battleships capable of launching shells weighing as much as-a small car over
+distances of up to 25 miles. Physicists were able to formulate equations that
+
+12
+
+ 
+a Se SSS
+
+described how various factors such as atmospheric drag, wind, gravity, and muzzle
+velocity influenced the trajectory y of these shells. However, solving these equations
+was an incredibly labor-intensive task, performed by human computers. The results
+of their computations were then published in ballistic "firing tables" included in
+gunnery manuals.
+
+During the war, the U.S. military scoured the nation in search of mathematics majors,
+predominantly female, to hire for the purpose of computing these firing tables.
+However, the demand for new tables exceeded the available human resources. In
+some cases, artillery pieces had to be deployed to the battlefield without the
+necessary firing tables, rendering them nearly useless due to the inability to aim
+accurately. Faced with this predicament, the U.S. military was willing to invest in
+even the most unconventional and inventive schemes to automate these
+computations. One early success in this endeavor was the creation of the Harvard
+Mark I computer, a collaborative project between Harvard University and IBM in
+1944. .
+
+The Harvard Mark I computer marked the first programmable digital computer
+developed in the United States. However, it was not an entirely electronic device.
+Instead, the Mark I was constructed using a combination of switches, relays, rotating
+shafts, and clutches. This colossal machine weighed 5 tons, comprised an intricate
+network of 500 miles ef wire, stood at a towering height of 8 feet, and stretched a
+remarkable length of 51 feet. Its central component was a 50-foot rotating shaft,
+powered bya 5-horsepower electric motor. The Mark I operated continuously for 15
+years, emitting a sound reminiscent of a room filled with ladies engaged in knitting
+(refer to figure 1.8).
+
+Figure 1.8: The Harvard MARK I Computer
+
+13
+
+ 
+Introduction To Computers
+
+1.5.8 TheABC Computer and the Colossus
+
+In 1937, J, V. Atanasoff, a professor of physics and mathematics at Iowa State
+University, embarked on one of the earliest endeavors to construct an all-clectronic
+al computer, devoid of g cams, belts, and shafts. By 1941, together with his
+duate student Clifford Berry, Atanasoff achieved the creation of a machine
+capable of solving 29 simultaneous equations with 29 unknowns.
+
+This machine, known as the ABC computer, introduced a groundbreaking approach
+to data storage by utilizing capacitors to store information as electrical charges (see
+figure 1.9). This concept aligns with how modern computers store data in their main
+memory using dynamic RAM (DRAM). To the best of their knowledge, Atanasoff
+and Berry also incorporated binary arithmetic, making the ABC computer one of the
+earliest devices to employ this system. However, the machine lacked
+programmability, a conditional branch, and its design was limited to a specific type
+of mathematical problem. Following World War II, the project was not pursued
+
+. further, and the machine was unfortunately not preserved. It was dismantled by those
+who occupied the room where ithad been abandoned.
+
+ayy katona
+
+Figure 1.9: The Atanasoff-Berry. Computer {photo © 20021EEE]
+
+Another contender for the precursor of modern computers was Colossus, which was
+constructed by Britain during World War II with the specific objective of deciphering
+Germany's cryptographic codes. Britain spearheaded the development of electronic
+machines dedicated to code-breaking and achieved regular success in decoding
+
+14
+
+ 
+Introduction To Computers.
+
+Germany's encrypted radio transmissions. However, it's important to note that
+Colossus was nota versatile, reprogrammable machine.
+
+1.5.9 TheZScries Programmable Calculators
+
+The Harvard Mark I, the Atanasoff-Berry computer, and the British Colossus all
+made significant contributions. While American and British computer pioneers
+engaged in ongoing debates about who achieved certain milestones first, in 1965, the
+work of German innovator KonradZuse was published in English for the first time.
+
+Zusc (refer to figure 1.10) had constructed a series of general-purpose computers in
+Nazi Germany. The first of these machines, called the Z1, was built between 1936
+
+Figure 1.10: Prof. Wilhelm KonradZuse and his Z4 Computer
+
+Zuse's third creation, the Z3, which was completed in 1941, is widely regarded as the
+first functional, general-purpose, programmable digital computer controlled by
+software. Notably, Zuse independently reinvented Charles Babbage's concept of
+programming and made the decision to adopt binary representation for numbers,
+diverging from Babbage's preference for decimal.
+
+Tragically. the Z3, along with the earlier Z1 and Z2 machines. was destroyed during
+an Allied bombing raid, The 24, however, survived because Zuse took extraordinary
+measures to transport itto the mountains using a wagon
+
+15
+
+ 
+Introduction To Computers
+
+Zuse's achievements become even more remarkable when considering
+in Germany during World War J. For inst .
+Zuse resorted to creating his own by punching holes
+
+resource and manpower shortag,
+due to the scarcity of paper tape.
+in discarded movie film. Although these machines remained rela
+
+ly unknown
+outside Germany and had no direct influence on the development of computing in
+America, their architectural principles remain fundamentally unchanged and ar
+employed today. These principles involve an arithmetic unit for calculatic
+memory for storing data, a control system for overseeing operations, and input
+output devices to connect with the external world. Additionally, Zuse also created
+“Plankalkul," which could potentially be considered the first high-level computer
+language, although its recognition remained limited to Germany.
+
+&
+
+1.5.10 THE ENIAC and EDVAC
+
+The title of the forefather of today's all-electronic digital computers is commonly
+bestowed upon the ENIAC, an acronym for Electronic Numerical Integrator and
+Calculator. Developed between 1943 and 1945 at the University of Pennsylvania by
+professors John Mauchly and the 24-year-old J. Presper Eckert, ENIAC received
+funding from the war department after Mauchly and Eckert promised to build a
+machine capable of replacing the "computers" - referring to the women employed to
+calculate firing tables for artillery guns in the army.
+
+Upon witnessing the initial functionality ofa small segment of ENIAC, Mauchly and
+Eckert eagerly invited some of the female computers to their laboratory to showcase
+their progress. One of the women expressed astonishment, remarking, "I was
+astounded that it took all this equipment to multiply 5 by 1000.”
+
+ENIAC occupied a room measuring 20 by 40 feet, weighed 30 tons, and utilized over
+18,000 vacuum tubes. Similar to the Mark I, ENIAC made use of paper card readers
+provided by IBM, as they were a well-established component of IBM's accounting
+machines. While the ENIAC operated silently, the sheer number of vacuum tubes
+(18,000 in total) generated substantial heat, equivalent to the heat emitted by light
+bulbs. Consequently, the computer required a specially designed room equipped
+with robust air conditioning to manage the substantial heat output of 174,000 watts.
+
+16
+
+ 
+Introduction To Computers
+
+Figure 111: The Electronic Numeric Integrator and Calculator (ENIAC)
+
+In order to program a modern computer, you simply write a program using
+statements like:
+Circumference =3.14 * diameter
+
+However, programming the ENIAC was a far more cumbersome process. To
+perform the same computation on the ENIAC, one had to rearrange numerous patch
+cords and locate specific knobs on a vast wall of knobs, setting them to the values 3,
+1, and 4. Despite its 18,000 vacuum tubes, the ENIAC could only store 20 numbers at
+atime. Nevertheless, due to the absence of; moving parts, it operated much faster than
+the Mark I computer. A multiplication that took 6 seconds on the Mark I could be
+completed by the ENIAC in just 2.8 thousandths ofa second.
+
+The ENIAC operated at a basic clock speed of 100,000 cycles per second, whereas
+modern home computers have clock speeds of 1,000,000,000 cycles per second.
+Funded with $500,000 from, the U.S. Army, the ENIAC's injtial task was to
+determine the feasibility of building a hydrogen bomb (note that the atomic bomb
+was already completed during the war, making it older than the ENIAC). The first
+problem run on the ENIAC lasted only 20 seconds, a stark contrast to the forty hours
+it took to solve the same problem using a mechanical calculator. This initial ENIAC
+program remains classified to this day.
+
+ 
+Intreduction To Computers
+
+Following the analysis of half a million punch cards over a six-week period, the
+ENIAC delivered an unsettling verdict by confirming the feasibility of the hydrogen
+bomb. Eckert and Mauchly then collaborated with mathematician John von
+Neumann to design the EDVAC, which introduced the concept of stored programs.
+Despite von Neumann often being credited with this breakthrough, the idea of
+representing computation steps electronically, similar to data representation, can be
+found in Eckert's notes even before his collaboration with von Neumann.
+
+After the ENIAC and EDVAC, other computers with amusing names such as
+ILLIAC, JOHNNIAC, and MANIAC were developed. ILLIAC, for instance, was
+constructed at the University of Illinois at Champaign-Urbana, while JOHNNIAC
+paid homage to the brilliant John von Neumann. Von Neumann, known for his
+exceptional intellect, demonstrated extraordinary abilities from a young age,
+including telling jokes in classical Greek at the age of 6 and performing calculus at 8.
+He possessed an astonishing memory and could read a page of the phone directory
+and recite it backward. Von Neumann is particularly renowned for his involvement
+in devising the complex method required to detonate an atomic bomb.
+
+Today, one of the remarkable features of computers is their reprogrammability,
+enabling them to contribute to diverse fields. For instance, they are utilized in the
+creation of special effects in movies, compressing music to fit within the limited
+memory of an MP3 player, monitoring car tire rotation to detect and prevent
+skidding in anti-lock braking systems (ABS), and analyzing the writing style in
+Shakespeare's works to determine the authenticity ofa single author.
+
+1.5.10 The UNIVAC
+By the end of the 1950s, computers were no longer unique, custom-built devices
+exclusive to universities and government research labs. Due to a dispute over patent
+ownership, Eckert and Mauchly departed from the University of Pennsylvania and
+established their own company. Their inaugural product was the renowned UNIVAC
+computer, which marked the first commercially produced computer. In the 1950s,
+UNIVAC (short for "Universal Automatic Computer") became synonymous with
+the term "computer." Interestingly, the initial UNIVAC was sold to the Census
+
+18
+
+ 
+Introduction To Computers >
+Bureau. Additionally, UNIVAC pioneered the use of magnetic tape in computer
+systems, leading to confusion between pictures of recl-to-reel tape recorders and
+
+mainframe computers.
+
+1.5.11 The Advent of Mainframes and Microcomputers
+
+While the ENIAC undoubtedly laid the foundation for the U.S. commercial
+computer industry, its inventors, Mauchly and Eckert, did not reap substantial
+financial rewards from their work, and their company faced financial difficulties and
+was eventually sold at a loss. By 1955, IBM surpassed UNIVAC in computer sales,
+and during the 1960s, the group of cight companies selling computers became
+known as the "IBM and the seven dwarfs." IBM's dominance grew to such an extent
+that the U.S. government initiated antitrust proceedings against the company from
+1969 to 1982.
+
+Interestingly, it was IBM's decision to enlist the services of a relatively unknown but
+aggressive firm called Microsoft to provide software for their personal computers
+(PCs) that significantly impacted the industry (see figure 1.12). This lucrative
+contract allowed Microsoft to achieve such dominance that, by the year 2000, its
+
+Figure 1.12: The IBM 7094, a typical mainframe computer [photo courtesy of IBM]
+
+If you were learning computer programming in the 1970s, you would have worked
+with mainframe computers such as the IBM 7090, IBM 360, or IBM 370. which are
+now considered vintage machines. During that time, there were two primary
+methods of interacting with a mainframe.
+
+ 
+Introduction To Computers
+
+The first method was called time sharing, where the computer would allocate a small
+portion of time to each user in a round-robin fashion. It was common to have around
+100 users simultaneously logged on, each using a teletype machine to interact with
+the mainframe. A teletype was essentially a motorized typewriter that could transmit
+your keystrokes to the mainframe and print the computer's responses on paper. You
+would type a line of text, press the carriage return button, and then wait for the
+teletype to begin printing the computer's response, which happened at a speed of
+approximately 10 characters per second.
+
+The alternative method was batch mode processing, where the computer would give
+its undivided attention to your program. However, to take advantage of this
+dedicated processing time, you had to prepare your program offline using a key
+punch machine, which generated punch cards. Each punch card could hold only one
+statement of your program. Asa university student in the 1970s, you would purchase
+blank punch cards by the linear foot from the university bookstore. To submit your
+program to the mainframe, you would place your stack of punch cards in the card
+reader's hopper. The mainframe would run your program when it reached that point
+in the processing queue. After submitting your card deck, it was common to go for
+dinner or sleep and return later to check the printout for the results of your program.
+It's important to note that programs run in batch mode lacked interactivity.
+
+However, the landscape of computing changed rapidly. By the 1990s, it became
+typical for university students to own their personal computers, allowing them
+exclusive use in their dorm rooms. The affordability and accessibility of personal
+computers revolutionized computing, providing students with their own computing
+power and the ability to work interactively without relying on mainframes or batch
+processing (see figure 1.13).
+
+Figure 1.13: The original IBM Personal Computer (PC)
+
+20
+
+ 
+Introduction To Computers
+
+The invention of the microprocessor played a significant role in driving this
+transformation. A microprocessor is a computer that is built on a single integrated
+circuit (IC).
+
+Before the development of the microprocessor at Intel in 1971, computers had been
+in existence for about 20 years. The term "micro" in microprocessor refers to its
+physical size, as it allowed for the entire computer to be condensed onto a single
+chip.
+
+It's important to note that Intel did not invent the electronic computer itself.
+However, they were the first to successfully integrate an entire computer onto 2
+single chip (IC). Intel was established in 1968 and initially focused on producing
+semiconductor memory. They were pioneers in developing technologies like
+Dynamic Random Access Memory (DRAM) and Erasable Programmable Read-
+Only Memory (EPROM), which are still widely used today.
+
+In 1969, Intel received a request from Busicom (see figure 1.14), a Japanese
+manufacturer of high-performance calculators (which were typically the size of
+typewriters at that time). Busicom wanted Intel to create 12 custom calculator chips.
+each dedicated to specific functions such as the keyboard, display, printer, and so on.
+However, designing integrated circuits was an expensive process, and this approach
+would have required Busicom to bear the entire cost of developing these 12 new
+chips, which would only be useful to them.
+
+Figure 1.14: A typical Busicom desk calculator
+
+al
+
+ 
+Io 3 ure of events, 2 new addition to Intel's team. Ted Hoff, convinced Busicom to
+change their plans and accept a general-purpose computer chip instead. This chip.
+tke all computers. could be reprogrammed for various tasks such as contrelling a
+keytoard lay. printer, and more. Intel argued that since the chip could be
+sepexposed. the development costs could be spread across m i Je users, making it
+moore afordable for each user. To this end, Busicom agreed to pay Intel to design the
+general-purpose chip and negotiated a price break, as Intel could then sell the
+resulting chip to other customers as well. However, the chip's development took
+longer than pected. causing Busicom to withdraw from the project. Realizing the
+ar creation, Inte! gladly refunded Busicom's investment and retained
+to the device, which they completed independently. This marked the birth
+. the first microprocessor. The 4004 consisted of 2,300 transistors
+aod ran at a clock speed of 108 kHz (108,000 cycles per second). To put this in
+perspective, modem processors like the Pentium 4 have millions of transistors and
+clock speeds in the gigahertz range (billions of cycles per second).
+
+Interestingly. one of Intel's 4004 chips is still operational on board the Pioneer 10
+ch holds the record for being the farthest man-made object from
+Earth In 2 curious twist, Busicom faced bankruptcy and never utilized the
+endbreaking microprocessor. Following the success of the 4004. Intel continued
+the $00$ and S00. Notably, Intel priced the
+liberate jab at IBM's famous and expensive 360
+
+found its place in the MITS Altair computer, which is recognized as the
+onal computer (PC). Interestingly, assembl: ling the Altar required
+
+“i freshman named Bill Gates decided to drop out of college to focus on
+crams for the Altair. This early experience positioned Gates favorably
+chose to standardize on Intel microprocessors for their line of PCs in
+Remarkably, the Intel Pentium 4, used in present-day PCs, remains compatible
+
+ 
+Introduction To Computers
+
+Now let's move onto the five generations of computers:
+
+1. First Generation - 1940-1956: Vacuum Tubes
+
+The first generation of computers used vacuum tubes for circuitry and mag
+drums for memory. They were large, expensive to operate, and prone to gener
+significant heat. These computers relied on machine language and could only solve
+one problem at a time. Input was through punched cards, and output was in the form
+of printouts. Examples include the UNIVAC and ENIAC computers.
+
+is)
+
+2. Second Generation - 1956-1963: Transistor
+
+The second generation of computers saw the replacement of vacuum tubes with
+transistors. Transistors were smaller, faster, cheaper, and more energy-efficient,
+leading to significant improvements in computer size and reliability. Computers
+began to use symbolic or assembly languages, which allowed programmers to use
+words instead of binary machine language. High-level programming languages like
+COBOL and FORTRAN also emerged. Magnetic core memory replaced magnetic
+drums. Atomic energy industry computers were prominent during this generation.
+
+3. Third Generation - 1964-1971: Integrated Circuit
+
+The third generation witnessed the development of integrated circuits. Transistors
+were miniaturized and placed on silicon chips, enabling faster and more efficient
+computers. Users interacted with keyboards and monitors, and operating systems
+allowed multitasking. Computers became more accessible to a wider audience due
+to their smaller size and lower cost.
+
+4. Fourth Generation - 1971-Present: Microprocessors
+
+The fourth generation introduced microprocessors, where thousands of integrated
+circuits were incorporated into a single chip. This led to the miniaturization of
+computers, with devices that could fit in the palm of a hand. The Intel 4004 chip,
+developed in 1971, consolidated all computer components ona single chip. Personal
+computers and networks emerged, and graphical user interfaces, mice, and handheld
+devices became prominent.
+
+ 
+Introduction To Computers
+
+5. Fifth Generation - Present & Beyond: Artificial Intelligence
+
+The fifth generation is characterized by the development of artificial intelligence
+(Al). While still in progress, AI applications like voice recognition are already in use.
+Parallel processing and superconductors contribute to advancements in AI: The
+future holds the potential for quantum computation, molecular technology,
+nanotechnology, and devices capable of natural language processing, learning, and
+self-organization.
+
