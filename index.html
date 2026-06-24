@@ -3,70 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COS 110 Portal</title>
+    <title>COS 110 High-Fidelity Portal</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #090514);
+            background: radial-gradient(circle at top right, #0f1123, #05050b);
             overflow-x: hidden;
         }
-
-        /* Glassmorphism Classes */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
         }
-
         .glass-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
-
         .glass-input:focus {
             background: rgba(255, 255, 255, 0.08);
-            border-color: #818cf8;
-            box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
+            border-color: #6366f1;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
             outline: none;
         }
-
-        /* Interactive option cards */
-        .option-card {
+        .chapter-pill {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
-
-        .option-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(129, 140, 248, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .chapter-pill:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.3);
         }
-
+        .chapter-pill.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+            border-color: #818cf8;
+            box-shadow: 0 0 25px rgba(129, 140, 248, 0.15);
+        }
+        .option-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .option-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
         .option-card.selected {
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
             border-color: #818cf8;
             box-shadow: 0 0 20px rgba(129, 140, 248, 0.25);
         }
-
-        /* Animated background elements */
         .bubble {
             position: absolute;
             border-radius: 50%;
             background: linear-gradient(135deg, #4f46e5, #c084fc);
-            filter: blur(80px);
-            opacity: 0.15;
+            filter: blur(100px);
+            opacity: 0.12;
             z-index: 0;
             pointer-events: none;
         }
@@ -74,302 +77,351 @@
 </head>
 <body class="min-h-screen text-slate-100 flex items-center justify-center p-4 relative">
 
-    <div class="bubble w-96 h-96 -top-20 -left-20 animate-pulse"></div>
-    <div class="bubble w-80 h-80 -bottom-20 -right-20 animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="bubble w-96 h-96 -top-20 -left-20"></div>
+    <div class="bubble w-90 h-90 -bottom-20 -right-20"></div>
 
-    <main class="w-full max-w-2xl z-10">
+    <main class="w-full max-w-2xl z-10 my-8">
 
-        <section id="screen-welcome" class="glass-card p-8 md:p-12 text-center transform transition-all duration-500">
+        <section id="screen-welcome" class="glass-card p-8 md:p-12 text-center">
             <div class="mb-6 flex justify-center">
-                <div id="logo-container" class="relative w-20 h-20 bg-indigo-600/20 rounded-2xl flex items-center justify-center border border-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.3)]">
+                <div id="logo-container" class="w-20 h-20 bg-indigo-600/20 rounded-2xl flex items-center justify-center border border-indigo-500/30 shadow-[0_0_40px_rgba(99,102,241,0.25)]">
                     <span class="text-3xl font-bold text-indigo-400">&lt;/&gt;</span>
                 </div>
             </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 via-slate-200 to-purple-300">
-                COS 110 Portal
-            </h1>
-            <p class="text-slate-400 mt-4 text-base md:text-lg max-w-md mx-auto">
-                Test your alignment, logic, and core computing foundations in high fidelity.
-            </p>
-            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-semibold text-white rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
-                Enter Examination Room
-            </button>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 via-slate-200 to-purple-300">COS 110 Portal</h1>
+            <p class="text-slate-400 mt-3 text-base max-w-sm mx-auto">Multi-modular examination framework for computing architecture foundations.</p>
+            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 font-semibold text-white rounded-xl shadow-lg shadow-indigo-500/20 transition-all cursor-pointer">Enter Examination Room</button>
         </section>
 
 
-        <section id="screen-setup" class="glass-card p-8 md:p-10 hidden transform transition-all duration-500">
-            <h2 class="text-2xl font-bold text-slate-100 mb-6">Configure Your Session</h2>
+        <section id="screen-setup" class="glass-card p-6 md:p-8 hidden">
+            <h2 class="text-2xl font-bold text-slate-100 mb-6">Configure Session Parameters</h2>
             
             <div class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">Examinee Identification Name</label>
+                    <label class="block text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2">Examinee Identification Name</label>
                     <input type="text" id="student-name" placeholder="Enter full name..." class="w-full px-4 py-3 text-slate-100 glass-input text-base">
                     <p class="text-xs text-slate-500 mt-1.5 italic">We would always request for your name for a new quiz.</p>
                 </div>
 
                 <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium text-slate-300">Target Question Limit</label>
-                        <span id="range-display" class="text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">20 Questions</span>
+                    <label class="block text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2">
+                        Select Chapters <span class="text-indigo-400 font-bold">(Pick 1 to 3)</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div onclick="toggleChapter(1)" id="ch-1" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">1</span> Introduction Formalities
+                        </div>
+                        <div onclick="toggleChapter(2)" id="ch-2" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">2</span> Data Representation
+                        </div>
+                        <div onclick="toggleChapter(3)" id="ch-3" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">3</span> The Computer System
+                        </div>
+                        <div onclick="toggleChapter(4)" id="ch-4" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">4</span> Application Areas
+                        </div>
+                        <div onclick="toggleChapter(5)" id="ch-5" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">5</span> The Internet & Services
+                        </div>
+                        <div onclick="toggleChapter(6)" id="ch-6" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">6</span> Computers and Society
+                        </div>
+                        <div onclick="toggleChapter(7)" id="ch-7" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">7</span> Computer Ethics
+                        </div>
+                        <div onclick="toggleChapter(8)" id="ch-8" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
+                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">8</span> Problem Solving
+                        </div>
                     </div>
-                    <input type="range" id="question-range" min="20" max="100" step="10" value="20" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500" oninput="updateSetupMetrics(this.value)">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
-                    <div>
-                        <span class="block text-xs text-slate-500 uppercase font-semibold tracking-wider">Allotted Time</span>
-                        <span id="calc-time" class="text-lg font-bold text-slate-200">10 mins</span>
-                    </div>
-                    <div>
-                        <span class="block text-xs text-slate-500 uppercase font-semibold tracking-wider">Rate Allocation</span>
-                        <span class="text-lg font-bold text-purple-400">30s / item</span>
-                    </div>
-                </div>
-
-                <button onclick="validateAndProceedSetup()" class="w-full py-4 bg-slate-100 hover:bg-white text-slate-950 font-bold rounded-xl shadow-lg transition-all duration-200 text-center cursor-pointer">
-                    Generate Quiz Layout
-                </button>
-            </div>
-        </section>
-
-
-        <section id="screen-confirm" class="glass-card p-8 md:p-10 hidden text-center transform transition-all duration-500">
-            <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-full flex items-center justify-center mx-auto text-amber-400 text-2xl mb-4">⚠️</div>
-            <h2 class="text-2xl font-bold text-slate-100">Review Strict Guidelines</h2>
-            
-            <div class="my-6 max-w-sm mx-auto text-left bg-black/20 p-5 rounded-xl border border-white/5 space-y-2">
-                <p class="text-sm text-slate-400">Candidate: <span id="conf-name" class="text-slate-200 font-semibold float-right">--</span></p>
-                <p class="text-sm text-slate-400">Total Pool size: <span id="conf-count" class="text-indigo-400 font-semibold float-right">-- Questions</span></p>
-                <p class="text-sm text-slate-400">Allocated Duration: <span id="conf-time" class="text-purple-400 font-semibold float-right">--</span></p>
-            </div>
-
-            <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-left mb-6 text-sm text-red-300 leading-relaxed">
-                <span class="font-bold block text-red-400 mb-1">Crucial Warning:</span>
-                Do not leave this page, split screens, or switch tabs. Leaving the active layout environment will result in an automatic calculation timeout and cancellation of your test data submission.
-            </div>
-
-            <button onclick="triggerQuizStart()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 font-bold text-white rounded-xl shadow-lg shadow-emerald-950/20 transition-all duration-300 cursor-pointer">
-                Start Quiz
-            </button>
-        </section>
-
-
-        <section id="screen-quiz" class="glass-card p-6 md:p-8 hidden transform transition-all duration-500">
-            <div class="flex justify-between items-center mb-6">
                 <div>
-                    <span id="quiz-progress-text" class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Question 1 of --</span>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs uppercase tracking-wider font-semibold text-slate-400">Target Question Target Count</label>
+                        <span id="range-display" class="text-xs font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">--</span>
+                    </div>
+                    <input type="range" id="question-range" min="20" max="150" step="10" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500" oninput="updateSetupMetrics(this.value)" disabled>
                 </div>
+
+                <div class="grid grid-cols-2 gap-4 bg-black/30 p-4 rounded-xl border border-white/5">
+                    <div>
+                        <span class="block text-[10px] text-slate-500 uppercase font-bold tracking-wider">Calculated Time Run</span>
+                        <span id="calc-time" class="text-base font-bold text-slate-200">--</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-slate-500 uppercase font-bold tracking-wider">Dynamic Threshold Bounds</span>
+                        <span id="calc-bounds" class="text-xs font-medium text-purple-400">Select chapters...</span>
+                    </div>
+                </div>
+
+                <button onclick="validateAndProceedSetup()" class="w-full py-4 bg-slate-100 hover:bg-white text-slate-950 font-bold rounded-xl shadow-lg transition-all text-center cursor-pointer">Assemble Layout Parameters</button>
+            </div>
+        </section>
+
+
+        <section id="screen-confirm" class="glass-card p-8 text-center hidden">
+            <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-full flex items-center justify-center mx-auto text-amber-400 text-2xl mb-4">⚠️</div>
+            <h2 class="text-2xl font-bold">Review Lock Guidelines</h2>
+            <div class="my-6 max-w-sm mx-auto text-left bg-black/20 p-5 rounded-xl border border-white/5 space-y-2">
+                <p class="text-xs text-slate-400">Candidate: <span id="conf-name" class="text-slate-200 font-semibold float-right">--</span></p>
+                <p class="text-xs text-slate-400">Target Chapters Selected: <span id="conf-modules" class="text-purple-400 font-semibold float-right">--</span></p>
+                <p class="text-xs text-slate-400">Total Pool Question Limit: <span id="conf-count" class="text-indigo-400 font-semibold float-right">-- Questions</span></p>
+                <p class="text-xs text-slate-400">Allocated Session Time: <span id="conf-time" class="text-emerald-400 font-semibold float-right">--</span></p>
+            </div>
+            <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-left mb-6 text-xs text-red-300 leading-relaxed">
+                <span class="font-bold block text-red-400 mb-1">Strict Warning Protocol:</span>
+                Do not leave this web frame interface, launch background applications, or toggle screen systems. Deviating from the view engine window automatically voids runtime calculation buffers.
+            </div>
+            <button id="start-fetch-btn" onclick="triggerDynamicDataLoad()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 font-bold text-white rounded-xl shadow-lg cursor-pointer">Compile Files & Start</button>
+        </section>
+
+
+        <section id="screen-quiz" class="glass-card p-6 md:p-8 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <span id="quiz-progress-text" class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Question 1 of --</span>
                 <div class="flex items-center space-x-2 bg-red-500/10 border border-red-500/20 px-4 py-1.5 rounded-full">
-                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
                     <span id="global-timer" class="text-sm font-mono font-bold text-red-400">00:00</span>
                 </div>
             </div>
-
-            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-8">
+            <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden mb-8">
                 <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style="width: 0%"></div>
             </div>
-
             <div class="mb-8">
-                <h3 id="question-text" class="text-xl font-semibold text-slate-100 leading-relaxed">
-                    Loading layout question parameters...
-                </h3>
+                <h3 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 leading-relaxed">Loading questions parameters...</h3>
             </div>
-
             <div class="space-y-3.5 mb-8">
                 <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center">
                     <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">A</span>
-                    <span id="text-opt-a" class="text-slate-300 text-sm md:text-base">Option payload placeholder</span>
+                    <span id="text-opt-a" class="text-slate-300 text-sm md:text-base"></span>
                 </div>
                 <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center">
                     <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">B</span>
-                    <span id="text-opt-b" class="text-slate-300 text-sm md:text-base">Option payload placeholder</span>
+                    <span id="text-opt-b" class="text-slate-300 text-sm md:text-base"></span>
                 </div>
                 <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center">
                     <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">C</span>
-                    <span id="text-opt-c" class="text-slate-300 text-sm md:text-base">Option payload placeholder</span>
+                    <span id="text-opt-c" class="text-slate-300 text-sm md:text-base"></span>
                 </div>
                 <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center">
                     <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">D</span>
-                    <span id="text-opt-d" class="text-slate-300 text-sm md:text-base">Option payload placeholder</span>
+                    <span id="text-opt-d" class="text-slate-300 text-sm md:text-base"></span>
                 </div>
             </div>
-
             <div class="flex justify-end">
-                <button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:hover:bg-indigo-600 text-white font-semibold rounded-xl tracking-wide shadow-md transition-all duration-200 cursor-pointer">
-                    Next Question
-                </button>
+                <button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl transition-all cursor-pointer">Next Question</button>
             </div>
         </section>
 
-        <section id="screen-processing" class="glass-card p-12 text-center hidden transform transition-all duration-500">
+
+        <section id="screen-processing" class="glass-card p-12 text-center hidden">
             <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-400 mx-auto mb-6"></div>
-            <h2 class="text-xl font-bold text-slate-200">Evaluating & Compiling Answers...</h2>
-            <p class="text-slate-500 text-xs mt-2">Uploading runtime data results securely to database records.</p>
+            <h2 id="processing-title" class="text-xl font-bold text-slate-200">Evaluating & Compiling Answers...</h2>
         </section>
 
-        <section id="screen-result" class="glass-card p-8 text-center hidden transform transition-all duration-500">
+
+        <section id="screen-result" class="glass-card p-8 text-center hidden">
             <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto text-emerald-400 text-3xl mb-4">🏆</div>
             <h2 class="text-2xl font-bold text-slate-100">Session Evaluation Complete</h2>
-            <p class="text-slate-400 text-sm mt-1">Thank you, <span id="result-display-name" class="font-semibold text-slate-200"></span>. Your grade has been transmitted.</p>
+            <p class="text-slate-400 text-sm mt-1">Thank you, <span id="result-display-name" class="font-semibold text-slate-200"></span>. Grade submitted.</p>
             
             <div class="my-8">
-                <span class="block text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Your Total Metric Score</span>
+                <span class="block text-xs text-slate-500 font-semibold uppercase mb-1">Your Metrics Profile Score</span>
                 <div class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300" id="final-score-display">0 / 0</div>
                 <div class="text-sm font-bold text-slate-400 mt-2 bg-white/5 inline-block px-4 py-1 rounded-full border border-white/10" id="final-percentage-display">0%</div>
             </div>
 
-            <button onclick="location.reload()" class="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 text-sm border border-white/10 rounded-lg transition-all duration-200 cursor-pointer">
-                Configure New Run Session
-            </button>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button onclick="buildAndShowPreview()" class="px-6 py-3 bg-indigo-600 font-semibold text-white text-sm rounded-xl transition-all cursor-pointer">Review Performance Preview</button>
+                <button onclick="location.reload()" class="px-6 py-3 bg-white/5 text-slate-300 text-sm border border-white/10 rounded-xl transition-all cursor-pointer">Configure New Run</button>
+            </div>
+        </section>
+
+
+        <section id="screen-preview" class="glass-card p-6 hidden">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
+                <h2 class="text-xl font-bold text-slate-100">Quiz Performance Review</h2>
+                <button onclick="switchScreen('screen-result')" class="text-xs font-bold text-slate-400 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 cursor-pointer">Back to Result</button>
+            </div>
+            <div id="preview-items-container" class="space-y-6 max-h-[60vh] overflow-y-auto pr-2"></div>
         </section>
 
     </main>
 
     <script>
-        // --- 1. SAMPLE HARDCODED LOCAL STORAGE BREAKOUT (FALLBACK IN CASE REPO JSON IS CALLED) ---
-        // You'll swap or load this array completely from your generated JSON file later.
-        const MASTER_QUESTIONS_ARRAY = [
-            { id: 1, question: "Which core computing layer handles hardware abstraction layers directly inside systemic architectural paradigms?", a: "Kernel space core logic runtime loops", b: "Application virtualization drivers", c: "Compilers parsing semantic block maps", d: "Static JSON schema structures", answer: "a" },
-            { id: 2, question: "What is the structural performance impact of unindexed queries inside modern database interfaces?", a: "Linear scale time performance execution degradation", b: "Instant memory leak cascades across Vercel nodes", c: "Syntax mismatch validation exceptions", d: "Asynchronous structural configuration locks", answer: "a" },
-            // Add as many items as desired. Your python/node parsed bundle will sit here smoothly.
-        ];
-
-        // --- 2. GLOBAL APP STATE VARIABLE (Reset automatically on layout refresh) ---
+        // CORE GLOBAL CONTROLLER COMPONENT STATE OBJECT
         let appState = {
             studentName: "",
-            configuredCount: 20,
-            allocatedTimeSeconds: 600,
+            selectedChapters: [], // Track maximum of 3 items
+            minQuestions: 30,
+            maxQuestions: 150,
+            configuredCount: 30,
+            allocatedTimeSeconds: 900,
+            compiledQuestionPool: [], 
             selectedPool: [],
             currentQuestionIndex: 0,
-            answersRecorded: {}, // Format: { questionIndex: 'selectedOptionLetter' }
+            answersRecorded: {},
             globalTimerInterval: null,
             timeRemaining: 0
         };
 
-        // Screen switching mechanics with dynamic style adjustments
         function switchScreen(targetId) {
-            ['screen-welcome', 'screen-setup', 'screen-confirm', 'screen-quiz', 'screen-processing', 'screen-result'].forEach(id => {
+            ['screen-welcome', 'screen-setup', 'screen-confirm', 'screen-quiz', 'screen-processing', 'screen-result', 'screen-preview'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(targetId).classList.remove('hidden');
         }
 
-        // --- 3. PAGE 2 METRIC SLIDER CONFIGURATION ---
-        function updateSetupMetrics(value) {
-            document.getElementById('range-display').innerText = `${value} Questions`;
-            const totalSeconds = value * 30;
-            appState.allocatedTimeSeconds = totalSeconds;
+        // --- DYNAMIC MATRIX BOUNDS CHECK LOGIC LOOP ---
+        function toggleChapter(chapterId) {
+            const index = appState.selectedChapters.indexOf(chapterId);
+            if (index > -1) {
+                appState.selectedChapters.splice(index, 1);
+                document.getElementById(`ch-${chapterId}`).classList.remove('active');
+            } else {
+                if (appState.selectedChapters.length >= 3) {
+                    alert("Maximum limit restriction reached. You can select up to 3 distinct chapters.");
+                    return;
+                }
+                appState.selectedChapters.push(chapterId);
+                document.getElementById(`ch-${chapterId}`).classList.add('active');
+            }
+            calculateDynamicBounds();
+        }
+
+        function calculateDynamicBounds() {
+            const count = appState.selectedChapters.length;
+            const slider = document.getElementById('question-range');
+            const boundsText = document.getElementById('calc-bounds');
+
+            if (count === 0) {
+                slider.disabled = true;
+                boundsText.innerText = "Select chapters...";
+                document.getElementById('range-display').innerText = "--";
+                return;
+            }
+
+            slider.disabled = false;
+            if (count === 1) { appState.minQuestions = 30; } 
+            else if (count === 2) { appState.minQuestions = 60; } 
+            else if (count === 3) { appState.minQuestions = 100; }
+
+            slider.min = appState.minQuestions;
+            slider.max = appState.maxQuestions;
             
-            const minutes = Math.floor(totalSeconds / 60);
-            document.getElementById('calc-time').innerText = `${minutes} mins`;
+            // Adjust current value pointer if boundary constraints push out of space
+            if (parseInt(slider.value) < appState.minQuestions) {
+                slider.value = appState.minQuestions;
+            }
+            updateSetupMetrics(slider.value);
+            boundsText.innerText = `Range Allowed: ${appState.minQuestions} - ${appState.maxQuestions} Items`;
+        }
+
+        function updateSetupMetrics(value) {
+            appState.configuredCount = parseInt(value);
+            document.getElementById('range-display').innerText = `${value} Questions`;
+            appState.allocatedTimeSeconds = appState.configuredCount * 30;
+            document.getElementById('calc-time').innerText = `${Math.floor(appState.allocatedTimeSeconds / 60)} mins`;
         }
 
         function validateAndProceedSetup() {
             const nameInput = document.getElementById('student-name').value.trim();
-            if(!nameInput) {
-                alert("Please enter a valid identification name before proceeding.");
-                return;
-            }
-            appState.studentName = nameInput;
-            appState.configuredCount = parseInt(document.getElementById('question-range').value);
+            if (!nameInput) { alert("Please enter a valid examinee name."); return; }
+            if (appState.selectedChapters.length === 0) { alert("Please pick at least 1 module to proceed."); return; }
 
-            // Populate page 3 values
+            appState.studentName = nameInput;
+
             document.getElementById('conf-name').innerText = appState.studentName;
+            document.getElementById('conf-modules').innerText = `Ch. ${appState.selectedChapters.sort().join(', ')}`;
             document.getElementById('conf-count').innerText = `${appState.configuredCount} Questions`;
             document.getElementById('conf-time').innerText = `${Math.floor(appState.allocatedTimeSeconds / 60)} Minutes`;
-
+            
             switchScreen('screen-confirm');
         }
 
-        // --- 4. PAGE 3 TIMER & RANDOMIZATION TRIGGERS ---
-        function triggerQuizStart() {
-            switchScreen('screen-quiz');
-            
-            // Randomize question pool allocation from Master JSON list
-            // Shuffles all matching array options and slices down to target criteria boundary
-            const shuffled = [...MASTER_QUESTIONS_ARRAY].sort(() => 0.5 - Math.random());
-            appState.selectedPool = shuffled.slice(0, appState.configuredCount);
-            
-            appState.currentQuestionIndex = 0;
-            appState.answersRecorded = {};
-            appState.timeRemaining = appState.allocatedTimeSeconds;
+        // --- ASYNC MULTI-THREAD CONCURRENT POOL LOAD ---
+        async function triggerDynamicDataLoad() {
+            document.getElementById('processing-title').innerText = "Compiling & Syncing Chapter Pools...";
+            switchScreen('screen-processing');
 
-            renderActiveQuestion();
-            startGlobalCountdown();
-        }
+            appState.compiledQuestionPool = [];
+            
+            try {
+                // Fetch only the chapters chosen by the user simultaneously
+                const fetchPromises = appState.selectedChapters.map(ch => 
+                    fetch(`./chapter${ch}.json`).then(res => {
+                        if (!res.ok) throw new Error(`Missing layout asset data target: chapter${ch}.json`);
+                        return res.json();
+                    })
+                );
 
-        // --- 5. GLOBAL COUNTDOWN TIMER PARADIGM ---
-        function startGlobalCountdown() {
-            if(appState.globalTimerInterval) clearInterval(appState.globalTimerInterval);
-            
-            const timerElement = document.getElementById('global-timer');
-            
-            appState.globalTimerInterval = setInterval(() => {
-                if (appState.timeRemaining <= 0) {
-                    clearInterval(appState.globalTimerInterval);
-                    terminateAndSubmitQuiz();
+                const dataBundles = await Promise.all(fetchPromises);
+                dataBundles.forEach(bundle => {
+                    appState.compiledQuestionPool.push(...bundle);
+                });
+
+                if(appState.compiledQuestionPool.length < appState.configuredCount) {
+                    alert(`The chosen chapter files contain only ${appState.compiledQuestionPool.length} questions, which is less than your setting of ${appState.configuredCount}. Lower the slider or add questions.`);
+                    switchScreen('screen-setup');
                     return;
                 }
+
+                // Random slice generation configuration
+                const shuffled = [...appState.compiledQuestionPool].sort(() => 0.5 - Math.random());
+                appState.selectedPool = shuffled.slice(0, appState.configuredCount);
+
+                appState.currentQuestionIndex = 0;
+                appState.answersRecorded = {};
+                appState.timeRemaining = appState.allocatedTimeSeconds;
+
+                switchScreen('screen-quiz');
+                renderActiveQuestion();
+                startGlobalCountdown();
+
+            } catch (err) {
+                console.error(err);
+                alert("Runtime dynamic extraction fault: Make sure all chapterX.json files exist in the same folder.");
+                switchScreen('screen-setup');
+            }
+        }
+
+        function startGlobalCountdown() {
+            if (appState.globalTimerInterval) clearInterval(appState.globalTimerInterval);
+            const timerElement = document.getElementById('global-timer');
+            appState.globalTimerInterval = setInterval(() => {
+                if (appState.timeRemaining <= 0) { terminateAndSubmitQuiz(); return; }
                 appState.timeRemaining--;
-                
                 const mins = Math.floor(appState.timeRemaining / 60).toString().padStart(2, '0');
                 const secs = (appState.timeRemaining % 60).toString().padStart(2, '0');
                 timerElement.innerText = `${mins}:${secs}`;
             }, 1000);
         }
 
-        // --- 6. RENDERING QUESTION LAYOUT DATA ---
         function renderActiveQuestion() {
             const currentItem = appState.selectedPool[appState.currentQuestionIndex];
-            
-            // UI Progress bar updates
             document.getElementById('quiz-progress-text').innerText = `Question ${appState.currentQuestionIndex + 1} of ${appState.configuredCount}`;
-            const pct = ((appState.currentQuestionIndex + 1) / appState.configuredCount) * 100;
-            document.getElementById('quiz-progress-bar').style.width = `${pct}%`;
-
-            // Question text updates
+            document.getElementById('quiz-progress-bar').style.width = `${((appState.currentQuestionIndex + 1) / appState.configuredCount) * 100}%`;
             document.getElementById('question-text').innerText = currentItem.question;
             document.getElementById('text-opt-a').innerText = currentItem.a;
             document.getElementById('text-opt-b').innerText = currentItem.b;
             document.getElementById('text-opt-c').innerText = currentItem.c;
             document.getElementById('text-opt-d').innerText = currentItem.d;
 
-            // Remove any previously assigned configuration selection classes
-            ['a', 'b', 'c', 'd'].forEach(letter => {
-                document.getElementById(`opt-${letter}`).classList.remove('selected');
-            });
+            ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
+            const prev = appState.answersRecorded[appState.currentQuestionIndex];
+            if (prev) document.getElementById(`opt-${prev}`).classList.add('selected');
 
-            // Re-apply visual selected state if state was previously configured
-            const previouslySelected = appState.answersRecorded[appState.currentQuestionIndex];
-            if(previouslySelected) {
-                document.getElementById(`opt-${previouslySelected}`).classList.add('selected');
-            }
-
-            // Button label swap dynamically on tail end boundary index check
-            const nextBtn = document.getElementById('next-btn');
-            if(appState.currentQuestionIndex === appState.configuredCount - 1) {
-                nextBtn.innerText = "Submit Assessment Run";
-                nextBtn.classList.replace('bg-indigo-600', 'bg-emerald-600');
-                nextBtn.classList.replace('hover:bg-indigo-500', 'hover:bg-emerald-500');
-            } else {
-                nextBtn.innerText = "Next Question";
-                nextBtn.classList.replace('bg-emerald-600', 'bg-indigo-600');
-                nextBtn.classList.replace('hover:bg-emerald-500', 'hover:bg-indigo-500');
-            }
+            document.getElementById('next-btn').innerText = (appState.currentQuestionIndex === appState.configuredCount - 1) ? "Submit Assessment Run" : "Next Question";
         }
 
         function selectOption(letter) {
             appState.answersRecorded[appState.currentQuestionIndex] = letter;
-            
-            ['a', 'b', 'c', 'd'].forEach(l => {
-                document.getElementById(`opt-${l}`).classList.remove('selected');
-            });
-            document.getElementById(`opt-${letter}`).add('selected');
+            ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
+            document.getElementById(`opt-${letter}`).classList.add('selected');
         }
 
         function advanceQuiz() {
-            // Move to next layout step state or process complete submission bounds
-            if(appState.currentQuestionIndex < appState.configuredCount - 1) {
+            if (appState.currentQuestionIndex < appState.configuredCount - 1) {
                 appState.currentQuestionIndex++;
                 renderActiveQuestion();
             } else {
@@ -377,44 +429,49 @@
             }
         }
 
-        // --- 7. TERMINATE AND EVALUATE SCORE RECORD RUN ---
         function terminateAndSubmitQuiz() {
             clearInterval(appState.globalTimerInterval);
+            document.getElementById('processing-title').innerText = "Evaluating & Compiling Answers...";
             switchScreen('screen-processing');
-
+            
             let rawScore = 0;
-            appState.selectedPool.forEach((questionItem, idx) => {
-                if(appState.answersRecorded[idx] === questionItem.answer) {
-                    rawScore++;
-                }
+            appState.selectedPool.forEach((q, idx) => {
+                if (appState.answersRecorded[idx] === q.answer) rawScore++;
             });
-
-            const percentageScore = Math.round((rawScore / appState.configuredCount) * 100);
-
-            // =================================================================
-            // !! BACKEND HOOK !!
-            // Here is where your fetch function to record into Supabase or an API will drop in.
-            // Example structure:
-            // fetch('/api/save-score', { method: 'POST', body: JSON.stringify({ name: appState.studentName, score: rawScore, pct: percentageScore }) })
-            // =================================================================
-
+            const pct = Math.round((rawScore / appState.configuredCount) * 100);
+            
             setTimeout(() => {
                 document.getElementById('result-display-name').innerText = appState.studentName;
                 document.getElementById('final-score-display').innerText = `${rawScore} / ${appState.configuredCount}`;
-                document.getElementById('final-percentage-display').innerText = `${percentageScore}%`;
+                document.getElementById('final-percentage-display').innerText = `${pct}%`;
                 switchScreen('screen-result');
-            }, 1200); // Simulated delay for premium transition flow feel
+            }, 1200);
         }
 
-        // Javascript logo layout subtle rotation dynamic shift logic loop
-        let logo = document.getElementById('logo-container');
-        document.addEventListener('mousemove', (e) => {
-            if(logo && !document.getElementById('screen-welcome').classList.contains('hidden')) {
-                let ax = -(window.innerWidth / 2 - e.pageX) / 40;
-                let ay = (window.innerHeight / 2 - e.pageY) / 40;
-                logo.style.transform = `rotateY(${ax}deg) rotateX(${ay}deg)`;
-            }
-        });
+        function buildAndShowPreview() {
+            const container = document.getElementById('preview-items-container');
+            container.innerHTML = "";
+            appState.selectedPool.forEach((item, idx) => {
+                const studentSelection = appState.answersRecorded[idx] || "unanswered";
+                const isCorrect = studentSelection === item.answer;
+                const card = document.createElement('div');
+                card.className = "p-4 rounded-xl bg-white/5 border border-white/10 space-y-2 text-left";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-4">
+                        <h4 class="text-sm font-semibold text-slate-200">${idx + 1}. ${item.question}</h4>
+                        <span class="text-xs font-bold px-2 py-0.5 rounded shrink-0 ${isCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+                        <p class="text-slate-400">Your Answer: <span class="font-semibold ${isCorrect ? 'text-emerald-400' : 'text-red-400'}">(${studentSelection.toUpperCase()}) ${item[studentSelection] || 'None'}</span></p>
+                        <p class="text-slate-400">Correct Answer: <span class="font-semibold text-emerald-400">(${item.answer.toUpperCase()}) ${item[item.answer]}</span></p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            switchScreen('screen-preview');
+        }
     </script>
 </body>
 </html>
