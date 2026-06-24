@@ -133,7 +133,7 @@
     <script>
         // === CORE APP CONFIGURATION ===
         // Paste your key backwards/reversed here so it is hidden from static web crawlers
-        const OBFUSCATED_KEY = "AR8v6M1j-mQohVGW689t0INh02BcObJNvN2xQtJ6NRbA.QA"; 
+        const OBFUSCATED_KEY = "AQ.Ab8RN6JtQx2NvNJbOcB20hNI0t986WGVhoQm-j1uM6EQcmv8RA"; 
 
         let appState = {
             studentName: "",
@@ -146,7 +146,7 @@
         };
 
         function getDecodedKey() {
-            return OBFUSCATED_KEY.split("").reverse().join("");
+            return OBFUSCATED_KEY; // Just returns it straight
         }
 
         function switchScreen(targetId) {
