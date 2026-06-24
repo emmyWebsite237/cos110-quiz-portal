@@ -186,7 +186,7 @@ let appState = { studentName: "", targetCount: 30, selectedPool: [], currentQues
 
         function runQuestionCountdown() {
             if(appState.countdownInterval) clearInterval(appState.countdownInterval);
-            appState.timeRemaining = 10; // Reset countdown parameters
+            appState.timeRemaining = 20; // Reset countdown parameters
             document.getElementById('global-timer').innerText = `${appState.timeRemaining}s`;
 
             appState.countdownInterval = setInterval(() => {
