@@ -135,26 +135,7 @@
     </main>
 
     <script>
-        // CRITICAL ACTION: Paste your clean, normal key right here inside the quotes. 
-        // Do NOT reverse it. It should start exactly with "AIzaSy..."
-        const GEMINI_API_KEY = "AQ.Ab8RN6J8Ru_GDZBMP2NC2JXY8F3YCZqMIdlpLImovfktS4Pu0A"; // Your exact key
-
-// ... inside startAutonomousAISession() ...
-
-// 1. We pass the key in the URL parameter
-const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { 
-        "Content-Type": "application/json",
-        // 2. CRITICAL: Pass your project number to clear the SERVICE_BLOCKED gate
-        "X-Goog-User-Project": "489665057277" 
-    },
-    body: JSON.stringify({
-        contents: [{ parts: [{ text: `${promptRule}\n\nLECTURE SOURCE TEXT:\n${sourceMaterial}` }] }]
-    })
-}); 
+        const GEMINI_API_KEY = "AQ.Ab8RN6J8Ru_GDZBMP2NC2JXY8F3YCZqMIdlpLImovfktS4Pu0A";
 
         let appState = {
             studentName: "",
@@ -175,85 +156,82 @@ const response = await fetch(endpoint, {
 
         function selectChapter(chId) {
             appState.selectedChapter = chId;
-            // Updated array rule to handle all 8 selector indicators cleanly
             [1, 2, 3, 4, 5, 6, 7, 8].forEach(id => document.getElementById(`ch-${id}`).classList.remove('active'));
             document.getElementById(`ch-${chId}`).classList.add('active');
         }
 
-       async function startAutonomousAISession() {
-    const name = document.getElementById('student-name').value.trim();
-    if(!name) return alert("Please specify your full name.");
-    if(!appState.selectedChapter) return alert("Please select a target chapter module.");
+        async function startAutonomousAISession() {
+            const name = document.getElementById('student-name').value.trim();
+            if(!name) return alert("Please specify your full name.");
+            if(!appState.selectedChapter) return alert("Please select a target chapter module.");
 
-    appState.studentName = name;
-    const targetCount = parseInt(document.getElementById('question-range').value);
+            appState.studentName = name;
+            const targetCount = parseInt(document.getElementById('question-range').value);
 
-    document.getElementById('processing-title').innerText = "Downloading notes from GitHub...";
-    switchScreen('screen-processing');
+            document.getElementById('processing-title').innerText = "Downloading notes from GitHub...";
+            switchScreen('screen-processing');
 
-    try {
-        const githubUrl = `https://raw.githubusercontent.com/emmyWebsite237/cos110-quiz-portal/main/notes/chapter${appState.selectedChapter}.txt`;
-        
-        const fileResponse = await fetch(githubUrl);
-        if(!fileResponse.ok) {
-            throw new Error(`GitHub File Missing! Make sure "chapter${appState.selectedChapter}.txt" is uploaded into your notes folder on GitHub.`);
+            try {
+                const githubUrl = `https://raw.githubusercontent.com/emmyWebsite237/cos110-quiz-portal/main/notes/chapter${appState.selectedChapter}.txt`;
+                
+                const fileResponse = await fetch(githubUrl);
+                if(!fileResponse.ok) {
+                    throw new Error(`GitHub File Missing! Make sure "chapter${appState.selectedChapter}.txt" is uploaded into your notes folder on GitHub.`);
+                }
+                const sourceMaterial = await fileResponse.text();
+
+                document.getElementById('processing-title').innerText = "Synthesizing Question Vectors...";
+                
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                
+                const promptRule = `You are an expert academic examiner for COS 110. Read the following lecture note text material and generate exactly ${targetCount} randomized multiple-choice questions.
+                You MUST return ONLY a clean JSON array structure without markdown tags, backticks (\`\`\`), or trailing comments. Format each object item using this exact configuration layout:
+                {
+                    "id": 1,
+                    "question": "Question text here?",
+                    "a": "Option A choice content value",
+                    "b": "Option B choice content value",
+                    "c": "Option C choice content value",
+                    "d": "Option D choice content value",
+                    "answer": "lowercase correct key letter (a or b or c or d)"
+                }`;
+
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "X-Goog-User-Project": "489665057277" 
+                    },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `${promptRule}\n\nLECTURE SOURCE TEXT:\n${sourceMaterial}` }] }]
+                    })
+                });
+
+                if(!response.ok) {
+                    const errorDetails = await response.text();
+                    console.error("Google Server Error Payload:", errorDetails);
+                    throw new Error("Google API Authorization rejected. Check the browser console (F12).");
+                }
+
+                const resData = await response.json();
+                let cleanJsonString = resData.candidates[0].content.parts[0].text.trim();
+                cleanJsonString = cleanJsonString.replace(/^```json/i, "").replace(/```$/, "").trim();
+
+                appState.selectedPool = JSON.parse(cleanJsonString);
+                appState.currentQuestionIndex = 0;
+                appState.answersRecorded = {};
+                appState.timeRemaining = appState.selectedPool.length * 40;
+
+                switchScreen('screen-quiz');
+                renderActiveQuestion();
+                startGlobalCountdown();
+
+            } catch(e) {
+                console.error(e);
+                alert("Execution Stopped: " + e.message);
+                switchScreen('screen-setup');
+            }
         }
-        const sourceMaterial = await fileResponse.text();
-
-        document.getElementById('processing-title').innerText = "Synthesizing Question Vectors...";
-        
-        // 1. REMOVED the ?key= part from the URL entirely
-        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`;
-        
-        const promptRule = `You are an expert academic examiner for COS 110. Read the following lecture note text material and generate exactly ${targetCount} randomized multiple-choice questions.
-        You MUST return ONLY a clean JSON array structure without markdown tags, backticks (\`\`\`), or trailing comments. Format each object item using this exact configuration layout:
-        {
-            "id": 1,
-            "question": "Question text here?",
-            "a": "Option A choice content value",
-            "b": "Option B choice content value",
-            "c": "Option C choice content value",
-            "d": "Option D choice content value",
-            "answer": "lowercase correct key letter (a or b or c or d)"
-        }`;
-
-        const response = await fetch(endpoint, {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                // 2. ADDED the token here as a Authorization Bearer header
-                "Authorization": `Bearer ${GEMINI_API_KEY}` 
-            },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: `${promptRule}\n\nLECTURE SOURCE TEXT:\n${sourceMaterial}` }] }]
-            })
-        });
-
-        if(!response.ok) {
-            const errorDetails = await response.text();
-            console.error("Google Server Error Payload:", errorDetails);
-            throw new Error("Google API Authorization rejected. Check the browser console (F12).");
-        }
-
-        const resData = await response.json();
-        let cleanJsonString = resData.candidates[0].content.parts[0].text.trim();
-        cleanJsonString = cleanJsonString.replace(/^```json/i, "").replace(/```$/, "").trim();
-
-        appState.selectedPool = JSON.parse(cleanJsonString);
-        appState.currentQuestionIndex = 0;
-        appState.answersRecorded = {};
-        appState.timeRemaining = appState.selectedPool.length * 40;
-
-        switchScreen('screen-quiz');
-        renderActiveQuestion();
-        startGlobalCountdown();
-
-    } catch(e) {
-        console.error(e);
-        alert("Execution Stopped: " + e.message);
-        switchScreen('screen-setup');
-    }
-}
         
         function startGlobalCountdown() {
             if (appState.globalTimerInterval) clearInterval(appState.globalTimerInterval);
