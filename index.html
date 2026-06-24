@@ -138,6 +138,74 @@
         // === PASTE YOUR CHAPTER TEXT NOTES DIRECTLY INSIDE THESE OBJECT HOOKS ===
         const CHAPTER_NOTES = {};
 
+        async function startAutonomousAISession() {
+    const name = document.getElementById('student-name').value.trim();
+    if(!name) return alert("Please specify your full name.");
+    if(!appState.selectedChapter) return alert("Please select a target chapter module.");
+
+    appState.studentName = name;
+    const targetCount = parseInt(document.getElementById('question-range').value);
+
+    // CHANGE: Show that we are downloading the notes first
+    document.getElementById('processing-title').innerText = "Downloading notes from GitHub...";
+    switchScreen('screen-processing');
+
+    try {
+        // REPLACE WITH YOUR ACTUAL GITHUB USERNAME AND REPO NAME
+        const githubUrl = `https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/notes/chapter${appState.selectedChapter}.txt`;
+        
+        const fileResponse = await fetch(githubUrl);
+        if(!fileResponse.ok) throw new Error("Could not download the note file from GitHub.");
+        const sourceMaterial = await fileResponse.text();
+
+        // Now feed that downloaded text to Gemini
+        document.getElementById('processing-title').innerText = "Synthesizing Question Vectors...";
+        
+        const liveKey = getDecodedKey();
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${liveKey}`;
+        
+        const promptRule = `You are an expert academic examiner for COS 110. Read the following lecture note text material and generate exactly ${targetCount} randomized multiple-choice questions.
+        You MUST return ONLY a clean JSON array structure without markdown tags, backticks (\`\`\`), or trailing comments. Format each object item using this exact configuration layout:
+        {
+            "id": 1,
+            "question": "Question text here?",
+            "a": "Option A choice content value",
+            "b": "Option B choice content value",
+            "c": "Option C choice content value",
+            "d": "Option D choice content value",
+            "answer": "lowercase correct key letter (a or b or c or d)"
+        }`;
+
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: `${promptRule}\n\nLECTURE SOURCE TEXT:\n${sourceMaterial}` }] }]
+            })
+        });
+
+        if(!response.ok) throw new Error("Endpoint rejected execution initialization token mapping.");
+
+        const resData = await response.json();
+        let cleanJsonString = resData.candidates[0].content.parts[0].text.trim();
+        cleanJsonString = cleanJsonString.replace(/^```json/i, "").replace(/```$/, "").trim();
+
+        appState.selectedPool = JSON.parse(cleanJsonString);
+        appState.currentQuestionIndex = 0;
+        appState.answersRecorded = {};
+        appState.timeRemaining = appState.selectedPool.length * 40;
+
+        switchScreen('screen-quiz');
+        renderActiveQuestion();
+        startGlobalCountdown();
+
+    } catch(e) {
+        console.error(e);
+        alert("Error: " + e.message);
+        switchScreen('screen-setup');
+    }
+}
+        
         let appState = {
             studentName: "",
             selectedChapter: null,
