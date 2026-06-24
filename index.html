@@ -3,141 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>COS 110 Portal | Secure AI Simulator</title>
+    <title>COS 110 Portal | AI Simulator</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f8fafc;
+            background-image: radial-gradient(circle at top right, #f1f5f9, #f8fafc);
             overflow-x: hidden;
             width: 100%;
         }
+
+        /* Light-Theme Crisp Glassmorphism Cards */
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(226, 232, 240, 0.8);
-            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.1);
+            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
             border-radius: 24px;
         }
+
         .glass-input {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #cbd5e1;
             border-radius: 14px;
+            color: #0f172a;
+            transition: all 0.3s ease;
         }
+
         .glass-input:focus {
-            border-color: #4f46e5;
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-        .chapter-pill {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .chapter-pill.active {
-            background: rgba(79, 70, 229, 0.05);
             border-color: #4f46e5;
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.15);
+            outline: none;
         }
+
+        /* Option Selection Cards */
         .option-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 16px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            transition: all 0.2s ease;
+            user-select: none;
         }
+
+        .option-card:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
         .option-card.selected {
-            background: rgba(79, 70, 229, 0.06);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(147, 51, 234, 0.08));
             border-color: #4f46e5;
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.12);
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            filter: blur(60px);
+            opacity: 0.6;
+            z-index: 0;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen text-slate-800 flex items-center justify-center p-4 relative">
 
-    <main class="w-full max-w-2xl my-6">
+    <div class="bubble w-72 h-72 top-0 left-0 animate-pulse"></div>
+    <div class="bubble w-72 h-72 bottom-0 right-0 animate-pulse" style="animation-delay: 2s;"></div>
 
-        <section id="screen-welcome" class="glass-card p-8 md:p-12 text-center">
-            <div class="mb-6 flex justify-center"><span class="text-4xl">🎓</span></div>
-            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900">COS 110 Exam Room</h1>
-            <p class="text-slate-500 mt-3 max-w-sm mx-auto">Select a module to instantly generate a verified AI knowledge assessment session.</p>
-            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 font-semibold text-white rounded-xl shadow-md transition-all cursor-pointer">Enter Room</button>
+    <main class="w-full max-w-2xl z-10 my-6">
+
+        <section id="screen-welcome" class="glass-card p-8 md:p-12 text-center transform transition-all duration-500">
+            <div class="mb-6 flex justify-center">
+                <div class="relative w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 shadow-sm">
+                    <span class="text-3xl font-bold text-indigo-600">🤖</span>
+                </div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                COS 110 Portal
+            </h1>
+            <p class="text-slate-500 mt-4 text-base md:text-lg max-w-md mx-auto">
+                Upload your lecture notes material. The AI engine will instantly generate unique assessment targets for you.
+            </p>
+            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 font-semibold text-white rounded-xl shadow-md shadow-indigo-200 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+                Enter AI Examination Room
+            </button>
         </section>
 
-        <section id="screen-setup" class="glass-card p-8 md:p-10 hidden">
-            <h2 class="text-2xl font-bold text-slate-900 mb-6">Select Assessment Area</h2>
+
+        <section id="screen-setup" class="glass-card p-8 md:p-10 hidden transform transition-all duration-500">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Configure AI Generator</h2>
+            
             <div class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Your Full Name</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Examinee Identification Name</label>
                     <input type="text" id="student-name" placeholder="Enter full name..." class="w-full px-4 py-3 glass-input text-base">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Choose Chapter Target</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div onclick="selectChapter(1)" id="ch-1" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 1 Note</div>
-                        <div onclick="selectChapter(2)" id="ch-2" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 2 Note</div>
-                        <div onclick="selectChapter(3)" id="ch-3" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 3 Note</div>
-                        <div onclick="selectChapter(4)" id="ch-4" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 4 Note</div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Google Gemini API Key</label>
+                    <input type="password" id="gemini-key" placeholder="AI Studio Key (AIzaSy...)" class="w-full px-4 py-3 glass-input text-sm font-mono">
+                    <p class="text-xs text-slate-400 mt-1">Get a free key from Google AI Studio to run serverless generations.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Upload Lecture Handout (PDF)</label>
+                    <div class="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center hover:border-indigo-500 transition-colors bg-white/50 relative">
+                        <input type="file" id="pdf-file-input" accept="application/pdf" class="absolute inset-0 opacity-0 cursor-pointer">
+                        <div class="text-slate-500 space-y-1 pointer-events-none">
+                            <span class="block text-2xl">📄</span>
+                            <span id="file-name-display" class="block text-sm font-semibold text-slate-700">Click or drag handout PDF here</span>
+                            <span class="block text-xs text-slate-400">Supports standard document vector text extracts</span>
+                        </div>
                     </div>
                 </div>
 
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium text-slate-700">Questions Count</label>
-                        <span id="range-display" class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">10 Questions</span>
+                        <label class="text-sm font-medium text-slate-700">Questions to Synthesize</label>
+                        <span id="range-display" class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">10 Questions</span>
                     </div>
-                    <input type="range" id="question-range" min="5" max="25" step="5" value="10" class="w-full h-2 rounded-lg accent-indigo-600 cursor-pointer bg-slate-200" oninput="document.getElementById('range-display').innerText = this.value + ' Questions'">
+                    <input type="range" id="question-range" min="5" max="30" step="5" value="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" oninput="updateSetupMetrics(this.value)">
                 </div>
 
-                <button onclick="startSecureAISession()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all cursor-pointer">Generate Exam Questions</button>
+                <button onclick="validateAndProceedSetup()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md shadow-indigo-100 transition-all duration-200 text-center cursor-pointer">
+                    Initiate AI Evaluation
+                </button>
             </div>
         </section>
 
-        <section id="screen-quiz" class="glass-card p-6 md:p-8 hidden">
+
+        <section id="screen-quiz" class="glass-card p-6 md:p-8 hidden transform transition-all duration-500">
             <div class="flex justify-between items-center mb-6">
-                <span id="quiz-progress-text" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Question 1 of --</span>
-                <div class="bg-red-50 px-4 py-1.5 rounded-full"><span id="global-timer" class="text-sm font-mono font-bold text-red-600">00:00</span></div>
+                <div>
+                    <span id="quiz-progress-text" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Question 1 of --</span>
+                </div>
+                <div class="flex items-center space-x-2 bg-red-50 border border-red-100 px-4 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <span id="global-timer" class="text-sm font-mono font-bold text-red-600">00:00</span>
+                </div>
             </div>
+
             <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-8">
-                <div id="quiz-progress-bar" class="h-full bg-indigo-600 transition-all duration-300" style="width: 0%"></div>
+                <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style="width: 0%"></div>
             </div>
-            <div class="mb-8"><h3 id="question-text" class="text-xl font-bold text-slate-900 leading-relaxed">Loading...</h3></div>
+
+            <div class="mb-8">
+                <h3 id="question-text" class="text-xl font-bold text-slate-900 leading-relaxed">
+                    Loading question parameters...
+                </h3>
+            </div>
+
             <div class="space-y-3.5 mb-8">
-                <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">A</span><span id="text-opt-a" class="text-slate-700 text-sm font-medium"></span></div>
-                <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">B</span><span id="text-opt-b" class="text-slate-700 text-sm font-medium"></span></div>
-                <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">C</span><span id="text-opt-c" class="text-slate-700 text-sm font-medium"></span></div>
-                <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">D</span><span id="text-opt-d" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center">
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">A</span>
+                    <span id="text-opt-a" class="text-slate-700 text-sm md:text-base font-medium"></span>
+                </div>
+                <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center">
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">B</span>
+                    <span id="text-opt-b" class="text-slate-700 text-sm md:text-base font-medium"></span>
+                </div>
+                <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center">
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">C</span>
+                    <span id="text-opt-c" class="text-slate-700 text-sm md:text-base font-medium"></span>
+                </div>
+                <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center">
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">D</span>
+                    <span id="text-opt-d" class="text-slate-700 text-sm md:text-base font-medium"></span>
+                </div>
             </div>
-            <div class="flex justify-end"><button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl tracking-wide cursor-pointer">Next Question</button></div>
+
+            <div class="flex justify-end">
+                <button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl tracking-wide shadow-sm transition-all duration-200 cursor-pointer">
+                    Next Question
+                </button>
+            </div>
         </section>
 
-        <section id="screen-processing" class="glass-card p-12 text-center hidden">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-indigo-600 mx-auto mb-6"></div>
-            <h2 id="processing-title" class="text-xl font-bold text-slate-800">Fetching Chapter Note...</h2>
+
+        <section id="screen-processing" class="glass-card p-12 text-center hidden transform transition-all duration-500">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mx-auto mb-6"></div>
+            <h2 id="processing-title" class="text-xl font-bold text-slate-800">Reading Handout File...</h2>
+            <p class="text-slate-400 text-xs mt-2">Extracting document parameters inside secure runtime bounds.</p>
         </section>
 
-        <section id="screen-result" class="glass-card p-8 text-center hidden">
-            <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 text-2xl mb-4">🏆</div>
-            <h2 class="text-2xl font-bold text-slate-900">Session Complete</h2>
-            <div class="my-6">
+
+        <section id="screen-result" class="glass-card p-8 text-center hidden transform transition-all duration-500">
+            <div class="w-20 h-20 bg-emerald-50 border border-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-500 text-3xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-slate-900">Session Evaluation Complete</h2>
+            <p class="text-slate-500 text-sm mt-1">Thank you, <span id="result-display-name" class="font-semibold text-slate-800"></span>. Your data layout is locked.</p>
+            
+            <div class="my-8">
+                <span class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1">Your Total Metric Score</span>
                 <div class="text-5xl font-extrabold text-indigo-600" id="final-score-display">0 / 0</div>
+                <div class="text-sm font-bold text-slate-500 mt-2 bg-slate-100 inline-block px-4 py-1 rounded-full border border-slate-200" id="final-percentage-display">0%</div>
             </div>
-            <button onclick="location.reload()" class="px-6 py-2.5 bg-slate-100 text-slate-700 border rounded-xl cursor-pointer">Restart Session</button>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button onclick="buildAndShowPreview()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-all cursor-pointer">Review Performance Preview</button>
+                <button onclick="location.reload()" class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm border border-slate-200 rounded-xl transition-all duration-200 cursor-pointer">Start New Run</button>
+            </div>
+        </section>
+
+
+        <section id="screen-preview" class="glass-card p-6 hidden transform transition-all duration-500">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Performance Assessment Sheet</h2>
+                <button onclick="switchScreen('screen-result')" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-200 transition-all">Back</button>
+            </div>
+            <div id="preview-items-container" class="space-y-6 max-h-[55vh] overflow-y-auto pr-2"></div>
         </section>
 
     </main>
 
     <script>
-        // CONFIGURATION CHANGE HERE: Paste your real Cloudflare Worker endpoint URL
-        const SECURE_WORKER_URL = "https://cos110-ai-bridge.yourname.workers.dev";
-        
-        // CONFIGURATION CHANGE HERE: Paste your GitHub Repository path where text notes are stored
-        const GITHUB_NOTES_BASE = "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/main/notes/";
+        // Set up local file reader environment via pdf.js workers
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
 
         let appState = {
             studentName: "",
-            selectedChapter: null,
+            apiKey: "",
+            targetFile: null,
+            configuredCount: 10,
             selectedPool: [],
             currentQuestionIndex: 0,
             answersRecorded: {},
@@ -145,70 +241,130 @@
             timeRemaining: 0
         };
 
+        // UI Event Hook to map visual uploaded file name
+        document.getElementById('pdf-file-input').addEventListener('change', function(e) {
+            if(e.target.files.length > 0) {
+                appState.targetFile = e.target.files[0];
+                document.getElementById('file-name-display').innerText = appState.targetFile.name;
+            }
+        });
+
         function switchScreen(targetId) {
-            ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result'].forEach(id => {
+            ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result', 'screen-preview'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(targetId).classList.remove('hidden');
         }
 
-        function selectChapter(chId) {
-            appState.selectedChapter = chId;
-            [1, 2, 3, 4].forEach(id => document.getElementById(`ch-${id}`).classList.remove('active'));
-            document.getElementById(`ch-${chId}`).classList.add('active');
+        function updateSetupMetrics(value) {
+            appState.configuredCount = parseInt(value);
+            document.getElementById('range-display').innerText = `${value} Questions`;
         }
 
-        async function startSecureAISession() {
+        function validateAndProceedSetup() {
             const name = document.getElementById('student-name').value.trim();
-            if(!name) return alert("Please type your name.");
-            if(!appState.selectedChapter) return alert("Please select a chapter note module.");
+            const key = document.getElementById('gemini-key').value.trim();
+            
+            if (!name) return alert("Please specify an Examinee Name parameters.");
+            if (!key) return alert("A valid Google Gemini API validation key is required.");
+            if (!appState.targetFile) return alert("Please drop or choose a valid Chapter Handout PDF file.");
 
             appState.studentName = name;
-            const targetCount = parseInt(document.getElementById('question-range').value);
+            appState.apiKey = key;
 
-            document.getElementById('processing-title').innerText = "Downloading Chapter Note from Github...";
+            triggerAIExtractionEngine();
+        }
+
+        // --- CLIENT SIDE LOCAL TEXT EXTRACT LOOP ---
+        async function triggerAIExtractionEngine() {
+            document.getElementById('processing-title').innerText = "Reading Handout File...";
             switchScreen('screen-processing');
 
             try {
-                // 1. Fetch text note automatically from GitHub directory
-                const noteResponse = await fetch(`${GITHUB_NOTES_BASE}chapter${appState.selectedChapter}.txt`);
-                if (!noteResponse.ok) throw new Error("Could not find the chapter note file on GitHub.");
-                const noteText = await noteResponse.text();
+                const arrayBuffer = await appState.targetFile.arrayBuffer();
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                const pdf = await loadingTask.promise;
+                let fullText = "";
+                
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(" ");
+                    fullText += pageText + "\n";
+                }
 
-                // 2. Pass text to Cloudflare Worker middleman safely
-                document.getElementById('processing-title').innerText = "AI is dynamically setting exam layout...";
-                const aiResponse = await fetch(SECURE_WORKER_URL, {
+                if(!fullText.trim()) throw new Error("Document structure empty or missing vector text maps.");
+                
+                dispatchGeminiAPIRequest(fullText);
+
+            } catch (err) {
+                console.error(err);
+                alert("File Scan Failure: Ensure your file contains crawlable vector font layers.");
+                switchScreen('screen-setup');
+            }
+        }
+
+        // --- DYNAMIC AI PIPELINE SERVERLESS INTERFACE ---
+        async function dispatchGeminiAPIRequest(extractedText) {
+            document.getElementById('processing-title').innerText = "Gemini is building questions...";
+
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${appState.apiKey}`;
+            
+            const systemRule = `You are a strict examiner for the college course COS 110. Evaluate the provided text source and generate exactly ${appState.configuredCount} multiple-choice questions.
+            You MUST return ONLY a clean JSON array string without markup tags, without markdown wrap structures, and without triple backticks (\`\`\`).
+            Follow this explicit object key mapping parameters layout:
+            {
+                "id": 1,
+                "question": "Question text body description written clearly?",
+                "a": "Option parameter choice A text",
+                "b": "Option parameter choice B text",
+                "c": "Option parameter choice C text",
+                "d": "Option parameter choice D text",
+                "answer": "lowercase correct choice key here (a or b or c or d)"
+            }`;
+
+            try {
+                const response = await fetch(endpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ noteText: noteText, count: targetCount })
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `${systemRule}\n\nLECTURE SOURCE TEXT:\n${extractedText}` }] }]
+                    })
                 });
 
-                if(!aiResponse.ok) throw new Error("Secure AI middleman rejected token processing verification.");
+                if(!response.ok) throw new Error("Target pipeline rejected handshake validation parameter.");
+
+                const resData = await response.json();
+                let cleanString = resData.candidates[0].content.parts[0].text.trim();
                 
-                appState.selectedPool = await aiResponse.json();
+                // Strip accidental backticks formatting leaks if present
+                cleanString = cleanString.replace(/^```json/i, "").replace(/```$/, "").trim();
+
+                appState.selectedPool = JSON.parse(cleanString);
                 appState.currentQuestionIndex = 0;
                 appState.answersRecorded = {};
-                appState.timeRemaining = appState.selectedPool.length * 40;
+                appState.timeRemaining = appState.selectedPool.length * 40; // 40 Seconds allocation factor per question
 
                 switchScreen('screen-quiz');
                 renderActiveQuestion();
                 startGlobalCountdown();
 
-            } catch (err) {
-                console.error(err);
-                alert("Session Failed: " + err.message);
+            } catch(e) {
+                console.error(e);
+                alert("AI Build Fault: Ensure your key is valid and check that the file context isn't too short.");
                 switchScreen('screen-setup');
             }
         }
 
         function startGlobalCountdown() {
             if (appState.globalTimerInterval) clearInterval(appState.globalTimerInterval);
+            const timerElement = document.getElementById('global-timer');
             appState.globalTimerInterval = setInterval(() => {
-                if (appState.timeRemaining <= 0) { terminateQuiz(); return; }
+                if (appState.timeRemaining <= 0) { terminateAndSubmitQuiz(); return; }
                 appState.timeRemaining--;
                 const mins = Math.floor(appState.timeRemaining / 60).toString().padStart(2, '0');
                 const secs = (appState.timeRemaining % 60).toString().padStart(2, '0');
-                document.getElementById('global-timer').innerText = `${mins}:${secs}`;
+                timerElement.innerText = `${mins}:${secs}`;
             }, 1000);
         }
 
@@ -226,7 +382,14 @@
             const prev = appState.answersRecorded[appState.currentQuestionIndex];
             if (prev) document.getElementById(`opt-${prev}`).classList.add('selected');
 
-            document.getElementById('next-btn').innerText = (appState.currentQuestionIndex === appState.selectedPool.length - 1) ? "Submit Exam" : "Next Question";
+            const nextBtn = document.getElementById('next-btn');
+            if (appState.currentQuestionIndex === appState.selectedPool.length - 1) {
+                nextBtn.innerText = "Submit Evaluation Run";
+                nextBtn.className = "px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl tracking-wide shadow-sm transition-all duration-200 cursor-pointer";
+            } else {
+                nextBtn.innerText = "Next Question";
+                nextBtn.className = "px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl tracking-wide shadow-sm transition-all duration-200 cursor-pointer";
+            }
         }
 
         function selectOption(letter) {
@@ -240,18 +403,52 @@
                 appState.currentQuestionIndex++;
                 renderActiveQuestion();
             } else {
-                terminateQuiz();
+                terminateAndSubmitQuiz();
             }
         }
 
-        function terminateQuiz() {
+        function terminateAndSubmitQuiz() {
             clearInterval(appState.globalTimerInterval);
+            document.getElementById('processing-title').innerText = "Calculating Scores...";
+            switchScreen('screen-processing');
+            
             let rawScore = 0;
             appState.selectedPool.forEach((q, idx) => {
                 if (appState.answersRecorded[idx] === q.answer) rawScore++;
             });
-            document.getElementById('final-score-display').innerText = `${rawScore} / ${appState.selectedPool.length}`;
-            switchScreen('screen-result');
+            const pct = Math.round((rawScore / appState.selectedPool.length) * 100);
+            
+            setTimeout(() => {
+                document.getElementById('result-display-name').innerText = appState.studentName;
+                document.getElementById('final-score-display').innerText = `${rawScore} / ${appState.selectedPool.length}`;
+                document.getElementById('final-percentage-display').innerText = `${pct}%`;
+                switchScreen('screen-result');
+            }, 800);
+        }
+
+        function buildAndShowPreview() {
+            const container = document.getElementById('preview-items-container');
+            container.innerHTML = "";
+            appState.selectedPool.forEach((item, idx) => {
+                const studentSelection = appState.answersRecorded[idx] || "unanswered";
+                const isCorrect = studentSelection === item.answer;
+                const card = document.createElement('div');
+                card.className = "p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-left";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-4">
+                        <h4 class="text-sm font-bold text-slate-800">${idx + 1}. ${item.question}</h4>
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded shrink-0 ${isCorrect ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+                        <p class="text-slate-500">Your Choice: <span class="font-semibold ${isCorrect ? 'text-emerald-600' : 'text-red-600'}">(${studentSelection.toUpperCase()}) ${item[studentSelection] || 'None'}</span></p>
+                        <p class="text-slate-500">Correct Choice: <span class="font-semibold text-emerald-600">(${item.answer.toUpperCase()}) ${item[item.answer]}</span></p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            switchScreen('screen-preview');
         }
     </script>
 </body>
