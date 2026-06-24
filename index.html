@@ -3,177 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>COS 110 Portal | Exam Simulator</title>
+    <title>COS 110 Portal | Secure AI Simulator</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .glass-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(148, 163, 184, 0.05); border-radius: 20px; }
-        .option-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.2s ease; }
-        .option-card.selected { background: rgba(79, 70, 229, 0.06); border-color: #4f46e5; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.1);
+            border-radius: 24px;
+        }
+        .glass-input {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+        }
+        .glass-input:focus {
+            border-color: #4f46e5;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+        .chapter-pill {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chapter-pill.active {
+            background: rgba(79, 70, 229, 0.05);
+            border-color: #4f46e5;
+        }
+        .option-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-card.selected {
+            background: rgba(79, 70, 229, 0.06);
+            border-color: #4f46e5;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <main class="w-full max-w-xl">
+    <main class="w-full max-w-2xl my-6">
 
-        <section id="screen-setup" class="glass-card p-8">
-            <h2 class="text-2xl font-bold text-slate-900 mb-6 text-center">🎓 COS 110 Portal</h2>
-            <div class="space-y-5">
+        <section id="screen-welcome" class="glass-card p-8 md:p-12 text-center">
+            <div class="mb-6 flex justify-center"><span class="text-4xl">🎓</span></div>
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900">COS 110 Exam Room</h1>
+            <p class="text-slate-500 mt-3 max-w-sm mx-auto">Select a module to instantly generate a verified AI knowledge assessment session.</p>
+            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 font-semibold text-white rounded-xl shadow-md transition-all cursor-pointer">Enter Room</button>
+        </section>
+
+        <section id="screen-setup" class="glass-card p-8 md:p-10 hidden">
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Select Assessment Area</h2>
+            <div class="space-y-6">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Gemini API Key</label>
-                    <input type="password" id="api-key-input" placeholder="Paste your API Key here..." class="w-full px-4 py-3 border rounded-xl bg-slate-50 text-sm focus:outline-none focus:border-indigo-600">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Your Full Name</label>
+                    <input type="text" id="student-name" placeholder="Enter full name..." class="w-full px-4 py-3 glass-input text-base">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Upload Chapter Material (.txt)</label>
-                    <input type="file" id="file-input" accept=".txt" class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Choose Chapter Target</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div onclick="selectChapter(1)" id="ch-1" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 1 Note</div>
+                        <div onclick="selectChapter(2)" id="ch-2" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 2 Note</div>
+                        <div onclick="selectChapter(3)" id="ch-3" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 3 Note</div>
+                        <div onclick="selectChapter(4)" id="ch-4" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">Chapter 4 Note</div>
+                    </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Number of Questions</label>
-                    <select id="question-count" class="w-full p-3 border rounded-xl bg-slate-50 text-sm">
-                        <option value="5">5 Questions</option>
-                        <option value="10" selected>10 Questions</option>
-                        <option value="15">15 Questions</option>
-                        <option value="20">20 Questions</option>
-                    </select>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-sm font-medium text-slate-700">Questions Count</label>
+                        <span id="range-display" class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">10 Questions</span>
+                    </div>
+                    <input type="range" id="question-range" min="5" max="25" step="5" value="10" class="w-full h-2 rounded-lg accent-indigo-600 cursor-pointer bg-slate-200" oninput="document.getElementById('range-display').innerText = this.value + ' Questions'">
                 </div>
 
-                <button onclick="generateExam()" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm cursor-pointer transition-all">Upload & Generate Quiz</button>
+                <button onclick="startSecureAISession()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all cursor-pointer">Generate Exam Questions</button>
             </div>
         </section>
 
-        <section id="screen-loading" class="glass-card p-12 text-center hidden">
-            <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-indigo-600 mx-auto mb-4"></div>
-            <h3 class="text-lg font-bold text-slate-800">Reading Text Material...</h3>
-            <p class="text-slate-400 text-xs mt-1">Generating your examination pool layout.</p>
-        </section>
-
-        <section id="screen-quiz" class="glass-card p-6 hidden">
+        <section id="screen-quiz" class="glass-card p-6 md:p-8 hidden">
             <div class="flex justify-between items-center mb-6">
-                <span id="quiz-progress" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Question 1 of --</span>
+                <span id="quiz-progress-text" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Question 1 of --</span>
+                <div class="bg-red-50 px-4 py-1.5 rounded-full"><span id="global-timer" class="text-sm font-mono font-bold text-red-600">00:00</span></div>
             </div>
-            
-            <div class="mb-6"><h3 id="question-text" class="text-lg font-bold text-slate-900 leading-relaxed">Loading...</h3></div>
-            
-            <div class="space-y-3 mb-6">
-                <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center text-sm font-medium text-slate-700"><span class="font-bold text-indigo-600 mr-3">(a)</span><span id="text-opt-a"></span></div>
-                <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center text-sm font-medium text-slate-700"><span class="font-bold text-indigo-600 mr-3">(b)</span><span id="text-opt-b"></span></div>
-                <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center text-sm font-medium text-slate-700"><span class="font-bold text-indigo-600 mr-3">(c)</span><span id="text-opt-c"></span></div>
-                <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center text-sm font-medium text-slate-700"><span class="font-bold text-indigo-600 mr-3">(d)</span><span id="text-opt-d"></span></div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-8">
+                <div id="quiz-progress-bar" class="h-full bg-indigo-600 transition-all duration-300" style="width: 0%"></div>
             </div>
-            
-            <div class="flex justify-end"><button id="next-btn" onclick="advanceQuiz()" class="px-6 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl text-sm">Next Question</button></div>
+            <div class="mb-8"><h3 id="question-text" class="text-xl font-bold text-slate-900 leading-relaxed">Loading...</h3></div>
+            <div class="space-y-3.5 mb-8">
+                <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">A</span><span id="text-opt-a" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">B</span><span id="text-opt-b" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">C</span><span id="text-opt-c" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center"><span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">D</span><span id="text-opt-d" class="text-slate-700 text-sm font-medium"></span></div>
+            </div>
+            <div class="flex justify-end"><button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl tracking-wide cursor-pointer">Next Question</button></div>
+        </section>
+
+        <section id="screen-processing" class="glass-card p-12 text-center hidden">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-indigo-600 mx-auto mb-6"></div>
+            <h2 id="processing-title" class="text-xl font-bold text-slate-800">Fetching Chapter Note...</h2>
         </section>
 
         <section id="screen-result" class="glass-card p-8 text-center hidden">
-            <div class="text-4xl mb-3">🏆</div>
-            <h2 class="text-xl font-bold text-slate-900">Quiz Completed</h2>
-            <div class="my-4 text-4xl font-extrabold text-indigo-600" id="final-score">0 / 0</div>
-            <button onclick="location.reload()" class="px-5 py-2 bg-slate-100 text-slate-700 border rounded-xl text-sm">Restart</button>
+            <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 text-2xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-slate-900">Session Complete</h2>
+            <div class="my-6">
+                <div class="text-5xl font-extrabold text-indigo-600" id="final-score-display">0 / 0</div>
+            </div>
+            <button onclick="location.reload()" class="px-6 py-2.5 bg-slate-100 text-slate-700 border rounded-xl cursor-pointer">Restart Session</button>
         </section>
 
     </main>
 
     <script>
-        let quizData = [];
-        let currentIndex = 0;
-        let userAnswers = {};
+        // CONFIGURATION CHANGE HERE: Paste your real Cloudflare Worker endpoint URL
+        const SECURE_WORKER_URL = "https://cos110-ai-bridge.yourname.workers.dev";
+        
+        // CONFIGURATION CHANGE HERE: Paste your GitHub Repository path where text notes are stored
+        const GITHUB_NOTES_BASE = "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/main/notes/";
 
-        function switchScreen(id) {
-            ['screen-setup', 'screen-loading', 'screen-quiz', 'screen-result'].forEach(s => document.getElementById(s).classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
+        let appState = {
+            studentName: "",
+            selectedChapter: null,
+            selectedPool: [],
+            currentQuestionIndex: 0,
+            answersRecorded: {},
+            globalTimerInterval: null,
+            timeRemaining: 0
+        };
+
+        function switchScreen(targetId) {
+            ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(targetId).classList.remove('hidden');
         }
 
-        function generateExam() {
-            const apiKey = document.getElementById('api-key-input').value.trim();
-            const fileInput = document.getElementById('file-input');
-            const count = document.getElementById('question-count').value;
+        function selectChapter(chId) {
+            appState.selectedChapter = chId;
+            [1, 2, 3, 4].forEach(id => document.getElementById(`ch-${id}`).classList.remove('active'));
+            document.getElementById(`ch-${chId}`).classList.add('active');
+        }
 
-            if (!apiKey) return alert("Please type or paste your API key.");
-            if (fileInput.files.length === 0) return alert("Please select a text file.");
+        async function startSecureAISession() {
+            const name = document.getElementById('student-name').value.trim();
+            if(!name) return alert("Please type your name.");
+            if(!appState.selectedChapter) return alert("Please select a chapter note module.");
 
-            switchScreen('screen-loading');
+            appState.studentName = name;
+            const targetCount = parseInt(document.getElementById('question-range').value);
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = async function(e) {
-                const textContent = e.target.result;
+            document.getElementById('processing-title').innerText = "Downloading Chapter Note from Github...";
+            switchScreen('screen-processing');
+
+            try {
+                // 1. Fetch text note automatically from GitHub directory
+                const noteResponse = await fetch(`${GITHUB_NOTES_BASE}chapter${appState.selectedChapter}.txt`);
+                if (!noteResponse.ok) throw new Error("Could not find the chapter note file on GitHub.");
+                const noteText = await noteResponse.text();
+
+                // 2. Pass text to Cloudflare Worker middleman safely
+                document.getElementById('processing-title').innerText = "AI is dynamically setting exam layout...";
+                const aiResponse = await fetch(SECURE_WORKER_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ noteText: noteText, count: targetCount })
+                });
+
+                if(!aiResponse.ok) throw new Error("Secure AI middleman rejected token processing verification.");
                 
-                try {
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-                    
-                    const prompt = `Read the following text material and generate exactly ${count} multiple choice questions.
-                    Return ONLY a valid JSON array matching this exact schema format without markdown tags or codeblocks:
-                    [{"question":"...","a":"...","b":"...","c":"...","d":"...","answer":"correct_letter_lowercase"}]
-                    
-                    MATERIAL:\n${textContent}`;
+                appState.selectedPool = await aiResponse.json();
+                appState.currentQuestionIndex = 0;
+                appState.answersRecorded = {};
+                appState.timeRemaining = appState.selectedPool.length * 40;
 
-                    const response = await fetch(endpoint, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
+                switchScreen('screen-quiz');
+                renderActiveQuestion();
+                startGlobalCountdown();
 
-                    if (!response.ok) throw new Error("API rejected the key or request format.");
-
-                    const resData = await response.json();
-                    let rawText = resData.candidates[0].content.parts[0].text.trim();
-                    
-                    // Strip markdown wrapping if the model accidentally returns it
-                    rawText = rawText.replace(/^```json/i, "").replace(/```$/, "").trim();
-                    
-                    quizData = JSON.parse(rawText);
-                    currentIndex = 0;
-                    userAnswers = {};
-
-                    switchScreen('screen-quiz');
-                    renderQuestion();
-
-                } catch(err) {
-                    console.error(err);
-                    alert("Error processing text or contacting API: " + err.message);
-                    switchScreen('screen-setup');
-                }
-            };
-            reader.readAsText(file);
+            } catch (err) {
+                console.error(err);
+                alert("Session Failed: " + err.message);
+                switchScreen('screen-setup');
+            }
         }
 
-        function renderQuestion() {
-            const current = quizData[currentIndex];
-            document.getElementById('quiz-progress').innerText = `Question ${currentIndex + 1} of ${quizData.length}`;
-            document.getElementById('question-text').innerText = current.question;
-            document.getElementById('text-opt-a').innerText = current.a;
-            document.getElementById('text-opt-b').innerText = current.b;
-            document.getElementById('text-opt-c').innerText = current.c;
-            document.getElementById('text-opt-d').innerText = current.d;
+        function startGlobalCountdown() {
+            if (appState.globalTimerInterval) clearInterval(appState.globalTimerInterval);
+            appState.globalTimerInterval = setInterval(() => {
+                if (appState.timeRemaining <= 0) { terminateQuiz(); return; }
+                appState.timeRemaining--;
+                const mins = Math.floor(appState.timeRemaining / 60).toString().padStart(2, '0');
+                const secs = (appState.timeRemaining % 60).toString().padStart(2, '0');
+                document.getElementById('global-timer').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderActiveQuestion() {
+            const currentItem = appState.selectedPool[appState.currentQuestionIndex];
+            document.getElementById('quiz-progress-text').innerText = `Question ${appState.currentQuestionIndex + 1} of ${appState.selectedPool.length}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((appState.currentQuestionIndex + 1) / appState.selectedPool.length) * 100}%`;
+            document.getElementById('question-text').innerText = currentItem.question;
+            document.getElementById('text-opt-a').innerText = currentItem.a;
+            document.getElementById('text-opt-b').innerText = currentItem.b;
+            document.getElementById('text-opt-c').innerText = currentItem.c;
+            document.getElementById('text-opt-d').innerText = currentItem.d;
 
             ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
-            if (userAnswers[currentIndex]) document.getElementById(`opt-${userAnswers[currentIndex]}`).classList.add('selected');
+            const prev = appState.answersRecorded[appState.currentQuestionIndex];
+            if (prev) document.getElementById(`opt-${prev}`).classList.add('selected');
 
-            document.getElementById('next-btn').innerText = (currentIndex === quizData.length - 1) ? "Finish" : "Next Question";
+            document.getElementById('next-btn').innerText = (appState.currentQuestionIndex === appState.selectedPool.length - 1) ? "Submit Exam" : "Next Question";
         }
 
         function selectOption(letter) {
-            userAnswers[currentIndex] = letter;
+            appState.answersRecorded[appState.currentQuestionIndex] = letter;
             ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
             document.getElementById(`opt-${letter}`).classList.add('selected');
         }
 
         function advanceQuiz() {
-            if (currentIndex < quizData.length - 1) {
-                currentIndex++;
-                renderQuestion();
+            if (appState.currentQuestionIndex < appState.selectedPool.length - 1) {
+                appState.currentQuestionIndex++;
+                renderActiveQuestion();
             } else {
-                let score = 0;
-                quizData.forEach((q, idx) => {
-                    if (userAnswers[idx] === q.answer.toLowerCase()) score++;
-                });
-                document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
-                switchScreen('screen-result');
+                terminateQuiz();
             }
+        }
+
+        function terminateQuiz() {
+            clearInterval(appState.globalTimerInterval);
+            let rawScore = 0;
+            appState.selectedPool.forEach((q, idx) => {
+                if (appState.answersRecorded[idx] === q.answer) rawScore++;
+            });
+            document.getElementById('final-score-display').innerText = `${rawScore} / ${appState.selectedPool.length}`;
+            switchScreen('screen-result');
         }
     </script>
 </body>
