@@ -152,7 +152,7 @@
 
     try {
         // REPLACE WITH YOUR ACTUAL GITHUB USERNAME AND REPO NAME
-        const githubUrl = `https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/notes/chapter${appState.selectedChapter}.txt`;
+        const githubUrl = `https://raw.githubusercontent.com/emmyWebsite237/cos110-quiz-portal/blob/main/notes/chapter1.txt`;
         
         const fileResponse = await fetch(githubUrl);
         if(!fileResponse.ok) throw new Error("Could not download the note file from GitHub.");
