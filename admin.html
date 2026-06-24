@@ -11,105 +11,197 @@
     </style>
 </head>
 <body class="p-6">
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-6xl mx-auto space-y-6">
         
         <div class="flex justify-between items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <div>
                 <h1 class="text-2xl font-bold text-slate-900">Question Pool Manager</h1>
-                <p class="text-sm text-slate-500">Add, view, and manage your local exam tracks.</p>
+                <p class="text-sm text-slate-500">Add questions individually or bulk-paste formatted text blocks.</p>
             </div>
             <a href="index.html" class="px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all">
                 Go to Exam Portal →
             </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-1 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
-                <h2 class="text-lg font-bold text-slate-800 mb-4">Add New Question</h2>
-                <form id="question-form" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Select Track / Chapter</label>
-                        <select id="form-track" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
-                            <option value="chapter1">Chapter 1</option>
-                            <option value="chapter2">Chapter 2</option>
-                        </select>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-5 space-y-4">
+                
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Target Track / Chapter</label>
+                    <select id="global-track" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:outline-none focus:border-indigo-500">
+                        <option value="chapter1">Chapter 1 Track</option>
+                        <option value="chapter2">Chapter 2 Track</option>
+                    </select>
+                </div>
+
+                <div class="flex bg-slate-200 p-1 rounded-xl">
+                    <button id="tab-single" onclick="switchMode('single')" class="w-1/2 py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer">Single Question</button>
+                    <button id="tab-bulk" onclick="switchMode('bulk')" class="w-1/2 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer">Bulk Paste Engine</button>
+                </div>
+
+                <div id="panel-single" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h2 class="text-base font-bold text-slate-800 mb-4">Add Single Item</h2>
+                    <form id="question-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Question Body</label>
+                            <textarea id="form-question" rows="2" placeholder="Enter question description..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500" required></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Options Layout</label>
+                            <input type="text" id="form-opt-a" placeholder="Option A" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                            <input type="text" id="form-opt-b" placeholder="Option B" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                            <input type="text" id="form-opt-c" placeholder="Option C" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                            <input type="text" id="form-opt-d" placeholder="Option D" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Correct Answer</label>
+                            <select id="form-answer" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                                <option value="a">(a)</option> <option value="b">(b)</option> <option value="c">(c)</option> <option value="d">(d)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all cursor-pointer">Commit Item</button>
+                    </form>
+                </div>
+
+                <div id="panel-bulk" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hidden">
+                    <div class="mb-3">
+                        <h2 class="text-base font-bold text-slate-800">Bulk Text Parser</h2>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Separate raw questions using a blank empty line. Default answer configuration keys will assign as <span class="font-bold text-slate-600">(a)</span> initially, which you can easily toggle in the list preview.</p>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Question Body</label>
-                        <textarea id="form-question" rows="3" placeholder="Enter question description..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500" required></textarea>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Raw Dump Window</label>
+                            <textarea id="bulk-raw-text" rows="10" placeholder="1. What is 2+2? (a) 3 (b) 4 (c) 5 (d) 6&#10;&#10;2. What is CPU? (a) Core (b) Unit (c) Central Processing Unit (d) Board" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:border-indigo-500 leading-relaxed"></textarea>
+                        </div>
+                        <button onclick="processBulkTextDump()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl transition-all cursor-pointer">
+                            Run Structural Extraction
+                        </button>
                     </div>
-                    <div class="space-y-2">
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Options Layout</label>
-                        <input type="text" id="form-opt-a" placeholder="Option A" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                        <input type="text" id="form-opt-b" placeholder="Option B" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                        <input type="text" id="form-opt-c" placeholder="Option C" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                        <input type="text" id="form-opt-d" placeholder="Option D" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Correct Answer Index Tag</label>
-                        <select id="form-answer" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
-                            <option value="a">(a)</option>
-                            <option value="b">(b)</option>
-                            <option value="c">(c)</option>
-                            <option value="d">(d)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all cursor-pointer">
-                        Commit Question to Database
-                    </button>
-                </form>
+                </div>
+
             </div>
 
-            <div class="md:col-span-2 space-y-6">
+            <div class="lg:col-span-7 space-y-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                        <span class="block text-xs font-medium text-slate-400">Chapter 1 Total</span>
+                        <span class="block text-xs font-medium text-slate-400">Chapter 1 Total Items</span>
                         <span id="count-c1" class="text-2xl font-bold text-slate-800">0</span>
                     </div>
                     <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                        <span class="block text-xs font-medium text-slate-400">Chapter 2 Total</span>
+                        <span class="block text-xs font-medium text-slate-400">Chapter 2 Total Items</span>
                         <span id="count-c2" class="text-2xl font-bold text-slate-800">0</span>
                     </div>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-bold text-slate-800">Active Database Question Index</h2>
+                        <h2 class="text-base font-bold text-slate-800">Active Database Question Index</h2>
                         <button onclick="clearAllData()" class="text-xs font-semibold text-red-500 hover:text-red-700 cursor-pointer">Wipe Everything</button>
                     </div>
-                    <div id="questions-list-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
-                        </div>
+                    <div id="questions-list-container" class="space-y-4 max-h-[65vh] overflow-y-auto pr-2"></div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <script>
         let db = JSON.parse(localStorage.getItem('COS110_LOCAL_DB')) || { chapter1: [], chapter2: [] };
 
+        function switchMode(mode) {
+            if(mode === 'single') {
+                document.getElementById('panel-single').classList.remove('hidden');
+                document.getElementById('panel-bulk').classList.add('hidden');
+                document.getElementById('tab-single').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer";
+                document.getElementById('tab-bulk').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer";
+            } else {
+                document.getElementById('panel-single').classList.add('hidden');
+                document.getElementById('panel-bulk').classList.remove('hidden');
+                document.getElementById('tab-single').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-700 cursor-pointer";
+                document.getElementById('tab-bulk').className = "w-1/2 py-2 text-xs font-bold rounded-lg text-slate-700 bg-white shadow-xs cursor-pointer";
+            }
+        }
+
+        // Add single question
         document.getElementById('question-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const track = document.getElementById('form-track').value;
-            
-            const newQuestion = {
-                id: Date.now(),
+            const track = document.getElementById('global-track').value;
+            db[track].push({
+                id: Date.now() + Math.random(),
                 question: document.getElementById('form-question').value.trim(),
                 a: document.getElementById('form-opt-a').value.trim(),
                 b: document.getElementById('form-opt-b').value.trim(),
                 c: document.getElementById('form-opt-c').value.trim(),
                 d: document.getElementById('form-opt-d').value.trim(),
                 answer: document.getElementById('form-answer').value
-            };
-
-            db[track].push(newQuestion);
+            });
             saveAndRefresh();
             this.reset();
-            document.getElementById('form-track').value = track; // keep the selected track
         });
 
-        function saveAndRefresh() {
-            localStorage.setItem('COS110_LOCAL_DB', JSON.stringify(db));
-            renderDashboardData();
+        // Bulk text parser engine
+        function processBulkTextDump() {
+            const track = document.getElementById('global-track').value;
+            const rawText = document.getElementById('bulk-raw-text').value.trim();
+            if(!rawText) return alert("Pasting space layout parameters is empty.");
+
+            // Split items using double carriage line breaks or single line breaks if cleanly arranged
+            const rawBlocks = rawText.split(/\n\s*\n/);
+            let addedCount = 0;
+
+            rawBlocks.forEach(block => {
+                const text = block.trim().replace(/\s+/g, ' ');
+                if(!text) return;
+
+                // Match layout structures: (a), (b), (c), (d)
+                const regexA = /\s*\(a\)\s*/i;
+                const regexB = /\s*\(b\)\s*/i;
+                const regexC = /\s*\(c\)\s*/i;
+                const regexD = /\s*\(d\)\s*/i;
+
+                if(regexA.test(text) && regexB.test(text) && regexC.test(text) && regexD.test(text)) {
+                    // Split sections sequentially
+                    const partsA = text.split(regexA);
+                    const questionStr = partsA[0].replace(/^\d+[\.\s]*/, '').trim(); // strip leading question indices like '1.'
+                    
+                    const partsB = partsA[1].split(regexB);
+                    const optA = partsB[0].trim();
+
+                    const partsC = partsB[1].split(regexC);
+                    const optB = partsC[0].trim();
+
+                    const partsD = partsC[1].split(regexD);
+                    const optC = partsD[0].trim();
+                    const optD = partsD[1].trim();
+
+                    db[track].push({
+                        id: Date.now() + Math.random(),
+                        question: questionStr,
+                        a: optA,
+                        b: optB,
+                        c: optC,
+                        d: optD,
+                        answer: "a" // Baseline fallback answer target string context
+                    });
+                    addedCount++;
+                }
+            });
+
+            alert(`Bulk Insertion Complete. Processed and extracted ${addedCount} questions successfully!`);
+            document.getElementById('bulk-raw-text').value = "";
+            saveAndRefresh();
+        }
+
+        function toggleAnswer(track, id, currentAns) {
+            const sequence = ['a', 'b', 'c', 'd'];
+            let nextIndex = (sequence.indexOf(currentAns) + 1) % 4;
+            const targetQuestion = db[track].find(q => q.id === id);
+            if(targetQuestion) {
+                targetQuestion.answer = sequence[nextIndex];
+                saveAndRefresh();
+            }
         }
 
         function deleteQuestion(track, id) {
@@ -117,8 +209,13 @@
             saveAndRefresh();
         }
 
+        function saveAndRefresh() {
+            localStorage.setItem('COS110_LOCAL_DB', JSON.stringify(db));
+            renderDashboardData();
+        }
+
         function clearAllData() {
-            if(confirm("Are you sure you want to completely erase the entire database? This action is irreversible.")) {
+            if(confirm("Wipe everything?")) {
                 db = { chapter1: [], chapter2: [] };
                 saveAndRefresh();
             }
@@ -127,7 +224,6 @@
         function renderDashboardData() {
             document.getElementById('count-c1').innerText = db.chapter1.length;
             document.getElementById('count-c2').innerText = db.chapter2.length;
-
             const container = document.getElementById('questions-list-container');
             container.innerHTML = "";
 
@@ -136,25 +232,29 @@
                     const card = document.createElement('div');
                     card.className = "p-4 rounded-xl bg-slate-50 border border-slate-200 relative text-sm space-y-1";
                     card.innerHTML = `
-                        <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-indigo-50 border border-indigo-100 text-indigo-600 px-2 py-0.5 rounded mb-1">${trackKey} — Item #${index + 1}</span>
+                        <span class="inline-block text-[10px] font-bold uppercase bg-indigo-50 border border-indigo-100 text-indigo-600 px-2 py-0.5 rounded mb-1">${trackKey} — Item #${index + 1}</span>
                         <p class="font-bold text-slate-800 pr-10">${item.question}</p>
                         <div class="grid grid-cols-2 gap-1 text-xs text-slate-500 pt-1">
                             <p><strong>(a)</strong> ${item.a}</p> <p><strong>(b)</strong> ${item.b}</p>
                             <p><strong>(c)</strong> ${item.c}</p> <p><strong>(d)</strong> ${item.d}</p>
                         </div>
-                        <p class="text-xs text-emerald-600 font-bold pt-1">Correct Tag Target: (${item.answer.toUpperCase()})</p>
-                        <button onclick="deleteQuestion('${trackKey}', ${item.id})" class="absolute top-2 right-4 text-slate-400 hover:text-red-500 font-bold transition-colors cursor-pointer text-base">×</button>
+                        <div class="pt-2 flex items-center gap-2">
+                            <span class="text-xs text-slate-500">Correct Target:</span>
+                            <button onclick="toggleAnswer('${trackKey}', ${item.id}, '${item.answer}')" class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 cursor-pointer">
+                                (${item.answer.toUpperCase()}) — Click to change
+                            </button>
+                        </div>
+                        <button onclick="deleteQuestion('${trackKey}', ${item.id})" class="absolute top-2 right-4 text-slate-400 hover:text-red-500 font-bold text-base cursor-pointer">×</button>
                     `;
                     container.appendChild(card);
                 });
             });
 
             if(db.chapter1.length === 0 && db.chapter2.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6">Your query database layout index is empty.</p>`;
+                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6">Your data layout index is empty.</p>`;
             }
         }
 
-        // Run baseline load metrics
         renderDashboardData();
     </script>
 </body>
