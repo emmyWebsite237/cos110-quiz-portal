@@ -145,4 +145,226 @@
             </div>
             <div class="mb-8"><h3 id="question-text" class="text-xl font-bold text-slate-900 leading-relaxed">Loading...</h3></div>
             <div class="space-y-3.5 mb-8">
-                <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center"><span class="w-10 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">(a)</span><span id
+                <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center"><span class="w-10 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">(a)</span><span id="text-opt-a" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center"><span class="w-10 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">(b)</span><span id="text-opt-b" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center"><span class="w-10 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">(c)</span><span id="text-opt-c" class="text-slate-700 text-sm font-medium"></span></div>
+                <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center"><span class="w-10 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-xs text-slate-400 mr-4 border border-slate-200 shrink-0">(d)</span><span id="text-opt-d" class="text-slate-700 text-sm font-medium"></span></div>
+            </div>
+            <div class="flex justify-end"><button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl tracking-wide cursor-pointer">Next Question</button></div>
+        </section>
+
+        <section id="screen-processing" class="glass-card p-12 text-center hidden">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-indigo-600 mx-auto mb-6"></div>
+            <h2 id="processing-title" class="text-xl font-bold text-slate-800">Processing Document Nodes...</h2>
+        </section>
+
+        <section id="screen-result" class="glass-card p-8 text-center hidden">
+            <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto text-emerald-500 text-2xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-slate-900">Session Complete</h2>
+            <div class="my-6">
+                <div class="text-5xl font-extrabold text-indigo-600" id="final-score-display">0 / 0</div>
+            </div>
+            <button onclick="location.reload()" class="px-6 py-2.5 bg-slate-100 text-slate-700 border rounded-xl cursor-pointer">Restart Session</button>
+        </section>
+
+    </main>
+
+    <button onclick="switchScreen('screen-admin')" class="fixed bottom-4 right-4 p-3 bg-slate-800 hover:bg-slate-900 text-white rounded-full text-xs shadow-lg transition-all cursor-pointer opacity-40 hover:opacity-100">🔧 File Repository</button>
+
+    <script>
+        let appState = {
+            studentName: "",
+            selectedChapters: [],
+            selectedPool: [],
+            currentQuestionIndex: 0,
+            answersRecorded: {},
+            globalTimerInterval: null,
+            timeRemaining: 0
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateStatusBadges();
+        });
+
+        function switchScreen(targetId) {
+            ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result', 'screen-admin'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(targetId).classList.remove('hidden');
+        }
+
+        function updateStatusBadges() {
+            [1, 2, 3, 4, 5, 6, 7, 8].forEach(id => {
+                const data = localStorage.getItem(`cos110_ch_raw_${id}`);
+                const badge = document.getElementById(`badge-${id}`);
+                if(data) {
+                    badge.innerText = "Loaded";
+                    badge.className = "text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md";
+                } else {
+                    badge.innerText = "Empty";
+                    badge.className = "text-[10px] text-red-500 font-normal bg-red-50 px-2 py-0.5 rounded-md";
+                }
+            });
+        }
+
+        function toggleChapterSelect(chId) {
+            const index = appState.selectedChapters.indexOf(chId);
+            if (index > -1) {
+                appState.selectedChapters.splice(index, 1);
+                document.getElementById(`ch-${chId}`).classList.remove('active');
+            } else {
+                if (appState.selectedChapters.length >= 3) {
+                    return alert("You can select a maximum of 3 chapters to generate questions from.");
+                }
+                appState.selectedChapters.push(chId);
+                document.getElementById(`ch-${chId}`).classList.add('active');
+            }
+            document.getElementById('selected-chapters-count').innerText = `${appState.selectedChapters.length} / 3 Selected`;
+        }
+
+        function commitTextToMemory() {
+            const targetSlot = document.getElementById('admin-chapter-select').value;
+            const fileInput = document.getElementById('admin-file-input');
+
+            if(fileInput.files.length === 0) return alert("Please select a plain text document first.");
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const text = e.target.result;
+                localStorage.setItem(`cos110_ch_raw_${targetSlot}`, text);
+                alert(`Chapter ${targetSlot} successfully stored into persistent memory!`);
+                updateStatusBadges();
+                switchScreen('screen-setup');
+            };
+            reader.readAsText(file);
+        }
+
+        async function startSecureAISession() {
+            const apiKey = document.getElementById('api-key-input').value.trim();
+            const name = document.getElementById('student-name').value.trim();
+
+            if(!apiKey) return alert("Please paste a valid Gemini API key.");
+            if(!name) return alert("Please specify the examinee full name.");
+            if(appState.selectedChapters.length === 0) return alert("Please select at least 1 chapter module to load.");
+
+            let completeContextPool = "";
+            for (let chId of appState.selectedChapters) {
+                const note = localStorage.getItem(`cos110_ch_raw_${chId}`);
+                if(!note) return alert(`Chapter ${chId} slot is empty! Use the File Repository manager at the bottom to upload content for it first.`);
+                completeContextPool += `\n--- START OF CHAPTER ${chId} NOTE TEXT ---\n${note}\n--- END OF CHAPTER ${chId} ---\n`;
+            }
+
+            appState.studentName = name;
+            const targetCount = parseInt(document.getElementById('question-range').value);
+
+            document.getElementById('processing-title').innerText = "AI is scanning lecture materials and layout formats...";
+            switchScreen('screen-processing');
+
+            try {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+                const formatPrompt = `You are an expert academic tester. Analyze the provided lecture notes and generate exactly ${targetCount} unique, balanced multiple choice questions based on them.
+                You MUST return ONLY a clean JSON array matching the exact configuration below. Do not wrap it in markdown block quotes, do not use backticks (\`\`\`), and do not include trailing explanations.
+                
+                Expected JSON configuration array shape:
+                [
+                  {
+                    "question": "Clear context question goes here?",
+                    "a": "Choice text line alternative 1",
+                    "b": "Choice text line alternative 2",
+                    "c": "Choice text line alternative 3",
+                    "d": "Choice text line alternative 4",
+                    "answer": "lowercase correct option letter match (a or b or c or d)"
+                  }
+                ]
+
+                LECTURE SOURCE DATA MATRIX:
+                ${completeContextPool}`;
+
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: formatPrompt }] }] })
+                });
+
+                if(!response.ok) throw new Error("Connection failed or the API key was invalid.");
+
+                const data = await response.json();
+                let cleanJson = data.candidates[0].content.parts[0].text.trim();
+                
+                // Clean up any stray markdown wrappers
+                cleanJson = cleanJson.replace(/^```json/i, "").replace(/```$/, "").trim();
+
+                appState.selectedPool = JSON.parse(cleanJson);
+                appState.currentQuestionIndex = 0;
+                appState.answersRecorded = {};
+                appState.timeRemaining = appState.selectedPool.length * 40;
+
+                switchScreen('screen-quiz');
+                renderActiveQuestion();
+                startGlobalCountdown();
+
+            } catch (err) {
+                console.error(err);
+                alert("Session Engine Interrupted: " + err.message);
+                switchScreen('screen-setup');
+            }
+        }
+
+        function startGlobalCountdown() {
+            if (appState.globalTimerInterval) clearInterval(appState.globalTimerInterval);
+            appState.globalTimerInterval = setInterval(() => {
+                if (appState.timeRemaining <= 0) { terminateQuiz(); return; }
+                appState.timeRemaining--;
+                const mins = Math.floor(appState.timeRemaining / 60).toString().padStart(2, '0');
+                const secs = (appState.timeRemaining % 60).toString().padStart(2, '0');
+                document.getElementById('global-timer').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderActiveQuestion() {
+            const currentItem = appState.selectedPool[appState.currentQuestionIndex];
+            document.getElementById('quiz-progress-text').innerText = `Question ${appState.currentQuestionIndex + 1} of ${appState.selectedPool.length}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((appState.currentQuestionIndex + 1) / appState.selectedPool.length) * 100}%`;
+            document.getElementById('question-text').innerText = currentItem.question;
+            document.getElementById('text-opt-a').innerText = currentItem.a;
+            document.getElementById('text-opt-b').innerText = currentItem.b;
+            document.getElementById('text-opt-c').innerText = currentItem.c;
+            document.getElementById('text-opt-d').innerText = currentItem.d;
+
+            ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
+            const prev = appState.answersRecorded[appState.currentQuestionIndex];
+            if (prev) document.getElementById(`opt-${prev}`).classList.add('selected');
+
+            document.getElementById('next-btn').innerText = (appState.currentQuestionIndex === appState.selectedPool.length - 1) ? "Submit Exam" : "Next Question";
+        }
+
+        function selectOption(letter) {
+            appState.answersRecorded[appState.currentQuestionIndex] = letter;
+            ['a', 'b', 'c', 'd'].forEach(l => document.getElementById(`opt-${l}`).classList.remove('selected'));
+            document.getElementById(`opt-${letter}`).classList.add('selected');
+        }
+
+        function advanceQuiz() {
+            if (appState.currentQuestionIndex < appState.selectedPool.length - 1) {
+                appState.currentQuestionIndex++;
+                renderActiveQuestion();
+            } else {
+                terminateQuiz();
+            }
+        }
+
+        function terminateQuiz() {
+            clearInterval(appState.globalTimerInterval);
+            let rawScore = 0;
+            appState.selectedPool.forEach((q, idx) => {
+                if (appState.answersRecorded[idx] === q.answer.toLowerCase()) rawScore++;
+            });
+            document.getElementById('final-score-display').innerText = `${rawScore} / ${appState.selectedPool.length}`;
+            switchScreen('screen-result');
+        }
+    </script>
+</body>
+</html>
