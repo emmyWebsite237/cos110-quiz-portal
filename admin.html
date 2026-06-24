@@ -3,162 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COS 110 Portal | Admin Dashboard</title>
+    <title>COS 110 | Admin Portal</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.05);
-            border-radius: 20px;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
-
-    <div class="max-w-5xl mx-auto space-y-6">
+<body class="p-6">
+    <div class="max-w-4xl mx-auto space-y-6">
         
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-200">
+        <div class="flex justify-between items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
             <div>
-                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Management Dashboard</h1>
-                <p class="text-slate-500 text-sm mt-1">Monitor examinee grade logs and export live course analytics metrics.</p>
+                <h1 class="text-2xl font-bold text-slate-900">Question Pool Manager</h1>
+                <p class="text-sm text-slate-500">Add, view, and manage your local exam tracks.</p>
             </div>
-            <div class="flex gap-2">
-                <button onclick="exportGradeLogCSV()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all cursor-pointer">
-                    Export Spreadsheet (.CSV)
-                </button>
-                <button onclick="clearSystemLogs()" class="px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-semibold rounded-xl border border-red-200 transition-all cursor-pointer">
-                    Reset Records
-                </button>
-            </div>
+            <a href="index.html" class="px-4 py-2 text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all">
+                Go to Exam Portal →
+            </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="glass-card p-6">
-                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Total Submissions</span>
-                <span id="stat-total-runs" class="block text-3xl font-extrabold text-slate-900 mt-2">0</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="md:col-span-1 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm h-fit">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Add New Question</h2>
+                <form id="question-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Select Track / Chapter</label>
+                        <select id="form-track" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                            <option value="chapter1">Chapter 1</option>
+                            <option value="chapter2">Chapter 2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Question Body</label>
+                        <textarea id="form-question" rows="3" placeholder="Enter question description..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500" required></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Options Layout</label>
+                        <input type="text" id="form-opt-a" placeholder="Option A" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                        <input type="text" id="form-opt-b" placeholder="Option B" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                        <input type="text" id="form-opt-c" placeholder="Option C" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                        <input type="text" id="form-opt-d" placeholder="Option D" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Correct Answer Index Tag</label>
+                        <select id="form-answer" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                            <option value="a">(a)</option>
+                            <option value="b">(b)</option>
+                            <option value="c">(c)</option>
+                            <option value="d">(d)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all cursor-pointer">
+                        Commit Question to Database
+                    </button>
+                </form>
             </div>
-            <div class="glass-card p-6">
-                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Class Average Score</span>
-                <span id="stat-class-average" class="block text-3xl font-extrabold text-indigo-600 mt-2">0%</span>
-            </div>
-            <div class="glass-card p-6">
-                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Top Performing Score</span>
-                <span id="stat-highest-score" class="block text-3xl font-extrabold text-emerald-600 mt-2">0%</span>
-            </div>
-        </div>
 
-        <div class="glass-card overflow-hidden">
-            <div class="p-6 border-b border-slate-100 bg-white/50">
-                <h3 class="font-bold text-slate-800 text-lg">Live Performance Log Sheet</h3>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 text-slate-400 uppercase tracking-wider text-[11px] font-bold border-b border-slate-100">
-                            <th class="p-4">Timestamp</th>
-                            <th class="p-4">Student Name</th>
-                            <th class="p-4">Target Chapter</th>
-                            <th class="p-4">Raw Score</th>
-                            <th class="p-4 text-right">Percentage Metric</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-table-rows" class="text-sm divide-y divide-slate-100">
-                        </tbody>
-                </table>
-                <div id="empty-state-notice" class="p-12 text-center text-slate-400 hidden">
-                    <span class="text-3xl block mb-2">📁</span>
-                    No submission logs found in the browser runtime repository.
+            <div class="md:col-span-2 space-y-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="block text-xs font-medium text-slate-400">Chapter 1 Total</span>
+                        <span id="count-c1" class="text-2xl font-bold text-slate-800">0</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <span class="block text-xs font-medium text-slate-400">Chapter 2 Total</span>
+                        <span id="count-c2" class="text-2xl font-bold text-slate-800">0</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-bold text-slate-800">Active Database Question Index</h2>
+                        <button onclick="clearAllData()" class="text-xs font-semibold text-red-500 hover:text-red-700 cursor-pointer">Wipe Everything</button>
+                    </div>
+                    <div id="questions-list-container" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                        </div>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
-        // On initialization, parse whatever historical grades are saved in localStorage
-        document.addEventListener('DOMContentLoaded', () => {
-            refreshDashboardLogs();
+        let db = JSON.parse(localStorage.getItem('COS110_LOCAL_DB')) || { chapter1: [], chapter2: [] };
+
+        document.getElementById('question-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const track = document.getElementById('form-track').value;
+            
+            const newQuestion = {
+                id: Date.now(),
+                question: document.getElementById('form-question').value.trim(),
+                a: document.getElementById('form-opt-a').value.trim(),
+                b: document.getElementById('form-opt-b').value.trim(),
+                c: document.getElementById('form-opt-c').value.trim(),
+                d: document.getElementById('form-opt-d').value.trim(),
+                answer: document.getElementById('form-answer').value
+            };
+
+            db[track].push(newQuestion);
+            saveAndRefresh();
+            this.reset();
+            document.getElementById('form-track').value = track; // keep the selected track
         });
 
-        function refreshDashboardLogs() {
-            const logs = JSON.parse(localStorage.getItem('cos110_exam_logs') || '[]');
-            const tableBody = document.getElementById('admin-table-rows');
-            const emptyNotice = document.getElementById('empty-state-notice');
-            
-            tableBody.innerHTML = '';
-            
-            if (logs.length === 0) {
-                emptyNotice.classList.remove('hidden');
-                updateMetricStats(0, 0, 0);
-                return;
-            }
-            emptyNotice.classList.add('hidden');
-
-            let totalPercentageSum = 0;
-            let highestPercentage = 0;
-
-            logs.forEach(log => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50/50 transition-colors";
-                
-                const percentage = Math.round((log.rawScore / log.totalQuestions) * 100);
-                totalPercentageSum += percentage;
-                if (percentage > highestPercentage) highestPercentage = percentage;
-
-                tr.innerHTML = `
-                    <td class="p-4 text-slate-400 font-mono text-xs">${log.timestamp}</td>
-                    <td class="p-4 font-semibold text-slate-800">${log.studentName}</td>
-                    <td class="p-4 text-slate-600 font-medium">Chapter ${log.chapterId}</td>
-                    <td class="p-4 text-slate-500 font-mono">${log.rawScore} / ${log.totalQuestions}</td>
-                    <td class="p-4 text-right font-bold text-indigo-600">${percentage}%</td>
-                `;
-                tableBody.appendChild(tr);
-            });
-
-            const classAverage = Math.round(totalPercentageSum / logs.length);
-            updateMetricStats(logs.length, classAverage, highestPercentage);
+        function saveAndRefresh() {
+            localStorage.setItem('COS110_LOCAL_DB', JSON.stringify(db));
+            renderDashboardData();
         }
 
-        function updateMetricStats(total, average, highest) {
-            document.getElementById('stat-total-runs').innerText = total;
-            document.getElementById('stat-class-average').innerText = `${average}%`;
-            document.getElementById('stat-highest-score').innerText = `${highest}%`;
+        function deleteQuestion(track, id) {
+            db[track] = db[track].filter(q => q.id !== id);
+            saveAndRefresh();
         }
 
-        function exportGradeLogCSV() {
-            const logs = JSON.parse(localStorage.getItem('cos110_exam_logs') || '[]');
-            if(logs.length === 0) return alert("There are no record logs available to export.");
-
-            let csvContent = "data:text/csv;charset=utf-8,Timestamp,Student Name,Chapter Target,Raw Score,Total Targets,Percentage Metric\n";
-            
-            logs.forEach(log => {
-                const pct = Math.round((log.rawScore / log.totalQuestions) * 100);
-                const rowString = `"${log.timestamp}","${log.studentName}","Chapter ${log.chapterId}",${log.rawScore},${log.totalQuestions},${pct}%`;
-                csvContent += rowString + "\n";
-            });
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `COS110_Grade_Logs_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function clearSystemLogs() {
-            if(confirm("Are you certain you wish to completely wipe all historical student grade marks from this repository? This cannot be undone.")) {
-                localStorage.removeItem('cos110_exam_logs');
-                refreshDashboardLogs();
+        function clearAllData() {
+            if(confirm("Are you sure you want to completely erase the entire database? This action is irreversible.")) {
+                db = { chapter1: [], chapter2: [] };
+                saveAndRefresh();
             }
         }
+
+        function renderDashboardData() {
+            document.getElementById('count-c1').innerText = db.chapter1.length;
+            document.getElementById('count-c2').innerText = db.chapter2.length;
+
+            const container = document.getElementById('questions-list-container');
+            container.innerHTML = "";
+
+            ['chapter1', 'chapter2'].forEach(trackKey => {
+                db[trackKey].forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = "p-4 rounded-xl bg-slate-50 border border-slate-200 relative text-sm space-y-1";
+                    card.innerHTML = `
+                        <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-indigo-50 border border-indigo-100 text-indigo-600 px-2 py-0.5 rounded mb-1">${trackKey} — Item #${index + 1}</span>
+                        <p class="font-bold text-slate-800 pr-10">${item.question}</p>
+                        <div class="grid grid-cols-2 gap-1 text-xs text-slate-500 pt-1">
+                            <p><strong>(a)</strong> ${item.a}</p> <p><strong>(b)</strong> ${item.b}</p>
+                            <p><strong>(c)</strong> ${item.c}</p> <p><strong>(d)</strong> ${item.d}</p>
+                        </div>
+                        <p class="text-xs text-emerald-600 font-bold pt-1">Correct Tag Target: (${item.answer.toUpperCase()})</p>
+                        <button onclick="deleteQuestion('${trackKey}', ${item.id})" class="absolute top-2 right-4 text-slate-400 hover:text-red-500 font-bold transition-colors cursor-pointer text-base">×</button>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+
+            if(db.chapter1.length === 0 && db.chapter2.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 text-sm py-6">Your query database layout index is empty.</p>`;
+            }
+        }
+
+        // Run baseline load metrics
+        renderDashboardData();
     </script>
 </body>
 </html>
