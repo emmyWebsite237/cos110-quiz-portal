@@ -87,74 +87,74 @@
         let db = JSON.parse(localStorage.getItem('COS110_LOCAL_DB')) || {};
         chaptersList.forEach(c => { if(!db[c]) db[c] = []; });
 
+// Upgraded Bulk Engine: Reads multi-line formatting structures cleanly
         function processBulkTextDump() {
             const track = document.getElementById('global-track').value;
             const rawText = document.getElementById('bulk-raw-text').value.trim();
             if(!rawText) return alert("Text area is empty.");
 
+            // Split items using double line breaks to isolate each question block
             const rawBlocks = rawText.split(/\n\s*\n/);
             let addedCount = 0;
 
             rawBlocks.forEach(block => {
                 if(!block.trim()) return;
+
+                // Split the individual block into lines, cleaning up whitespace
+                const lines = block.split('\n')
+                                   .map(line => line.trim())
+                                   .filter(line => line.length > 0);
+
+                let questionStr = "";
+                let optA = "", optB = "", optC = "", optD = "";
                 let assignedAnswer = "a";
-                let normalizedText = block.trim();
 
-                const answerMatch = normalizedText.match(/Answer:\s*\(([a-d])\)/i);
-                if (answerMatch) {
-                    assignedAnswer = answerMatch[1].toLowerCase();
-                    normalizedText = normalizedText.replace(/Answer:\s*\(([a-d])\)/i, "").trim();
-                }
+                // Loop through lines to separate the question context from option labels
+                lines.forEach(line => {
+                    if (line.toLowerCase().startsWith('answer:')) {
+                        const answerMatch = line.match(/\(([a-d])\)/i);
+                        if (answerMatch) {
+                            assignedAnswer = answerMatch[1].toLowerCase();
+                        }
+                    } else if (line.toLowerCase().startsWith('(a)')) {
+                        optA = line.replace(/^\(a\)\s*/i, '').trim();
+                    } else if (line.toLowerCase().startsWith('(b)')) {
+                        optB = line.replace(/^\(b\)\s*/i, '').trim();
+                    } else if (line.toLowerCase().startsWith('(c)')) {
+                        optC = line.replace(/^\(c\)\s*/i, '').trim();
+                    } else if (line.toLowerCase().startsWith('(d)')) {
+                        optD = line.replace(/^\(d\)\s*/i, '').trim();
+                    } else {
+                        // If it doesn't match an option or answer string, it's part of the question text
+                        if (questionStr === "") {
+                            // Strip leading numbers like "1. " or "2) " from the start of the question
+                            questionStr = line.replace(/^\d+[\.\)]\s*/, '').trim();
+                        } else {
+                            questionStr += " " + line; // Appends multi-line questions if they exist
+                        }
+                    }
+                });
 
-                normalizedText = normalizedText.replace(/\s+/g, ' ');
-
-                const regexA = /\s*\(a\)\s*/i; const regexB = /\s*\(b\)\s*/i;
-                const regexC = /\s*\(c\)\s*/i; const regexD = /\s*\(d\)\s*/i;
-
-                if(regexA.test(normalizedText) && regexB.test(normalizedText) && regexC.test(normalizedText) && regexD.test(normalizedText)) {
-                    const partsA = normalizedText.split(regexA);
-                    const questionStr = partsA[0].replace(/^\d+[\.\s]*/, '').trim();
-                    
-                    const partsB = partsA[1].split(regexB);
-                    const optA = partsB[0].trim();
-
-                    const partsC = partsB[1].split(regexC);
-                    const optB = partsC[0].trim();
-
-                    const partsD = partsC[1].split(regexD);
-                    const optC = partsD[0].trim();
-                    const optD = partsD[1].trim();
-
+                // Ensure we have a valid structure before pushing to database tracking arrays
+                if (questionStr && optA && optB && optC && optD) {
                     db[track].push({
                         id: Date.now() + Math.random(),
                         question: questionStr,
-                        a: optA, b: optB, c: optC, d: optD,
+                        a: optA,
+                        b: optB,
+                        c: optC,
+                        d: optD,
                         answer: assignedAnswer
                     });
                     addedCount++;
                 }
             });
 
-            alert(`Successfully integrated ${addedCount} questions into ${track}!`);
+            alert(`Successfully processed and loaded ${addedCount} questions into ${track.toUpperCase()}!`);
             document.getElementById('bulk-raw-text').value = "";
             saveAndRefresh();
         }
-
-        function toggleAnswer(track, id, currentAns) {
-            const sequence = ['a', 'b', 'c', 'd'];
-            let nextIndex = (sequence.indexOf(currentAns) + 1) % 4;
-            const targetQuestion = db[track].find(q => q.id === id);
-            if(targetQuestion) {
-                targetQuestion.answer = sequence[nextIndex];
-                saveAndRefresh();
-            }
-        }
-
-        function deleteQuestion(track, id) {
-            db[track] = db[track].filter(q => q.id !== id);
-            saveAndRefresh();
-        }
-
+        
         function saveAndRefresh() {
             localStorage.setItem('COS110_LOCAL_DB', JSON.stringify(db));
             renderDashboardData();
