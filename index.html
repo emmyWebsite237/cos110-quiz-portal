@@ -54,7 +54,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4 relative">
 
     <main class="w-full max-w-2xl my-6">
 
@@ -76,14 +76,38 @@
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-2">Select Chapter Module</label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div onclick="selectChapter(1)" id="ch-1" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 1: Fundamentals</div>
-                        <div onclick="selectChapter(2)" id="ch-2" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 2: Data Representation</div>
-                        <div onclick="selectChapter(3)" id="ch-3" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 3: Computer Systems</div>
-                        <div onclick="selectChapter(4)" id="ch-4" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 4: Operating Systems</div>
-                        <div onclick="selectChapter(5)" id="ch-5" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 5: Networks & Internet</div>
-                        <div onclick="selectChapter(6)" id="ch-6" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 6: Algorithms & Logic</div>
-                        <div onclick="selectChapter(7)" id="ch-7" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 7: Databases & Info</div>
-                        <div onclick="selectChapter(8)" id="ch-8" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 8: Cybersecurity Basics</div>
+                        <div onclick="selectChapter(1)" id="ch-1" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 1: Fundamentals</span>
+                            <span id="badge-1" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(2)" id="ch-2" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 2: Data Representation</span>
+                            <span id="badge-2" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(3)" id="ch-3" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 3: Computer Systems</span>
+                            <span id="badge-3" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(4)" id="ch-4" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 4: Operating Systems</span>
+                            <span id="badge-4" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(5)" id="ch-5" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 5: Networks & Internet</span>
+                            <span id="badge-5" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(6)" id="ch-6" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 6: Algorithms & Logic</span>
+                            <span id="badge-6" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(7)" id="ch-7" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 7: Databases & Info</span>
+                            <span id="badge-7" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
+                        <div onclick="selectChapter(8)" id="ch-8" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700 justify-between">
+                            <span>Chapter 8: Cybersecurity Basics</span>
+                            <span id="badge-8" class="text-xs text-red-500 font-normal">Empty</span>
+                        </div>
                     </div>
                 </div>
 
@@ -96,6 +120,30 @@
                 </div>
 
                 <button onclick="startAutonomousAISession()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition-all cursor-pointer">Initiate Assessment</button>
+            </div>
+        </section>
+
+        <section id="screen-admin" class="glass-card p-8 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-slate-900">Admin Control Panel</h2>
+                <button onclick="switchScreen('screen-setup')" class="text-sm text-slate-500 underline">Back to setup</button>
+            </div>
+            <p class="text-slate-500 text-sm mb-6">Select a targeted chapter module below to link and store your plain text study material context locally.</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Target Chapter Assignment</label>
+                    <select id="admin-chapter-select" class="w-full p-3 border rounded-xl glass-input text-sm">
+                        <option value="1">Chapter 1</option><option value="2">Chapter 2</option>
+                        <option value="3">Chapter 3</option><option value="4">Chapter 4</option>
+                        <option value="5">Chapter 5</option><option value="6">Chapter 6</option>
+                        <option value="7">Chapter 7</option><option value="8">Chapter 8</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Upload Lecture Material (.txt files format preferred)</label>
+                    <input type="file" id="admin-file-input" accept=".txt" class="w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                </div>
+                <button onclick="saveMaterialToStorage()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all cursor-pointer">Commit to Local Memory</button>
             </div>
         </section>
 
@@ -134,6 +182,8 @@
 
     </main>
 
+    <button onclick="switchScreen('screen-admin')" class="fixed bottom-4 right-4 p-3 bg-slate-800 hover:bg-slate-900 text-white rounded-full text-xs shadow-lg transition-all cursor-pointer opacity-40 hover:opacity-100">🔧 Admin Config</button>
+
     <script>
         const GEMINI_API_KEY = "AQ.Ab8RN6J8Ru_GDZBMP2NC2JXY8F3YCZqMIdlpLImovfktS4Pu0A";
 
@@ -147,8 +197,27 @@
             timeRemaining: 0
         };
 
+        // Run validation layout immediately upon startup window loading
+        window.addEventListener('DOMContentLoaded', () => {
+            updateChapterStatusBadges();
+        });
+
+        function updateChapterStatusBadges() {
+            [1, 2, 3, 4, 5, 6, 7, 8].forEach(id => {
+                const data = localStorage.getItem(`cos110_chapter_${id}`);
+                const badge = document.getElementById(`badge-${id}`);
+                if(data) {
+                    badge.innerText = "Loaded";
+                    badge.className = "text-xs text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md";
+                } else {
+                    badge.innerText = "Empty";
+                    badge.className = "text-xs text-red-500 font-normal bg-red-50 px-2 py-0.5 rounded-md";
+                }
+            });
+        }
+
         function switchScreen(targetId) {
-            ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result'].forEach(id => {
+            ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result', 'screen-admin'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(targetId).classList.remove('hidden');
@@ -160,28 +229,43 @@
             document.getElementById(`ch-${chId}`).classList.add('active');
         }
 
+        function saveMaterialToStorage() {
+            const chapterId = document.getElementById('admin-chapter-select').value;
+            const fileInput = document.getElementById('admin-file-input');
+            
+            if(fileInput.files.length === 0) return alert("Please pick a .txt material file first.");
+            
+            const selectedFile = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const textContent = e.target.result;
+                localStorage.setItem(`cos110_chapter_${chapterId}`, textContent);
+                alert(`Chapter ${chapterId} file locked into system successfully!`);
+                updateChapterStatusBadges();
+                switchScreen('screen-setup');
+            };
+            reader.readAsText(selectedFile);
+        }
+
         async function startAutonomousAISession() {
             const name = document.getElementById('student-name').value.trim();
             if(!name) return alert("Please specify your full name.");
             if(!appState.selectedChapter) return alert("Please select a target chapter module.");
 
+            // READ directly from local persistent storage database configuration
+            const sourceMaterial = localStorage.getItem(`cos110_chapter_${appState.selectedChapter}`);
+            if(!sourceMaterial) {
+                return alert(`Chapter ${appState.selectedChapter} material has not been initialized yet. Use the 'Admin Config' button in the bottom corner to upload its text first!`);
+            }
+
             appState.studentName = name;
             const targetCount = parseInt(document.getElementById('question-range').value);
 
-            document.getElementById('processing-title').innerText = "Downloading notes from GitHub...";
             switchScreen('screen-processing');
-
+            document.getElementById('processing-title').innerText = "Synthesizing Question Vectors...";
+            
             try {
-                const githubUrl = `https://raw.githubusercontent.com/emmyWebsite237/cos110-quiz-portal/main/notes/chapter${appState.selectedChapter}.txt`;
-                
-                const fileResponse = await fetch(githubUrl);
-                if(!fileResponse.ok) {
-                    throw new Error(`GitHub File Missing! Make sure "chapter${appState.selectedChapter}.txt" is uploaded into your notes folder on GitHub.`);
-                }
-                const sourceMaterial = await fileResponse.text();
-
-                document.getElementById('processing-title').innerText = "Synthesizing Question Vectors...";
-                
                 const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
                 
                 const promptRule = `You are an expert academic examiner for COS 110. Read the following lecture note text material and generate exactly ${targetCount} randomized multiple-choice questions.
@@ -209,8 +293,8 @@
 
                 if(!response.ok) {
                     const errorDetails = await response.text();
-                    console.error("Google Server Error Payload:", errorDetails);
-                    throw new Error("Google API Authorization rejected. Check the browser console (F12).");
+                    console.error(errorDetails);
+                    throw new Error("API Authorization rejected. Check console logs.");
                 }
 
                 const resData = await response.json();
