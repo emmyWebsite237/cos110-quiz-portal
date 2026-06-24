@@ -80,6 +80,10 @@
                         <div onclick="selectChapter(2)" id="ch-2" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 2: Data Representation</div>
                         <div onclick="selectChapter(3)" id="ch-3" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 3: Computer Systems</div>
                         <div onclick="selectChapter(4)" id="ch-4" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 4: Operating Systems</div>
+                        <div onclick="selectChapter(5)" id="ch-5" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 5: Networks & Internet</div>
+                        <div onclick="selectChapter(6)" id="ch-6" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 6: Algorithms & Logic</div>
+                        <div onclick="selectChapter(7)" id="ch-7" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 7: Databases & Info</div>
+                        <div onclick="selectChapter(8)" id="ch-8" class="chapter-pill p-4 flex items-center text-sm font-semibold text-slate-700">Chapter 8: Cybersecurity Basics</div>
                     </div>
                 </div>
 
@@ -131,9 +135,9 @@
     </main>
 
     <script>
-        // === CORE APP CONFIGURATION ===
-        // Paste your key backwards/reversed here so it is hidden from static web crawlers
-        const OBFUSCATED_KEY = "AQ.Ab8RN6JtQx2NvNJbOcB20hNI0t986WGVhoQm-j1uM6EQcmv8RA"; 
+        // CRITICAL ACTION: Paste your clean, normal key right here inside the quotes. 
+        // Do NOT reverse it. It should start exactly with "AIzaSy..."
+        const GEMINI_API_KEY = "PASTE_YOUR_AI_STUDIO_KEY_HERE"; 
 
         let appState = {
             studentName: "",
@@ -145,10 +149,6 @@
             timeRemaining: 0
         };
 
-        function getDecodedKey() {
-            return OBFUSCATED_KEY; // Just returns it straight
-        }
-
         function switchScreen(targetId) {
             ['screen-welcome', 'screen-setup', 'screen-quiz', 'screen-processing', 'screen-result'].forEach(id => {
                 document.getElementById(id).classList.add('hidden');
@@ -158,7 +158,8 @@
 
         function selectChapter(chId) {
             appState.selectedChapter = chId;
-            [1, 2, 3, 4].forEach(id => document.getElementById(`ch-${id}`).classList.remove('active'));
+            // Updated array rule to handle all 8 selector indicators cleanly
+            [1, 2, 3, 4, 5, 6, 7, 8].forEach(id => document.getElementById(`ch-${id}`).classList.remove('active'));
             document.getElementById(`ch-${chId}`).classList.add('active');
         }
 
@@ -174,17 +175,17 @@
             switchScreen('screen-processing');
 
             try {
-                // FIXED: Raw GitHub URL format without the broken browser template path /blob/
                 const githubUrl = `https://raw.githubusercontent.com/emmyWebsite237/cos110-quiz-portal/main/notes/chapter${appState.selectedChapter}.txt`;
                 
                 const fileResponse = await fetch(githubUrl);
-                if(!fileResponse.ok) throw new Error("Could not download the note file from GitHub. Ensure your folder contains chapter1.txt, chapter2.txt, etc.");
+                if(!fileResponse.ok) {
+                    throw new Error(`GitHub File Missing! Make sure "chapter${appState.selectedChapter}.txt" is uploaded into your notes folder on GitHub.`);
+                }
                 const sourceMaterial = await fileResponse.text();
 
                 document.getElementById('processing-title').innerText = "Synthesizing Question Vectors...";
                 
-                const liveKey = getDecodedKey();
-                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${liveKey}`;
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
                 
                 const promptRule = `You are an expert academic examiner for COS 110. Read the following lecture note text material and generate exactly ${targetCount} randomized multiple-choice questions.
                 You MUST return ONLY a clean JSON array structure without markdown tags, backticks (\`\`\`), or trailing comments. Format each object item using this exact configuration layout:
@@ -206,7 +207,11 @@
                     })
                 });
 
-                if(!response.ok) throw new Error("Endpoint rejected execution initialization token mapping.");
+                if(!response.ok) {
+                    const errorDetails = await response.text();
+                    console.error("Google Server Error Payload:", errorDetails);
+                    throw new Error("Google API Key rejected. Open your browser console (F12) to see the exact error response details.");
+                }
 
                 const resData = await response.json();
                 let cleanJsonString = resData.candidates[0].content.parts[0].text.trim();
@@ -223,7 +228,7 @@
 
             } catch(e) {
                 console.error(e);
-                alert("Error: " + e.message);
+                alert("Execution Stopped: " + e.message);
                 switchScreen('screen-setup');
             }
         }
@@ -239,7 +244,6 @@
             }, 1000);
         }
 
-        // FIXED: Restored core interactive layout mechanics below
         function renderActiveQuestion() {
             const currentItem = appState.selectedPool[appState.currentQuestionIndex];
             document.getElementById('quiz-progress-text').innerText = `Question ${appState.currentQuestionIndex + 1} of ${appState.selectedPool.length}`;
