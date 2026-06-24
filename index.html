@@ -471,7 +471,7 @@
             document.getElementById(`opt-${letter}`).classList.add('selected');
         }
 
-        fn advanceQuiz() {
+        function advanceQuiz() {
             if (appState.currentQuestionIndex < appState.configuredCount - 1) {
                 appState.currentQuestionIndex++;
                 renderActiveQuestion();
