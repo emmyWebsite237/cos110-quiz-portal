@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COS 110 Portal | Admin Console</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top right, #1e1b4b, #090514);
+            overflow-x: hidden;
+        }
 
+        /* Glassmorphism Classes matching index.html */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .admin-table th {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .admin-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Animated background elements */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #c084fc);
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100 p-4 md:p-8 relative flex items-start justify-center">
+
+    <div class="bubble w-full max-w-3xl h-96 top-10 left-1/4 animate-pulse"></div>
+
+    <div class="w-full max-w-4xl z-10 my-6 space-y-6">
+        
+        <div class="glass-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <div class="flex items-center space-x-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 shadow-[0_0_12px_#818cf8]"></span>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-100">COS 110 Management Dashboard</h1>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Real-time performance execution and grade tracking logs.</p>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <button onclick="refreshRecordsTable()" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-semibold text-xs rounded-xl transition-all cursor-pointer shadow-md flex items-center gap-2">
+                    🔄 Refresh Logs
+                </button>
+                <button onclick="exportToCSV()" class="px-4 py-2 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs border border-white/10 rounded-xl transition-all cursor-pointer">
+                    📥 Export CSV
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="glass-card p-5 flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Submissions</span>
+                <span id="metric-total" class="text-3xl font-extrabold text-slate-100 mt-2">0</span>
+            </div>
+            <div class="glass-card p-5 flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Class Average Percentage</span>
+                <span id="metric-avg" class="text-3xl font-extrabold text-indigo-400 mt-2">0%</span>
+            </div>
+            <div class="glass-card p-5 flex flex-col justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Highest Scored Bound</span>
+                <span id="metric-high" class="text-3xl font-extrabold text-emerald-400 mt-2">0%</span>
+            </div>
+        </div>
+
+        <div class="glass-card overflow-hidden shadow-2xl">
+            <div class="p-5 border-b border-white/5 flex justify-between items-center bg-white/[0.01]">
+                <h3 class="text-sm font-bold text-slate-300">Examinee Grade Sheets</h3>
+                <span id="status-indicator" class="text-[10px] font-mono text-slate-500 italic">Idle</span>
+            </div>
+            
+            <div class="overflow-x-auto w-full">
+                <table class="w-full text-left admin-table border-collapse">
+                    <thead>
+                        <tr class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+                            <th class="p-4 pl-6">Examinee Name</th>
+                            <th class="p-4">Raw Score</th>
+                            <th class="p-4">Percentage</th>
+                            <th class="p-4">Modules Checked</th>
+                            <th class="p-4 pr-6 text-right">Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body" class="text-sm text-slate-300 divider-y divider-white/5">
+                        <tr id="empty-state-row">
+                            <td colspan="5" class="p-12 text-center text-slate-500 italic text-xs">
+                                No assessment run submissions loaded. Connect database hooks or hit refresh.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SEED MOCK DATA ARRAY ---
+        let SUBMISSIONS_DATA_SOURCE = [
+            { name: "Igbinosa Favour Oghosa", score: "28 / 30", percentage: 93, modules: "Ch. 1, 2", time: "Jun 24, 04:32" },
+            { name: "Eze PraiseGod Ifeanyichukwu", score: "54 / 60", percentage: 90, modules: "Ch. 1, 3, 4", time: "Jun 24, 04:55" },
+            { name: "Doctor Emmanuel", score: "145 / 150", percentage: 97, modules: "Ch. 5, 7, 8", time: "Jun 24, 05:01" }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTableData(SUBMISSIONS_DATA_SOURCE);
+        });
+
+        // --- 2. TABLE RENDERING LOOP ---
+        function renderTableData(records) {
+            const tbody = document.getElementById('admin-table-body');
+            
+            if (!records || records.length === 0) {
+                document.getElementById('empty-state-row').classList.remove('hidden');
+                updateMetrics(0, 0, 0);
+                return;
+            }
+
+            tbody.innerHTML = ""; // Clear existing elements
+
+            let totalPct = 0;
+            let highestPct = 0;
+
+            records.forEach(entry => {
+                totalPct += entry.percentage;
+                if(entry.percentage > highestPct) highestPct = entry.percentage;
+
+                const row = document.createElement('tr');
+                row.className = "transition-all duration-150";
+
+                row.innerHTML = `
+                    <td class="p-4 pl-6 font-semibold text-slate-200">${entry.name}</td>
+                    <td class="p-4 font-mono text-xs text-slate-400">${entry.score}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-bold ${entry.percentage >= 50 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/10' : 'bg-red-500/10 text-red-400 border border-red-500/10'}">
+                            ${entry.percentage}%
+                        </span>
+                    </td>
+                    <td class="p-4 text-xs font-medium text-purple-400">${entry.modules}</td>
+                    <td class="p-4 pr-6 text-right font-mono text-xs text-slate-500">${entry.time}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            const avgPct = Math.round(totalPct / records.length);
+            updateMetrics(records.length, avgPct, highestPct);
+        }
+
+        // --- 3. METRIC UPDATER CARD AGGREGATES ---
+        function updateMetrics(total, avg, high) {
+            document.getElementById('metric-total').innerText = total;
+            document.getElementById('metric-avg').innerText = `${avg || 0}%`;
+            document.getElementById('metric-high').innerText = `${high || 0}%`;
+        }
+
+        // --- 4. REFRESH HANDLER ---
+        function refreshRecordsTable() {
+            const status = document.getElementById('status-indicator');
+            status.innerText = "Syncing with records pool...";
+            status.className = "text-[10px] font-mono text-indigo-400 animate-pulse";
+
+            setTimeout(() => {
+                renderTableData(SUBMISSIONS_DATA_SOURCE);
+                status.innerText = "Sync complete";
+                status.className = "text-[10px] font-mono text-emerald-400";
+            }, 800);
+        }
+
+        // --- 5. EXPORT TO CSV ---
+        function exportToCSV() {
+            if(SUBMISSIONS_DATA_SOURCE.length === 0) return alert("No log metrics available to export.");
+            
+            let csvContent = "data:text/csv;charset=utf-8,Name,Raw Score,Percentage,Modules Checked,Timestamp\n";
+            
+            SUBMISSIONS_DATA_SOURCE.forEach(r => {
+                csvContent += `"${r.name}","${r.score}",${r.percentage}%,Format "${r.modules}",${r.time}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "COS110_Quiz_Records.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
