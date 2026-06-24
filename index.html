@@ -137,7 +137,24 @@
     <script>
         // CRITICAL ACTION: Paste your clean, normal key right here inside the quotes. 
         // Do NOT reverse it. It should start exactly with "AIzaSy..."
-        const GEMINI_API_KEY = "AQ.Ab8RN6JtQx2NvNJbOcB20hNI0t986WGVhoQm-j1uM6EQcmv8RA"; 
+        const GEMINI_API_KEY = "AQ.Ab8RN6J8Ru_GDZBMP2NC2JXY8F3YCZqMIdlpLImovfktS4Pu0A"; // Your exact key
+
+// ... inside startAutonomousAISession() ...
+
+// 1. We pass the key in the URL parameter
+const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { 
+        "Content-Type": "application/json",
+        // 2. CRITICAL: Pass your project number to clear the SERVICE_BLOCKED gate
+        "X-Goog-User-Project": "489665057277" 
+    },
+    body: JSON.stringify({
+        contents: [{ parts: [{ text: `${promptRule}\n\nLECTURE SOURCE TEXT:\n${sourceMaterial}` }] }]
+    })
+}); 
 
         let appState = {
             studentName: "",
