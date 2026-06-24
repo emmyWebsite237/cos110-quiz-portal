@@ -3,210 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COS 110 Portal | Admin Console</title>
+    <title>COS 110 Portal | Admin Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap');
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #090514);
-            overflow-x: hidden;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-
-        /* Glassmorphism Classes matching index.html */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-        }
-
-        .admin-table th {
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .admin-table td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .admin-table tr:hover td {
-            background: rgba(255, 255, 255, 0.01);
-        }
-
-        /* Animated background elements */
-        .bubble {
-            position: absolute;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4f46e5, #c084fc);
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: 0;
-            pointer-events: none;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.05);
+            border-radius: 20px;
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-100 p-4 md:p-8 relative flex items-start justify-center">
+<body class="min-h-screen p-4 md:p-8">
 
-    <div class="bubble w-full max-w-3xl h-96 top-10 left-1/4 animate-pulse"></div>
-
-    <div class="w-full max-w-4xl z-10 my-6 space-y-6">
+    <div class="max-w-5xl mx-auto space-y-6">
         
-        <div class="glass-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-200">
             <div>
-                <div class="flex items-center space-x-2.5">
-                    <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 shadow-[0_0_12px_#818cf8]"></span>
-                    <h1 class="text-xl font-bold tracking-tight text-slate-100">COS 110 Management Dashboard</h1>
-                </div>
-                <p class="text-xs text-slate-400 mt-1">Real-time performance execution and grade tracking logs.</p>
+                <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Management Dashboard</h1>
+                <p class="text-slate-500 text-sm mt-1">Monitor examinee grade logs and export live course analytics metrics.</p>
             </div>
-            
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <button onclick="refreshRecordsTable()" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-semibold text-xs rounded-xl transition-all cursor-pointer shadow-md flex items-center gap-2">
-                    🔄 Refresh Logs
+            <div class="flex gap-2">
+                <button onclick="exportGradeLogCSV()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-all cursor-pointer">
+                    Export Spreadsheet (.CSV)
                 </button>
-                <button onclick="exportToCSV()" class="px-4 py-2 bg-white/5 hover:bg-white/10 text-slate-300 font-semibold text-xs border border-white/10 rounded-xl transition-all cursor-pointer">
-                    📥 Export CSV
+                <button onclick="clearSystemLogs()" class="px-5 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-semibold rounded-xl border border-red-200 transition-all cursor-pointer">
+                    Reset Records
                 </button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="glass-card p-5 flex flex-col justify-between">
-                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Submissions</span>
-                <span id="metric-total" class="text-3xl font-extrabold text-slate-100 mt-2">0</span>
+            <div class="glass-card p-6">
+                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Total Submissions</span>
+                <span id="stat-total-runs" class="block text-3xl font-extrabold text-slate-900 mt-2">0</span>
             </div>
-            <div class="glass-card p-5 flex flex-col justify-between">
-                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Class Average Percentage</span>
-                <span id="metric-avg" class="text-3xl font-extrabold text-indigo-400 mt-2">0%</span>
+            <div class="glass-card p-6">
+                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Class Average Score</span>
+                <span id="stat-class-average" class="block text-3xl font-extrabold text-indigo-600 mt-2">0%</span>
             </div>
-            <div class="glass-card p-5 flex flex-col justify-between">
-                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Highest Scored Bound</span>
-                <span id="metric-high" class="text-3xl font-extrabold text-emerald-400 mt-2">0%</span>
+            <div class="glass-card p-6">
+                <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Top Performing Score</span>
+                <span id="stat-highest-score" class="block text-3xl font-extrabold text-emerald-600 mt-2">0%</span>
             </div>
         </div>
 
-        <div class="glass-card overflow-hidden shadow-2xl">
-            <div class="p-5 border-b border-white/5 flex justify-between items-center bg-white/[0.01]">
-                <h3 class="text-sm font-bold text-slate-300">Examinee Grade Sheets</h3>
-                <span id="status-indicator" class="text-[10px] font-mono text-slate-500 italic">Idle</span>
+        <div class="glass-card overflow-hidden">
+            <div class="p-6 border-b border-slate-100 bg-white/50">
+                <h3 class="font-bold text-slate-800 text-lg">Live Performance Log Sheet</h3>
             </div>
-            
-            <div class="overflow-x-auto w-full">
-                <table class="w-full text-left admin-table border-collapse">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
-                            <th class="p-4 pl-6">Examinee Name</th>
+                        <tr class="bg-slate-50 text-slate-400 uppercase tracking-wider text-[11px] font-bold border-b border-slate-100">
+                            <th class="p-4">Timestamp</th>
+                            <th class="p-4">Student Name</th>
+                            <th class="p-4">Target Chapter</th>
                             <th class="p-4">Raw Score</th>
-                            <th class="p-4">Percentage</th>
-                            <th class="p-4">Modules Checked</th>
-                            <th class="p-4 pr-6 text-right">Timestamp</th>
+                            <th class="p-4 text-right">Percentage Metric</th>
                         </tr>
                     </thead>
-                    <tbody id="admin-table-body" class="text-sm text-slate-300 divider-y divider-white/5">
-                        <tr id="empty-state-row">
-                            <td colspan="5" class="p-12 text-center text-slate-500 italic text-xs">
-                                No assessment run submissions loaded. Connect database hooks or hit refresh.
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="admin-table-rows" class="text-sm divide-y divide-slate-100">
+                        </tbody>
                 </table>
+                <div id="empty-state-notice" class="p-12 text-center text-slate-400 hidden">
+                    <span class="text-3xl block mb-2">📁</span>
+                    No submission logs found in the browser runtime repository.
+                </div>
             </div>
         </div>
+
     </div>
 
     <script>
-        // --- 1. SEED MOCK DATA ARRAY ---
-        let SUBMISSIONS_DATA_SOURCE = [
-            { name: "Igbinosa Favour Oghosa", score: "28 / 30", percentage: 93, modules: "Ch. 1, 2", time: "Jun 24, 04:32" },
-            { name: "Eze PraiseGod Ifeanyichukwu", score: "54 / 60", percentage: 90, modules: "Ch. 1, 3, 4", time: "Jun 24, 04:55" },
-            { name: "Doctor Emmanuel", score: "145 / 150", percentage: 97, modules: "Ch. 5, 7, 8", time: "Jun 24, 05:01" }
-        ];
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderTableData(SUBMISSIONS_DATA_SOURCE);
+        // On initialization, parse whatever historical grades are saved in localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshDashboardLogs();
         });
 
-        // --- 2. TABLE RENDERING LOOP ---
-        function renderTableData(records) {
-            const tbody = document.getElementById('admin-table-body');
+        function refreshDashboardLogs() {
+            const logs = JSON.parse(localStorage.getItem('cos110_exam_logs') || '[]');
+            const tableBody = document.getElementById('admin-table-rows');
+            const emptyNotice = document.getElementById('empty-state-notice');
             
-            if (!records || records.length === 0) {
-                document.getElementById('empty-state-row').classList.remove('hidden');
-                updateMetrics(0, 0, 0);
+            tableBody.innerHTML = '';
+            
+            if (logs.length === 0) {
+                emptyNotice.classList.remove('hidden');
+                updateMetricStats(0, 0, 0);
                 return;
             }
+            emptyNotice.classList.add('hidden');
 
-            tbody.innerHTML = ""; // Clear existing elements
+            let totalPercentageSum = 0;
+            let highestPercentage = 0;
 
-            let totalPct = 0;
-            let highestPct = 0;
+            logs.forEach(log => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/50 transition-colors";
+                
+                const percentage = Math.round((log.rawScore / log.totalQuestions) * 100);
+                totalPercentageSum += percentage;
+                if (percentage > highestPercentage) highestPercentage = percentage;
 
-            records.forEach(entry => {
-                totalPct += entry.percentage;
-                if(entry.percentage > highestPct) highestPct = entry.percentage;
-
-                const row = document.createElement('tr');
-                row.className = "transition-all duration-150";
-
-                row.innerHTML = `
-                    <td class="p-4 pl-6 font-semibold text-slate-200">${entry.name}</td>
-                    <td class="p-4 font-mono text-xs text-slate-400">${entry.score}</td>
-                    <td class="p-4">
-                        <span class="px-2.5 py-1 rounded-md text-xs font-bold ${entry.percentage >= 50 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/10' : 'bg-red-500/10 text-red-400 border border-red-500/10'}">
-                            ${entry.percentage}%
-                        </span>
-                    </td>
-                    <td class="p-4 text-xs font-medium text-purple-400">${entry.modules}</td>
-                    <td class="p-4 pr-6 text-right font-mono text-xs text-slate-500">${entry.time}</td>
+                tr.innerHTML = `
+                    <td class="p-4 text-slate-400 font-mono text-xs">${log.timestamp}</td>
+                    <td class="p-4 font-semibold text-slate-800">${log.studentName}</td>
+                    <td class="p-4 text-slate-600 font-medium">Chapter ${log.chapterId}</td>
+                    <td class="p-4 text-slate-500 font-mono">${log.rawScore} / ${log.totalQuestions}</td>
+                    <td class="p-4 text-right font-bold text-indigo-600">${percentage}%</td>
                 `;
-                tbody.appendChild(row);
+                tableBody.appendChild(tr);
             });
 
-            const avgPct = Math.round(totalPct / records.length);
-            updateMetrics(records.length, avgPct, highestPct);
+            const classAverage = Math.round(totalPercentageSum / logs.length);
+            updateMetricStats(logs.length, classAverage, highestPercentage);
         }
 
-        // --- 3. METRIC UPDATER CARD AGGREGATES ---
-        function updateMetrics(total, avg, high) {
-            document.getElementById('metric-total').innerText = total;
-            document.getElementById('metric-avg').innerText = `${avg || 0}%`;
-            document.getElementById('metric-high').innerText = `${high || 0}%`;
+        function updateMetricStats(total, average, highest) {
+            document.getElementById('stat-total-runs').innerText = total;
+            document.getElementById('stat-class-average').innerText = `${average}%`;
+            document.getElementById('stat-highest-score').innerText = `${highest}%`;
         }
 
-        // --- 4. REFRESH HANDLER ---
-        function refreshRecordsTable() {
-            const status = document.getElementById('status-indicator');
-            status.innerText = "Syncing with records pool...";
-            status.className = "text-[10px] font-mono text-indigo-400 animate-pulse";
+        function exportGradeLogCSV() {
+            const logs = JSON.parse(localStorage.getItem('cos110_exam_logs') || '[]');
+            if(logs.length === 0) return alert("There are no record logs available to export.");
 
-            setTimeout(() => {
-                renderTableData(SUBMISSIONS_DATA_SOURCE);
-                status.innerText = "Sync complete";
-                status.className = "text-[10px] font-mono text-emerald-400";
-            }, 800);
-        }
-
-        // --- 5. EXPORT TO CSV ---
-        function exportToCSV() {
-            if(SUBMISSIONS_DATA_SOURCE.length === 0) return alert("No log metrics available to export.");
+            let csvContent = "data:text/csv;charset=utf-8,Timestamp,Student Name,Chapter Target,Raw Score,Total Targets,Percentage Metric\n";
             
-            let csvContent = "data:text/csv;charset=utf-8,Name,Raw Score,Percentage,Modules Checked,Timestamp\n";
-            
-            SUBMISSIONS_DATA_SOURCE.forEach(r => {
-                csvContent += `"${r.name}","${r.score}",${r.percentage}%,Format "${r.modules}",${r.time}\n`;
+            logs.forEach(log => {
+                const pct = Math.round((log.rawScore / log.totalQuestions) * 100);
+                const rowString = `"${log.timestamp}","${log.studentName}","Chapter ${log.chapterId}",${log.rawScore},${log.totalQuestions},${pct}%`;
+                csvContent += rowString + "\n";
             });
 
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "COS110_Quiz_Records.csv");
+            link.setAttribute("download", `COS110_Grade_Logs_${new Date().toISOString().slice(0,10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        function clearSystemLogs() {
+            if(confirm("Are you certain you wish to completely wipe all historical student grade marks from this repository? This cannot be undone.")) {
+                localStorage.removeItem('cos110_exam_logs');
+                refreshDashboardLogs();
+            }
         }
     </script>
 </body>
