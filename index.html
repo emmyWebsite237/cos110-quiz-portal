@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>COS 110 Portal</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
@@ -10,173 +10,178 @@
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #090514);
+            background-color: #f8fafc;
+            background-image: radial-gradient(circle at top right, #f1f5f9, #f8fafc);
             overflow-x: hidden;
+            width: 100%;
         }
 
-        /* Glassmorphism Classes */
+        /* Pristine Light-Theme Glassmorphism Cards */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 30px rgba(148, 163, 184, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
             border-radius: 24px;
         }
 
         .glass-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #cbd5e1;
             border-radius: 14px;
+            color: #0f172a;
             transition: all 0.3s ease;
         }
 
         .glass-input:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: #818cf8;
-            box-shadow: 0 0 15px rgba(129, 140, 248, 0.2);
+            background: #ffffff;
+            border-color: #4f46e5;
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.15);
             outline: none;
         }
 
-        /* Interactive multi-chapter selection pills */
+        /* Fixed Interactive Chapter Selection Pillars */
         .chapter-pill {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            user-select: none;
         }
         .chapter-pill:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(129, 140, 248, 0.3);
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
+        /* Active Chapter Visual State Configuration */
         .chapter-pill.active {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-            border-color: #818cf8;
-            box-shadow: 0 0 20px rgba(129, 140, 248, 0.25);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(147, 51, 234, 0.08));
+            border-color: #4f46e5;
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.12);
         }
 
-        /* Interactive option cards */
+        /* Fixed Option Selection Cards */
         .option-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 16px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            user-select: none;
         }
 
         .option-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(129, 140, 248, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
         }
 
         .option-card.selected {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.2));
-            border-color: #818cf8;
-            box-shadow: 0 0 20px rgba(129, 140, 248, 0.25);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(147, 51, 234, 0.08));
+            border-color: #4f46e5;
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.12);
         }
 
-        /* Animated background elements */
+        /* Mobile safe ambient soft background elements */
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(135deg, #4f46e5, #c084fc);
-            filter: blur(80px);
-            opacity: 0.15;
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+            filter: blur(60px);
+            opacity: 0.6;
             z-index: 0;
             pointer-events: none;
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-100 flex items-center justify-center p-4 relative">
+<body class="min-h-screen text-slate-800 flex items-center justify-center p-4 relative">
 
-    <div class="bubble w-96 h-96 -top-20 -left-20 animate-pulse"></div>
-    <div class="bubble w-80 h-80 -bottom-20 -right-20 animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="bubble w-72 h-72 top-0 left-0 animate-pulse"></div>
+    <div class="bubble w-72 h-72 bottom-0 right-0 animate-pulse" style="animation-delay: 2s;"></div>
 
-    <main class="w-full max-w-2xl z-10 my-8">
+    <main class="w-full max-w-2xl z-10 my-6">
 
         <section id="screen-welcome" class="glass-card p-8 md:p-12 text-center transform transition-all duration-500">
             <div class="mb-6 flex justify-center">
-                <div id="logo-container" class="relative w-20 h-20 bg-indigo-600/20 rounded-2xl flex items-center justify-center border border-indigo-500/30 shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-                    <span class="text-3xl font-bold text-indigo-400">&lt;/&gt;</span>
+                <div id="logo-container" class="relative w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 shadow-sm">
+                    <span class="text-3xl font-bold text-indigo-600">&lt;/&gt;</span>
                 </div>
             </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 via-slate-200 to-purple-300">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                 COS 110 Portal
             </h1>
-            <p class="text-slate-400 mt-4 text-base md:text-lg max-w-md mx-auto">
+            <p class="text-slate-500 mt-4 text-base md:text-lg max-w-md mx-auto">
                 Test your alignment, logic, and core computing foundations in high fidelity.
             </p>
-            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 font-semibold text-white rounded-xl shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+            <button onclick="switchScreen('screen-setup')" class="mt-8 px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 font-semibold text-white rounded-xl shadow-md shadow-indigo-200 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
                 Enter Examination Room
             </button>
         </section>
 
 
         <section id="screen-setup" class="glass-card p-8 md:p-10 hidden transform transition-all duration-500">
-            <h2 class="text-2xl font-bold text-slate-100 mb-6">Configure Your Session</h2>
+            <h2 class="text-2xl font-bold text-slate-900 mb-6">Configure Your Session</h2>
             
             <div class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">Examinee Identification Name</label>
-                    <input type="text" id="student-name" placeholder="Enter full name..." class="w-full px-4 py-3 text-slate-100 glass-input text-base">
-                    <p class="text-xs text-slate-500 mt-1.5 italic">We would always request for your name for a new quiz.</p>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Examinee Identification Name</label>
+                    <input type="text" id="student-name" placeholder="Enter full name..." class="w-full px-4 py-3 glass-input text-base">
+                    <p class="text-xs text-slate-400 mt-1.5 italic">We would always request for your name for a new quiz.</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">
-                        Select Chapters <span class="text-indigo-400 font-bold">(Pick 1 to 3)</span>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">
+                        Select Chapters <span class="text-indigo-600 font-bold">(Pick 1 to 3)</span>
                     </label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div onclick="toggleChapter(1)" id="ch-1" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">1</span> Introduction formalities
+                        <div onclick="toggleChapter(1)" id="ch-1" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">1</span> Introduction formalities
                         </div>
-                        <div onclick="toggleChapter(2)" id="ch-2" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">2</span> Data representation in computers
+                        <div onclick="toggleChapter(2)" id="ch-2" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">2</span> Data representation in computers
                         </div>
-                        <div onclick="toggleChapter(3)" id="ch-3" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">3</span> The computer system
+                        <div onclick="toggleChapter(3)" id="ch-3" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">3</span> The computer system
                         </div>
-                        <div onclick="toggleChapter(4)" id="ch-4" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">4</span> Application areas of computer
+                        <div onclick="toggleChapter(4)" id="ch-4" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">4</span> Application areas of computer
                         </div>
-                        <div onclick="toggleChapter(5)" id="ch-5" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">5</span> The internet and its services
+                        <div onclick="toggleChapter(5)" id="ch-5" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">5</span> The internet and its services
                         </div>
-                        <div onclick="toggleChapter(6)" id="ch-6" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">6</span> Computers and society
+                        <div onclick="toggleChapter(6)" id="ch-6" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">6</span> Computers and society
                         </div>
-                        <div onclick="toggleChapter(7)" id="ch-7" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">7</span> Computer ethics
+                        <div onclick="toggleChapter(7)" id="ch-7" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">7</span> Computer ethics
                         </div>
-                        <div onclick="toggleChapter(8)" id="ch-8" class="chapter-pill p-3.5 flex items-center text-xs font-medium text-slate-300">
-                            <span class="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center mr-3 border border-white/10 font-bold text-indigo-400">8</span> Problem solving
+                        <div onclick="toggleChapter(8)" id="ch-8" class="chapter-pill p-3.5 flex items-center text-xs font-semibold text-slate-600">
+                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center mr-3 border border-slate-200 font-bold text-indigo-600">8</span> Problem solving
                         </div>
                     </div>
                 </div>
 
                 <div>
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-medium text-slate-300">Target Question Limit</label>
-                        <span id="range-display" class="text-sm font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">--</span>
+                        <label class="text-sm font-medium text-slate-700">Target Question Limit</label>
+                        <span id="range-display" class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">--</span>
                     </div>
-                    <input type="range" id="question-range" min="20" max="150" step="10" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500" oninput="updateSetupMetrics(this.value)" disabled>
+                    <input type="range" id="question-range" min="20" max="150" step="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" oninput="updateSetupMetrics(this.value)" disabled>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
+                <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div>
-                        <span class="block text-xs text-slate-500 uppercase font-semibold tracking-wider">Allotted Time</span>
-                        <span id="calc-time" class="text-lg font-bold text-slate-200">--</span>
+                        <span class="block text-xs text-slate-400 uppercase font-semibold tracking-wider">Allotted Time</span>
+                        <span id="calc-time" class="text-lg font-bold text-slate-800">--</span>
                     </div>
                     <div>
-                        <span class="block text-xs text-slate-500 uppercase font-semibold tracking-wider">Allowed Range Bounds</span>
-                        <span id="calc-bounds" class="text-sm font-bold text-purple-400">Select chapters...</span>
+                        <span class="block text-xs text-slate-400 uppercase font-semibold tracking-wider">Allowed Range Bounds</span>
+                        <span id="calc-bounds" class="text-sm font-bold text-purple-600">Select chapters...</span>
                     </div>
                 </div>
 
-                <button onclick="validateAndProceedSetup()" class="w-full py-4 bg-slate-100 hover:bg-white text-slate-950 font-bold rounded-xl shadow-lg transition-all duration-200 text-center cursor-pointer">
+                <button onclick="validateAndProceedSetup()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md shadow-indigo-100 transition-all duration-200 text-center cursor-pointer">
                     Generate Quiz Layout
                 </button>
             </div>
@@ -184,22 +189,22 @@
 
 
         <section id="screen-confirm" class="glass-card p-8 md:p-10 hidden text-center transform transition-all duration-500">
-            <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-full flex items-center justify-center mx-auto text-amber-400 text-2xl mb-4">⚠️</div>
-            <h2 class="text-2xl font-bold text-slate-100">Review Strict Guidelines</h2>
+            <div class="w-16 h-16 bg-amber-50 border border-amber-200 rounded-full flex items-center justify-center mx-auto text-amber-500 text-2xl mb-4">⚠️</div>
+            <h2 class="text-2xl font-bold text-slate-900">Review Strict Guidelines</h2>
             
-            <div class="my-6 max-w-sm mx-auto text-left bg-black/20 p-5 rounded-xl border border-white/5 space-y-2">
-                <p class="text-sm text-slate-400">Candidate: <span id="conf-name" class="text-slate-200 font-semibold float-right">--</span></p>
-                <p class="text-sm text-slate-400">Selected Modules: <span id="conf-modules" class="text-purple-400 font-semibold float-right">--</span></p>
-                <p class="text-sm text-slate-400">Total Pool size: <span id="conf-count" class="text-indigo-400 font-semibold float-right">-- Questions</span></p>
-                <p class="text-sm text-slate-400">Allocated Duration: <span id="conf-time" class="text-emerald-400 font-semibold float-right">--</span></p>
+            <div class="my-6 max-w-sm mx-auto text-left bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-2">
+                <p class="text-sm text-slate-500">Candidate: <span id="conf-name" class="text-slate-800 font-semibold float-right">--</span></p>
+                <p class="text-sm text-slate-500">Selected Modules: <span id="conf-modules" class="text-purple-600 font-semibold float-right">--</span></p>
+                <p class="text-sm text-slate-500">Total Pool size: <span id="conf-count" class="text-indigo-600 font-semibold float-right">-- Questions</span></p>
+                <p class="text-sm text-slate-500">Allocated Duration: <span id="conf-time" class="text-emerald-600 font-semibold float-right">--</span></p>
             </div>
 
-            <div class="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-left mb-6 text-sm text-red-300 leading-relaxed">
-                <span class="font-bold block text-red-400 mb-1">Crucial Warning:</span>
+            <div class="p-4 bg-red-50 border border-red-100 rounded-xl text-left mb-6 text-sm text-red-600 leading-relaxed">
+                <span class="font-bold block text-red-700 mb-1">Crucial Warning:</span>
                 Do not leave this page, split screens, or switch tabs. Leaving the active layout environment will result in an automatic calculation timeout and cancellation of your test data submission.
             </div>
 
-            <button id="start-fetch-btn" onclick="triggerDynamicDataLoad()" class="w-full py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 font-bold text-white rounded-xl shadow-lg shadow-emerald-950/20 transition-all duration-300 cursor-pointer">
+            <button onclick="triggerDynamicDataLoad()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 font-bold text-white rounded-xl shadow-md shadow-emerald-100 transition-all duration-300 cursor-pointer">
                 Start Quiz
             </button>
         </section>
@@ -208,45 +213,45 @@
         <section id="screen-quiz" class="glass-card p-6 md:p-8 hidden transform transition-all duration-500">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <span id="quiz-progress-text" class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Question 1 of --</span>
+                    <span id="quiz-progress-text" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Question 1 of --</span>
                 </div>
-                <div class="flex items-center space-x-2 bg-red-500/10 border border-red-500/20 px-4 py-1.5 rounded-full">
+                <div class="flex items-center space-x-2 bg-red-50 border border-red-100 px-4 py-1.5 rounded-full">
                     <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                    <span id="global-timer" class="text-sm font-mono font-bold text-red-400">00:00</span>
+                    <span id="global-timer" class="text-sm font-mono font-bold text-red-600">00:00</span>
                 </div>
             </div>
 
-            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-8">
+            <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-8">
                 <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300" style="width: 0%"></div>
             </div>
 
             <div class="mb-8">
-                <h3 id="question-text" class="text-xl font-semibold text-slate-100 leading-relaxed">
-                    Loading layout question parameters...
+                <h3 id="question-text" class="text-xl font-bold text-slate-900 leading-relaxed">
+                    Loading question parameters...
                 </h3>
             </div>
 
             <div class="space-y-3.5 mb-8">
                 <div onclick="selectOption('a')" id="opt-a" class="option-card p-4 flex items-center">
-                    <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">A</span>
-                    <span id="text-opt-a" class="text-slate-300 text-sm md:text-base"></span>
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">A</span>
+                    <span id="text-opt-a" class="text-slate-700 text-sm md:text-base font-medium"></span>
                 </div>
                 <div onclick="selectOption('b')" id="opt-b" class="option-card p-4 flex items-center">
-                    <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">B</span>
-                    <span id="text-opt-b" class="text-slate-300 text-sm md:text-base"></span>
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">B</span>
+                    <span id="text-opt-b" class="text-slate-700 text-sm md:text-base font-medium"></span>
                 </div>
                 <div onclick="selectOption('c')" id="opt-c" class="option-card p-4 flex items-center">
-                    <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">C</span>
-                    <span id="text-opt-c" class="text-slate-300 text-sm md:text-base"></span>
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">C</span>
+                    <span id="text-opt-c" class="text-slate-700 text-sm md:text-base font-medium"></span>
                 </div>
                 <div onclick="selectOption('d')" id="opt-d" class="option-card p-4 flex items-center">
-                    <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-white/10 shrink-0">D</span>
-                    <span id="text-opt-d" class="text-slate-300 text-sm md:text-base"></span>
+                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center font-bold text-sm text-slate-400 mr-4 border border-slate-200 shrink-0">D</span>
+                    <span id="text-opt-d" class="text-slate-700 text-sm md:text-base font-medium"></span>
                 </div>
             </div>
 
             <div class="flex justify-end">
-                <button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl tracking-wide shadow-md transition-all duration-200 cursor-pointer">
+                <button id="next-btn" onclick="advanceQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl tracking-wide shadow-sm transition-all duration-200 cursor-pointer">
                     Next Question
                 </button>
             </div>
@@ -254,34 +259,34 @@
 
 
         <section id="screen-processing" class="glass-card p-12 text-center hidden transform transition-all duration-500">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-400 mx-auto mb-6"></div>
-            <h2 id="processing-title" class="text-xl font-bold text-slate-200">Evaluating & Compiling Answers...</h2>
-            <p class="text-slate-500 text-xs mt-2">Running evaluation maps securely.</p>
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mx-auto mb-6"></div>
+            <h2 id="processing-title" class="text-xl font-bold text-slate-800">Evaluating Answers...</h2>
+            <p class="text-slate-400 text-xs mt-2">Running evaluation maps securely.</p>
         </section>
 
 
         <section id="screen-result" class="glass-card p-8 text-center hidden transform transition-all duration-500">
-            <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto text-emerald-400 text-3xl mb-4">🏆</div>
-            <h2 class="text-2xl font-bold text-slate-100">Session Evaluation Complete</h2>
-            <p class="text-slate-400 text-sm mt-1">Thank you, <span id="result-display-name" class="font-semibold text-slate-200"></span>. Your grade has been transmitted.</p>
+            <div class="w-20 h-20 bg-emerald-50 border border-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-500 text-3xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-slate-900">Session Evaluation Complete</h2>
+            <p class="text-slate-500 text-sm mt-1">Thank you, <span id="result-display-name" class="font-semibold text-slate-800"></span>. Your grade has been transmitted.</p>
             
             <div class="my-8">
-                <span class="block text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Your Total Metric Score</span>
-                <div class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300" id="final-score-display">0 / 0</div>
-                <div class="text-sm font-bold text-slate-400 mt-2 bg-white/5 inline-block px-4 py-1 rounded-full border border-white/10" id="final-percentage-display">0%</div>
+                <span class="block text-xs uppercase tracking-wider text-slate-400 font-semibold mb-1">Your Total Metric Score</span>
+                <div class="text-5xl font-extrabold text-indigo-600" id="final-score-display">0 / 0</div>
+                <div class="text-sm font-bold text-slate-500 mt-2 bg-slate-100 inline-block px-4 py-1 rounded-full border border-slate-200" id="final-percentage-display">0%</div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button onclick="buildAndShowPreview()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition-all cursor-pointer">Review Performance Preview</button>
-                <button onclick="location.reload()" class="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-slate-300 text-sm border border-white/10 rounded-xl transition-all duration-200 cursor-pointer">Configure New Run Session</button>
+                <button onclick="buildAndShowPreview()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-all cursor-pointer">Review Performance Preview</button>
+                <button onclick="location.reload()" class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm border border-slate-200 rounded-xl transition-all duration-200 cursor-pointer">Configure New Session</button>
             </div>
         </section>
 
 
         <section id="screen-preview" class="glass-card p-6 hidden transform transition-all duration-500">
-            <div class="flex justify-between items-center mb-6 pb-4 border-b border-white/10">
-                <h2 class="text-xl font-bold text-slate-100">Performance Assessment Sheet</h2>
-                <button onclick="switchScreen('screen-result')" class="text-xs font-bold text-slate-400 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10 cursor-pointer hover:bg-white/10 transition-all">Back to Score</button>
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-200">
+                <h2 class="text-xl font-bold text-slate-900">Performance Assessment Sheet</h2>
+                <button onclick="switchScreen('screen-result')" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-200 transition-all">Back</button>
             </div>
             <div id="preview-items-container" class="space-y-6 max-h-[55vh] overflow-y-auto pr-2"></div>
         </section>
@@ -289,7 +294,7 @@
     </main>
 
     <script>
-        // --- MULTI-UNIT ENGINE RUNTIME ARCHITECTURE STATE OBJECT ---
+        // --- MULTI-UNIT CONFIGURATION GLOBAL RUNTIME STATE ---
         let appState = {
             studentName: "",
             selectedChapters: [],
@@ -312,19 +317,21 @@
             document.getElementById(targetId).classList.remove('hidden');
         }
 
-        // --- CHAPTER TOGGLE MANAGEMENT MECHANICS ---
+        // --- FIXED SELECTION PARADIGM FUNCTIONAL LOOPS ---
         function toggleChapter(chapterId) {
             const index = appState.selectedChapters.indexOf(chapterId);
+            const element = document.getElementById(`ch-${chapterId}`);
+            
             if (index > -1) {
                 appState.selectedChapters.splice(index, 1);
-                document.getElementById(`ch-${chapterId}`).classList.remove('active');
+                element.classList.remove('active');
             } else {
                 if (appState.selectedChapters.length >= 3) {
                     alert("Maximum limit constraint reached. You are allowed to choose up to 3 distinct chapters.");
                     return;
                 }
                 appState.selectedChapters.push(chapterId);
-                document.getElementById(`ch-${chapterId}`).add('active');
+                element.classList.add('active');
             }
             calculateDynamicBounds();
         }
@@ -378,17 +385,17 @@
             switchScreen('screen-confirm');
         }
 
-        // --- ASYNC RUNTIME LOADING MATRIX HOOKS ---
+        // --- RUNTIME ASYNC LOADING DATA ARCHITECTURE ---
         async function triggerDynamicDataLoad() {
-            document.getElementById('processing-title').innerText = "Compiling & Syncing Chapter Pools...";
+            document.getElementById('processing-title').innerText = "Compiling Chapter Pools...";
             switchScreen('screen-processing');
 
             appState.compiledQuestionPool = [];
             
             try {
                 const fetchPromises = appState.selectedChapters.map(ch => 
-                    fetch(`./chapter${ch}.json`).then(res => {
-                        if (!res.ok) throw new Error(`Missing chapter configuration file: chapter${ch}.json`);
+                    fetch(`./data/chapter${ch}.json`).then(res => {
+                        if (!res.ok) throw new Error(`Missing module config: data/chapter${ch}.json`);
                         return res.json();
                     })
                 );
@@ -417,7 +424,7 @@
 
             } catch (err) {
                 console.error(err);
-                alert("Extraction error: Validate your chapterX.json files matching inside the directory layout.");
+                alert("Extraction error: Validate your data/chapterX.json layout matches properly inside your root folder.");
                 switchScreen('screen-setup');
             }
         }
@@ -451,10 +458,10 @@
             const nextBtn = document.getElementById('next-btn');
             if (appState.currentQuestionIndex === appState.configuredCount - 1) {
                 nextBtn.innerText = "Submit Assessment Run";
-                nextBtn.className = "px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl tracking-wide shadow-md transition-all duration-200 cursor-pointer";
+                nextBtn.className = "px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl tracking-wide shadow-sm transition-all duration-200 cursor-pointer";
             } else {
                 nextBtn.innerText = "Next Question";
-                nextBtn.className = "px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl tracking-wide shadow-md transition-all duration-200 cursor-pointer";
+                nextBtn.className = "px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl tracking-wide shadow-sm transition-all duration-200 cursor-pointer";
             }
         }
 
@@ -464,7 +471,7 @@
             document.getElementById(`opt-${letter}`).classList.add('selected');
         }
 
-        function advanceQuiz() {
+        fn advanceQuiz() {
             if (appState.currentQuestionIndex < appState.configuredCount - 1) {
                 appState.currentQuestionIndex++;
                 renderActiveQuestion();
@@ -475,7 +482,7 @@
 
         function terminateAndSubmitQuiz() {
             clearInterval(appState.globalTimerInterval);
-            document.getElementById('processing-title').innerText = "Evaluating & Compiling Answers...";
+            document.getElementById('processing-title').innerText = "Evaluating Answers...";
             switchScreen('screen-processing');
             
             let rawScore = 0;
@@ -499,17 +506,17 @@
                 const studentSelection = appState.answersRecorded[idx] || "unanswered";
                 const isCorrect = studentSelection === item.answer;
                 const card = document.createElement('div');
-                card.className = "p-4 rounded-xl bg-white/5 border border-white/10 space-y-2 text-left";
+                card.className = "p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-left";
                 card.innerHTML = `
                     <div class="flex justify-between items-start gap-4">
-                        <h4 class="text-sm font-semibold text-slate-200">${idx + 1}. ${item.question}</h4>
-                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded shrink-0 ${isCorrect ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/10' : 'bg-red-500/10 text-red-400 border border-red-500/10'}">
+                        <h4 class="text-sm font-bold text-slate-800">${idx + 1}. ${item.question}</h4>
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded shrink-0 ${isCorrect ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}">
                             ${isCorrect ? 'Correct' : 'Incorrect'}
                         </span>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
-                        <p class="text-slate-400">Your Answer: <span class="font-semibold ${isCorrect ? 'text-emerald-400' : 'text-red-400'}">(${studentSelection.toUpperCase()}) ${item[studentSelection] || 'None'}</span></p>
-                        <p class="text-slate-400">Correct Answer: <span class="font-semibold text-emerald-400">(${item.answer.toUpperCase()}) ${item[item.answer]}</span></p>
+                        <p class="text-slate-500">Your Answer: <span class="font-semibold ${isCorrect ? 'text-emerald-600' : 'text-red-600'}">(${studentSelection.toUpperCase()}) ${item[studentSelection] || 'None'}</span></p>
+                        <p class="text-slate-500">Correct Answer: <span class="font-semibold text-emerald-600">(${item.answer.toUpperCase()}) ${item[item.answer]}</span></p>
                     </div>
                 `;
                 container.appendChild(card);
@@ -517,12 +524,12 @@
             switchScreen('screen-preview');
         }
 
-        // --- MOUSE ORIENTATION LOGO TRACKER EFFECT ---
+        // --- SUBTLE MOUSE ROTATION LOGO MATRIX ENGINE ---
         let logo = document.getElementById('logo-container');
         document.addEventListener('mousemove', (e) => {
             if(logo && !document.getElementById('screen-welcome').classList.contains('hidden')) {
-                let ax = -(window.innerWidth / 2 - e.pageX) / 40;
-                let ay = (window.innerHeight / 2 - e.pageY) / 40;
+                let ax = -(window.innerWidth / 2 - e.pageX) / 45;
+                let ay = (window.innerHeight / 2 - e.pageY) / 45;
                 logo.style.transform = `rotateY(${ax}deg) rotateX(${ay}deg)`;
             }
         });
